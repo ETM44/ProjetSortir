@@ -24,10 +24,6 @@ class Site
      */
     private $nom;
 
-<<<<<<< HEAD
-
-    private $sortiesOrganisateurs= [];
-=======
     /**
      * @ORM\OneToMany(targetEntity=Participant::class, mappedBy="site")
      */
@@ -40,7 +36,6 @@ class Site
         $this->participants = new ArrayCollection();
         $this->sorties = new ArrayCollection();
     }
->>>>>>> 1e4a280dbf6ff2024f1daaec5185c24aa03f83fa
 
     public function getId(): ?int
     {
