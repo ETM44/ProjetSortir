@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SortieRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -51,6 +53,41 @@ class Sortie
      * @ORM\Column(type="integer", nullable=true)
      */
     private $etatsortie;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Site::class, inversedBy="sorties")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $site;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Participant::class, inversedBy="sortiesOrganisees")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $organisateur;
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Etat::class, inversedBy="etatSorties")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $etat;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Lieu::class, inversedBy="sorties")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $lieu;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Inscription::class, mappedBy="no_sortie", cascade={"persist", "remove"})
+     */
+    private $inscriptions;
+
+    public function __construct()
+    {
+        $this->inscriptions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -137,6 +174,72 @@ class Sortie
     public function setEtatsortie(?int $etatsortie): self
     {
         $this->etatsortie = $etatsortie;
+
+        return $this;
+    }
+
+    public function getSite(): ?Site
+    {
+        return $this->site;
+    }
+
+    public function setSite(?Site $site): self
+    {
+        $this->site = $site;
+
+        return $this;
+    }
+
+    public function getOrganisateur(): ?Participant
+    {
+        return $this->organisateur;
+    }
+
+    public function setOrganisateur(?Participant $organisateur): self
+    {
+        $this->organisateur = $organisateur;
+
+        return $this;
+    }
+
+
+    public function getEtat(): ?Etat
+    {
+        return $this->etat;
+    }
+
+    public function setEtat(?Etat $etat): self
+    {
+        $this->etat = $etat;
+
+        return $this;
+    }
+
+    public function getLieu(): ?Lieu
+    {
+        return $this->lieu;
+    }
+
+    public function setLieu(?Lieu $lieu): self
+    {
+        $this->lieu = $lieu;
+
+        return $this;
+    }
+
+    public function getInscription(): ?Inscription
+    {
+        return $this->inscription;
+    }
+
+    public function setInscription(Inscription $inscription): self
+    {
+        // set the owning side of the relation if necessary
+        if ($inscription->getNoSortie() !== $this) {
+            $inscription->setNoSortie($this);
+        }
+
+        $this->inscription = $inscription;
 
         return $this;
     }
