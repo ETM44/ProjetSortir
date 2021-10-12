@@ -22,6 +22,9 @@ class Site
      */
     private $nom;
 
+
+    private $sortiesOrganisateurs= [];
+
     public function getId(): ?int
     {
         return $this->id;

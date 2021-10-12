@@ -17,7 +17,7 @@ class Ville
      */
     private $idVille;
 
-    /**git
+    /**
      * @ORM\Column(type="string", length=30)
      */
     private $nom_ville;
