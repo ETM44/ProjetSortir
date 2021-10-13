@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ title }}
+    <ul>
+
+        <li>Nom de la sortie : {{ sortie.nom }}</li>
+        <li>Date de la sortie : {{ sortie.dateHeureDebut|date("D d M Y") }}</li>
+        <li>Ville organisatrice :{{ sortie.site.nom }}</li>
+        <li>Lieu :{{ sortie.lieu.nom}} </li>
+    </ul>
+
+    {{ form(form) }}
+
+{#
+    <form method="post" id="formAnnuler">
+        <p>Motif : <textarea maxlength="150px" id="motifAnnulation">
+
+            </textarea> </p>
+
+<button type="submit">Confirmer l'annulation</button>
+
+<button type="reset">Annuler l'annulation</button>
+    </form>#}
+{% endblock %}

@@ -1,0 +1,33 @@
+body{
+    position:center
+}
+a{
+    text-decoration: none;
+}
+h1{
+    text-align: center;
+}
+.gauche, .droite{
+    display: flex;
+    flex-direction: column;
+    margin:60px;
+}
+
+.GaucheDroite{
+    display: flex;
+
+}
+
+.boutonsModifSortie{
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+}
+.lienBouton{
+    color: black;
+    border: 1px solid gray;
+    background-color: lightgray;
+}
+.lieuAddLieu{
+    display: flex;
+}
