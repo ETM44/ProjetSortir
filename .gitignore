@@ -1,6 +1,14 @@
 
 ###> symfony/framework-bundle ###
+<<<<<<< HEAD
 /.idea
+=======
+<<<<<<< HEAD
+/.idea
+=======
+
+>>>>>>> bcb9ba803ab00c1a8c514ca66c1b9f3072e672f1
+>>>>>>> 1e4a280dbf6ff2024f1daaec5185c24aa03f83fa
 /.env.local
 /.env.local.php
 /.env.*.local
@@ -8,8 +16,9 @@
 /public/bundles/
 /var/
 /vendor/
-###< symfony/framework-bundle ###
 
+###< symfony/framework-bundle ###
+/.idea
 ###> symfony/phpunit-bridge ###
 .phpunit.result.cache
 /phpunit.xml

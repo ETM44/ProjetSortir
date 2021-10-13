@@ -6,11 +6,14 @@ use App\Repository\ParticipantRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=ParticipantRepository::class)
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
 class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -23,6 +26,10 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank(message="You must enter your email")
+     *  @Assert\Length(min="2", max="180",
+     *     minMessage="Trop court ! Au moins deux caractères !",
+     *     maxMessage="Trop long ! Jusqu'à 180 caractères !")
      */
     private $email;
 
@@ -39,21 +46,37 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank(message="You must enter your name")
+     *  @Assert\Length(min="2", max="180",
+     *     minMessage="Too short ! At least 2 caracters !",
+     *     maxMessage="Too long ! Max 180 caracters !")
      */
+
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank(message="You must enter your firstname")
+     *  @Assert\Length(min="2", max="180",
+     *     minMessage="Too short ! At least 2 caracters !",
+     *     maxMessage="Too long ! Max 180 caracters !")
      */
     private $prenom;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\NotBlank(message="You must choose a pseudo")
+     *  @Assert\Length(min="2", max="50",
+     *     minMessage="Too short ! At least 2 caracters !",
+     *     maxMessage="Too long ! Max 50 caracters !")
      */
     private $pseudo;
 
     /**
      * @ORM\Column(type="string", length=10, nullable=true)
+     * @Assert\Length(min="10", max="10",
+     *  minMessage="Your phone number has to be 10 digits long to be valid !",
+     *  maxMessage="Your phone number has to be 10 digits long to be valid !")
      */
     private $telephone;
 
