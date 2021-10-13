@@ -19,6 +19,34 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
+    public function  findOneByid($id)
+    {
+        return $this->createQueryBuilder('s')
+         ->andWhere('s.id=:id')
+         ->setParameter('id',$id)
+         ->join('s.lieu','l')
+         ->addSelect('l')
+         ->getQuery()
+         ->getOneOrNullResult();
+
+    }
+    public function  findParticipantsInscrits($id)
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.id=:id')
+            ->setParameter('id',$id)
+            ->join('p.inscription','i')
+            ->addSelect('i')
+            ->andWhere('')
+            //->setParameter('',$id)
+            ->join('p.i.sortie','s')
+            ->addSelect('')
+            ->addSelect('')
+            ->getQuery()
+            ->getOneOrNullResult();
+
+    }
+
     // /**
     //  * @return Sortie[] Returns an array of Sortie objects
     //  */

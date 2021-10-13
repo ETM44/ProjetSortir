@@ -2,6 +2,28 @@
 
 {% block title %}Hello SortieController!{% endblock %}
 
+{% block javascripts %}
+    <script>
+        $(domcument).ready(function (){
+            $("#ville").change(function (){
+                var id = $(this).val();
+                //alert($(this).val)
+                $.get("/", function (data, status){
+                    //alert("Data: "+data+"\nStatus: "+status);
+                    var res=JSON.parse(data);
+                    $("#CP").val(res.code);
+                })
+            })
+        })
+    </script>
+{% endblock %}
+
 {% block main %}
+<select id="ville">
+    <option value="1">Quimper</option>
+    <option value="2">Nantes</option>
+    <option value="3">Rennes</option>
+</select>
+
 
 {% endblock %}
