@@ -13,17 +13,24 @@ security:
         app_user_provider:
             entity:
                 class: App\Entity\Participant
-                property: email
+                #property: email
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+
         main:
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 6048000
+                path: /
             lazy: true
             provider: app_user_provider
             custom_authenticator: App\Security\AppSortiesAuthenticator
             logout:
                 path: app_logout
+
                 # where to redirect after logout
                 # target: app_any_route
 
@@ -33,8 +40,10 @@ security:
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
 
+
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
+
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
