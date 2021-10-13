@@ -17,4 +17,12 @@ class SortieController extends AbstractController
             'controller_name' => 'SortieController',
         ]);
     }
+
+    /**
+     * @Route("/creerSortie", name="creerSortie")
+     */
+    public function creerSortie(): Response
+    {
+
+    }
 }
