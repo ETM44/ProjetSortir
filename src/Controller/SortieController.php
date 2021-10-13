@@ -8,7 +8,7 @@ use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use http\Env\Request;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\ResetType;
@@ -120,7 +120,7 @@ class SortieController extends AbstractController
         }
 
         return $this->render("sortie/modifierSortie.html.twig", [
-            "title" => "Modifier une sortie",
+            "title" => "Modifier la sortie :",
             "sortie" => $sortie,
             "updateSortieForm" => $updateSortieForm->createView()
             ]);
