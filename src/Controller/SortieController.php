@@ -41,7 +41,7 @@ class SortieController extends AbstractController
     }
 
     /**
-     * @Route("/afficherSortie", name="afficherSortie")
+     * @Route("sortie/afficherSortie{id}", name="afficherSortie")
      */
     public function afficherSortie(SortieRepository $sr): Response
     {
