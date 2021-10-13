@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ title }}
+    <ul>
+        <li>Nom de la sortie : {{ sortie.nom }}</li>
+        <li>Date de la sortie : {{ sortie.dateHeureDebut }}</li>
+        <li>Ville organisatrice :</li>
+        <li>Lieu : </li>
+        <li>Motif : <textarea maxlength="150px">
+
+            </textarea> </li>
+    </ul>
+{% endblock %}
