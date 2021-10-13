@@ -2,17 +2,18 @@
 
 namespace App\Controller;
 
+
 use App\Entity\Category;
 use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use http\Env\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Sortie;
@@ -39,6 +40,7 @@ class SortieController extends AbstractController
     {
 
     }
+
 
     /**
      * @Route("sortie/annuler/{id}", name="app_annulerSortie")
@@ -124,4 +126,30 @@ class SortieController extends AbstractController
             ]);
     }
     
+
+    /**
+     * @Route("/creerSortie/getCP/{id}", name="creerSortie_getCP")
+     */
+    public function getCP(Request $request, $id): Response
+    {
+        $tab=[
+            "1"=>"29000",
+            "2"=>"44000",
+            "3"=>"35000"
+    ];
+        return $this->json('{"code":'.$tab[$id].'}');
+    }
+
+    /**
+     * @Route("/afficherSortie", name="afficherSortie")
+     */
+    public function afficherSortie(SortieRepository $sr): Response
+    {
+        $sortie = $sr->findOnById();
+        $title= "Afficher une sortie - {{sortie.nom}}";
+        $tab = compact("title", "sortie");
+
+        return $this->render('afficherSortie.html.twig', $tab);
+    }
+
 }

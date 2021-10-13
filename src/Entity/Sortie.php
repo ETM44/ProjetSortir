@@ -80,7 +80,7 @@ class Sortie
     private $lieu;
 
     /**
-     * @ORM\OneToOne(targetEntity=Inscription::class, mappedBy="no_sortie", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity=Inscription::class, mappedBy="no_sortie")
      */
     private $inscriptions;
 
