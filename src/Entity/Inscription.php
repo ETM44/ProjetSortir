@@ -26,13 +26,13 @@ class Inscription
      * @ORM\ManyToOne  (targetEntity=Participant::class, inversedBy="inscription", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $no_participant;
+    private $participant;
 
     /**
-     * @ORM\ManyToOne (targetEntity=Sortie::class, inversedBy="inscription", cascade={"persist", "remove"})
+     * @ORM\ManyToOne (targetEntity=Sortie::class, inversedBy="inscriptions", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $no_sortie;
+    private $sortie;
 
     public function getId(): ?int
     {
@@ -51,26 +51,26 @@ class Inscription
         return $this;
     }
 
-    public function getNoParticipant(): ?Participant
+    public function getParticipant(): ?Participant
     {
-        return $this->no_participant;
+        return $this->participant;
     }
 
-    public function setNoParticipant(Participant $no_participant): self
+    public function setParticipant(Participant $participant): self
     {
-        $this->no_participant = $no_participant;
+        $this->participant = $participant;
 
         return $this;
     }
 
-    public function getNoSortie(): ?Sortie
+    public function getSortie(): ?Sortie
     {
-        return $this->no_sortie;
+        return $this->sortie;
     }
 
-    public function setNoSortie(Sortie $no_sortie): self
+    public function setSortie(Sortie $sortie): self
     {
-        $this->no_sortie = $no_sortie;
+        $this->sortie = $sortie;
 
         return $this;
     }

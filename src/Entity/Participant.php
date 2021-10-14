@@ -104,7 +104,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 
 
     /**
-     * @ORM\OneToMany(targetEntity=Inscription::class, mappedBy="no_participant")
+     * @ORM\OneToMany(targetEntity=Inscription::class, mappedBy="participant")
      */
     private $inscription;
 
