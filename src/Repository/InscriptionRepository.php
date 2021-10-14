@@ -22,9 +22,12 @@ class InscriptionRepository extends ServiceEntityRepository
     public function findParticipantsInscritsWithFilter($site, $nom, $dateHeureDebut, $dateHeureFin, $sortieOrganisateur, $sortieInscrit, $sortiePasInscrit, $sortiePassees)
     {
         return $this->createQueryBuilder('i')
-            ->andWhere('i.no_participant = 1')
-            ->orderBy('i.id', 'ASC')
-            ->setMaxResults(10)
+            ->join('i.participant', 'p')
+            ->addSelect('p')
+            ->join('i.sortie', 's')
+            ->addSelect('s')
+            ->join('s.etat', 'e')
+            ->addSelect('e')
             ->getQuery()
             ->getResult()
             ;

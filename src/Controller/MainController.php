@@ -29,12 +29,11 @@ class MainController extends AbstractController
         }
 
 
-        $result = $ir->findParticipantsInscritsWithFilter('Couëron', '', '$dateHeureDebut', '$dateHeureFin', true, true, true, true);
-
-        dd($result);
-
+        $results = $ir->findParticipantsInscritsWithFilter('', '', '', '', true, true, true, true);
+        //dd($results);
         return $this->render('main/index.html.twig', [
-            'mainForm' => $form->createView()
+            'mainForm' => $form->createView(),
+            'results' => $results
         ]);
     }
 }
