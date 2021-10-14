@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Form\MainFormType;
 use App\Bo\MainSearch;
+use App\Repository\InscriptionRepository;
+use App\Repository\SortieRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +16,7 @@ class MainController extends AbstractController
     /**
      * @Route("/main", name="main")
      */
-    public function index(Request $request): Response
+    public function index(InscriptionRepository $ir, Request $request): Response
     {
         $mainSearch = new MainSearch();
 
@@ -25,7 +27,12 @@ class MainController extends AbstractController
         if($form->isSubmitted()) {
             //dd($mainSearch);
         }
-        
+
+
+        $result = $ir->findParticipantsInscritsWithFilter('Couëron', '', '$dateHeureDebut', '$dateHeureFin', true, true, true, true);
+
+        dd($result);
+
         return $this->render('main/index.html.twig', [
             'mainForm' => $form->createView()
         ]);
