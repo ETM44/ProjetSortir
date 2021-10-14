@@ -19,32 +19,28 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
-    public function  findOneByid($id)
+    public function  findOneById($id)
     {
-        return $this->createQueryBuilder('s')
-         ->andWhere('s.id=:id')
-         ->setParameter('id',$id)
-         ->join('s.lieu','l')
-         ->addSelect('l')
-         ->getQuery()
-         ->getOneOrNullResult();
+        $qb = $this->createQueryBuilder('s')
+            ->join('s.lieu','l')
+            ->addSelect('l')
+            ->andWhere('s.id=:id')
+            ->setParameter('id',$id)
+            
+        return $qb->getQuery()->getResult();
 
     }
     public function  findParticipantsInscrits($id)
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.id=:id')
-            ->setParameter('id',$id)
-            ->join('p.inscription','i')
+        $qb = $this->createQueryBuilder('s')
+            ->join('s.inscription', 'i')
+            ->join('i.participant', 'p')
             ->addSelect('i')
-            ->andWhere('')
-            //->setParameter('',$id)
-            ->join('p.i.sortie','s')
-            ->addSelect('')
-            ->addSelect('')
-            ->getQuery()
-            ->getOneOrNullResult();
+            ->addSelect('p')
+            ->andWhere('i.sortie = :id')
+            ->setParameter('id', $id);
 
+        return $qb->getQuery()->getResult();
     }
 
     // /**

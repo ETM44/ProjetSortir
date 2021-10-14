@@ -1,29 +1,30 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{sortie.title}}{% endblock %}
+{% block title %}{{sortie.nom}}{% endblock %}
 
 {% block main %}
-
     <div>
         <ul>
             {% for sortie in sorties %}
             <li>
-                <a href="{{ path('afficherSortie',{'id':sortie.id}) }}">
+               {# <a href="{{ path('afficherSortie',{'id':sortie.id}) }}">#}
                     {{ sortie.nom }} {{ sortie.dateHeureDebut|date("d/m/y/H/i") }} {{ sortie.dateLimiteInscription }}
                     {{ sortie.nbInscriptionsMax }} {{ sortie.duree|date("H/i") }} {{ sortie.infosSortie }}
-                </a>
+               {# </a>#}
             </li>
+            {% endfor %}
         </ul>
     </div>
 
     <div>
         <ul>
-            {% for lieu in lieux %}
+            {% for lie in lieu %}
             <li>
-                <a href="{{ path('afficherSortie',{'id':lieu.id}) }}">
-                    {{ lieu.ville }} {{ lieu. }}
-                </a>
+               {# <a href="{{ path('afficherSortie',{'id':lieu.id}) }}">#}
+                    {{ lie.ville }} {{ lie.code_postal }}
+               {# </a>#}
             </li>
+            {% endfor %}
         </ul>
     </div>
 

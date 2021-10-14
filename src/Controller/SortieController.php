@@ -165,15 +165,15 @@ class SortieController extends AbstractController
     }
 
     /**
-     * @Route("/afficherSortie", name="afficherSortie")
+     * @Route("sortie/afficherSortie/{id}", name="afficherSortie")
      */
-    public function afficherSortie(SortieRepository $sr): Response
+    public function afficherSortie(SortieRepository $sr, $id=0): Response
     {
-        $sortie = $sr->findOnById();
+        $sortie = $sr->findOneById($id);
         $title= "Afficher une sortie - {{sortie.nom}}";
         $tab = compact("title", "sortie");
-
-        return $this->render('afficherSortie.html.twig', $tab);
+        dd($sortie);
+        return $this->render('sortie/afficherSortie.html.twig', $tab);
     }
 
 }
