@@ -2,29 +2,21 @@
 
 {% block title %}{{sortie.nom}}{% endblock %}
 
-{% block main %}
+{% block body %}
     <div>
         <ul>
-            {% for sortie in sorties %}
-            <li>
-               {# <a href="{{ path('afficherSortie',{'id':sortie.id}) }}">#}
-                    {{ sortie.nom }} {{ sortie.dateHeureDebut|date("d/m/y/H/i") }} {{ sortie.dateLimiteInscription }}
-                    {{ sortie.nbInscriptionsMax }} {{ sortie.duree|date("H/i") }} {{ sortie.infosSortie }}
-               {# </a>#}
-            </li>
-            {% endfor %}
+            <li>{{ sortie.nom }} </li>
+            <li>{{ sortie.dateHeureDebut | date('d/m/Y H:i') }} </li>
+            <li>{{ sortie.dateLimiteInscription | date('d/m/Y H:i') }}</li>
+            <li>{{ sortie.nbInscriptionsMax }}</li>
+            <li>{{ sortie.duree | date('H:i') }}</li>
+            <li>{{ sortie.infosSortie }}</li>
         </ul>
     </div>
-
     <div>
         <ul>
-            {% for lie in lieu %}
-            <li>
-               {# <a href="{{ path('afficherSortie',{'id':lieu.id}) }}">#}
-                    {{ lie.ville }} {{ lie.code_postal }}
-               {# </a>#}
-            </li>
-            {% endfor %}
+            <li>{{ sortie.lieu.ville.nomVille }}</li>
+            <li>{{ sortie.lieu.ville.codePostal }}</li>
         </ul>
     </div>
 
