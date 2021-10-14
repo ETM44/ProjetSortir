@@ -66,9 +66,13 @@
         <label class="label">Code postal : {{ sortie.lieu.ville.codePostal }}</label>
 
         <label class="label">Latitude :</label>
-        <input type="text" class="position" id="lat">
+        {% if sortir.lieu.latitude %}
+        <input type="text" class="position" id="lat" value=" {{ sortie.lieu.latitude }}">
+            {% endif %}
+        {% if sortie.lieu.longitude %}
         <label class="label">Longitude :</label>
-        <input type="text"class="position" id="lng">
+        <input type="text"class="position" id="lng" value=" {{ sortie.lieu.longitude }}">
+            {% endif %}
      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!
         1d2712.5968569125494!2d-1.5564777840385209!3d47.16574957915793!2m3!1f0!2f0!3f0!3m2!
         1i1024!2i768!4f13.1!3m3!1m2!1s0x4805e97f6fb1094b%3A0x7d21011fae2eb0ba!2s2%20Rue%20

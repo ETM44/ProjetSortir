@@ -59,8 +59,9 @@
 
 
 <div id="global">
-<h1>On sort !</h1>
-{#<h1>{{ title }}</h1>#}
+    {% if title %}
+<h1>{{ title }}</h1>
+    {% endif %}
 <main>
         {% block body %}{% endblock %}
 </main>

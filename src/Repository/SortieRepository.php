@@ -19,7 +19,7 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
-    public function  findOneById($id)
+  /*  public function  findOneById($id)
     {
         $qb = $this->createQueryBuilder('s')
             ->join('s.lieu','l')
@@ -29,7 +29,7 @@ class SortieRepository extends ServiceEntityRepository
             
         return $qb->getQuery()->getResult();
 
-    }
+    }*/
     public function  findParticipantsInscrits($id)
     {
         $qb = $this->createQueryBuilder('s')
