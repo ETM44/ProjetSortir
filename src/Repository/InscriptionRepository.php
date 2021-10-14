@@ -19,19 +19,18 @@ class InscriptionRepository extends ServiceEntityRepository
         parent::__construct($registry, Inscription::class);
     }
 
-    public function findParticipantsInscritsWithFilter($site, $nom, $dateHeureDebut, $dateHeureFin, $sortieOrganisateur, $sortieInscrit, $sortiePasInscrit, $sortiePassees)
+    /*public function findParticipantsInscritsWithFilter($site, $nom, $dateHeureDebut, $dateHeureFin, $sortieOrganisateur, $sortieInscrit, $sortiePasInscrit, $sortiePassees)
     {
         return $this->createQueryBuilder('i')
-            ->join('i.participant', 'p')
-            ->addSelect('p')
             ->join('i.sortie', 's')
-            ->addSelect('s')
+            ->join('i.participant', 'p')
+            ->addselect('COUNT(p) as nbrParticipant')
             ->join('s.etat', 'e')
-            ->addSelect('e')
+            ->addSelect('s')
             ->getQuery()
             ->getResult()
             ;
-    }
+    }*/
 
     // /**
     //  * @return Inscription[] Returns an array of Inscription objects

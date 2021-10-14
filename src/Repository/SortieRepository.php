@@ -19,6 +19,17 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
+    public function findParticipantsInscritsWithFilter($site, $nom, $dateHeureDebut, $dateHeureFin, $sortieOrganisateur, $sortieInscrit, $sortiePasInscrit, $sortiePassees)
+    {
+        return $this->createQueryBuilder('s')
+            /*->from("App\Entity\Inscription","i")*/
+            ->leftJoin('s.inscriptions', 'i')
+            ->addSelect('i')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     public function findOneByid($id)
     {
         return $this->createQueryBuilder('s')

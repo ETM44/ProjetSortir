@@ -7,30 +7,32 @@
     {{ form_start(mainForm) }}
 
     {{ form_widget(mainForm) }}
-    <button type="submit">Rechercher</button>
+    <button class="btn btn-primary" type="submit">Rechercher</button>
     {{ form_end(mainForm) }}
 
-   <table>
+   <table class="table table-striped">
        <thead>
-            <tr>Nom de la sortie</tr>
-            <tr>Date de la sortie</tr>
-            <tr>Clôture</tr>
-            <tr>inscrits/places</tr>
-            <tr>Etat</tr>
-            <tr>Inscrit</tr>
-            <tr>Organisateur</tr>
-            <tr>Actions</tr>
+            <tr>
+                <th scope="col">Nom de la sortie</th>
+                <th scope="col">Date de la sortie</th>
+                <th scope="col">Clôture</th>
+                <th scope="col">inscrits/places</th>
+                <th scope="col">Etat</th>
+                <th scope="col">Inscrit</th>
+                <th scope="col">Organisateur</th>
+                <th scope="col">Actions</th>
+            </tr>
        </thead>
        <tbody>
             {% for result in results %}
                 <tr>
-                    <td>{{ result.sortie.nom }}</td>
-                    <td>{{ result.sortie.dateHeureDebut|date('d/M/Y') }}</td>
-                    <td>{{ result.sortie.dateLimiteInscription|date('d/M/Y') }}</td>
-                    <td>{{ result.sortie.nbInscriptionsMax }}</td>
-                    <td>{{ result.sortie.etat.libelle }}</td>
+                    <td scope="row">{{ result.nom }}</td>
+                    <td>{{ result.dateHeureDebut|date('d/M/Y') }}</td>
+                    <td>{{ result.dateLimiteInscription|date('d/M/Y') }}</td>
+                    <td>{{ result.nombreInscription }} / {{ result.nbInscriptionsMax }}</td>
+                    <td>{{ result.etat.libelle }}</td>
                     <td></td>
-                    <td>{{ result.sortie.organisateur.pseudo }}</td>
+                    <td>{{ result.organisateur.pseudo }}</td>
                     <td></td>
                 </tr>
             {% endfor %}

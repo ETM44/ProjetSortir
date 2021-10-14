@@ -16,7 +16,7 @@ class MainController extends AbstractController
     /**
      * @Route("/main", name="main")
      */
-    public function index(InscriptionRepository $ir, Request $request): Response
+    public function index(SortieRepository $ir, Request $request): Response
     {
         $mainSearch = new MainSearch();
 
