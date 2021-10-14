@@ -54,10 +54,6 @@ class Sortie
      */
     private $etatsortie;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Site::class, inversedBy="sorties")
-     * @ORM\JoinColumn(nullable=false)
-     */
     private $site;
 
     /**
@@ -80,7 +76,7 @@ class Sortie
     private $lieu;
 
     /**
-     * @ORM\OneToMany(targetEntity=Inscription::class, mappedBy="no_sortie")
+     * @ORM\OneToMany(targetEntity=Inscription::class, mappedBy="sortie")
      */
     private $inscriptions;
 

@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Repository\SortieRepository;
 use App\Repository\EtatRepository;
+use App\Repository\LieuRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -167,12 +168,15 @@ class SortieController extends AbstractController
     /**
      * @Route("sortie/afficherSortie/{id}", name="afficherSortie")
      */
-    public function afficherSortie(SortieRepository $sr, $id=0): Response
+    public function afficherSortie(SortieRepository $sr, LieuRepository $lr, $id=0): Response
     {
-        $sortie = $sr->findOneById($id);
-        $title= "Afficher une sortie - {{sortie.nom}}";
-        $tab = compact("title", "sortie");
-        dd($sortie);
+        $sortie = $sr->find($id);
+        $lieu = $sortie->getLieu();
+        //dd($sortie);
+        $title= "Afficher une sortie";
+        $tab = compact("title", "sortie", "lieu");
+
+        //dd($sortie);
         return $this->render('sortie/afficherSortie.html.twig', $tab);
     }
 
