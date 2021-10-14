@@ -7,6 +7,7 @@
            and uncomment the following Encore helpers to start using Symfony UX #}
         {% block stylesheets %}
             <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         {% endblock %}
 
         {% block javascripts %}
@@ -16,23 +17,49 @@
     <body>
     <header>
         {% if app.user %}
-            <h2>Bonjour {{ app.user.pseudo }} ! </h2>
-            <a href="{{ path('app_logout') }}">Déconnexion</a>
+            <h2>Bonjour {{ app.user.pseudo }} ! On sort ? </h2>
+        {% else  %}
+            <h2>Bonjour ! On sort ? </h2>
         {% endif %}
+
+        <nav class="navbar navbar-expand-lg navbar">
+            <a class="navbar-brand" href="{{ path('main') }}"><strong>Sortir.com</strong></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                {% if app.user %}
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link" href="{{ path('app_logout') }}">Déconnexion <span class="sr-only">(current)</span></a>
+                </div>
+                {% else  %}
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link" href="{{ path('app_login') }}">Connexion <span class="sr-only">(current)</span></a>
+                    <a class="nav-item nav-link" href="{{path('app_register')}}">Inscription</a>
+                </div>
+                {% endif %}
+            </div>
+        </nav>
+
         <hr>
     </header>
 
     {% for categorie, messages in app.flashes %}
         {% for message in messages %}
-            <div class="flash flash-{{ categorie }}">
+            <div class="alert alert-{{ categorie }}" role="alert">
                 {{ message }}
             </div>
         {% endfor %}
     {% endfor %}
 
 
+<div id="global">
+<h1>On sort !</h1>
+{#<h1>{{ title }}</h1>#}
+<main>
         {% block body %}{% endblock %}
-
+</main>
+</div>
     <footer>
         <hr>
         @Sortir.com&#169;, {{ "now"|date("Y") }}

@@ -5,9 +5,11 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Repository\SortieRepository;
+use App\Repository\EtatRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -49,8 +51,9 @@ class SortieController extends AbstractController
      * @return Response
      */
     
-    public function annulerSortie($id,SortieRepository $repository,Request $request, EntityManagerInterface $em): Response{
+    public function annulerSortie($id,SortieRepository $repository, EtatRepository $etatrepo, Request $request, EntityManagerInterface $em): Response{
         $sortie=$repository->find($id);
+        $etatSortie=$etatrepo->find(6);
 
 
         $newSortie = new Sortie();
@@ -63,9 +66,9 @@ class SortieController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()){
             $sortie->setInfosSortie($newSortie->getInfosSortie());
-            $sortie->setEtatSortie(6);
+            $sortie->setEtat($etatSortie);
             $em->flush();
-            $this->addFlash('success', 'Votre sortie a bien été annulée.');
+            $this->addFlash('success', 'Votre sortie a bien été annulée. 😢 ');
             return $this->redirectToRoute("main");
         }
 
@@ -74,6 +77,27 @@ class SortieController extends AbstractController
             "sortie"=>$sortie,
             "form"=>$form->createView()
             ]);
+    }
+
+    /**
+     *  @Route("sortie/reactiver/{id}", name="app_reactiverSortie")
+     * @param $id
+     * @param SortieRepository $repository
+     * @param EtatRepository $etatrepo
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
+    public function reactiverSortie($id,SortieRepository $repository, EtatRepository $etatrepo, EntityManagerInterface $em):Response{
+        $sortie=$repository->find($id);
+        $etatSortie=$etatrepo->find(1);
+
+        $sortie->setEtat($etatSortie);
+        $em->flush();
+        $this->addFlash('success', 'Votre sortie a bien été remise en route ! 😊 ');
+        return $this->redirectToRoute("app_modifierSortie", [
+            "sortie"=>$sortie,
+            "id"=>$id,
+        ]);
     }
 
     /**
@@ -116,7 +140,7 @@ class SortieController extends AbstractController
             $em->persist($sortie);
             $em->flush();
             $this->addFlash('success', 'Votre sortie a bien été modifiée.');
-            return $this->redirectToRoute("sortie/detail/{id}");
+            return $this->redirectToRoute("afficherSortie");
         }
 
         return $this->render("sortie/modifierSortie.html.twig", [

@@ -15,12 +15,18 @@
 
 {% endblock %}
 {% block body %}
-    {% if sortie.etatSortie==6 %}
+    {% if sortie.organisateur.id != app.user.id %}
+        <i>Vous n'êtes pas autorisé à accéder à cette page ! </i>
+    {% else %}
+
+    {% if sortie.etat.id==6 %}
       <p> Cette sortie a été annulée !<br>
         Motif : {{ sortie.infosSortie }}
+<br>
+          <a href="{{ path('app_reactiverSortie') }}" class="lienBouton">Réactiver la sortie ?</a>
       </p>
 
-    {% elseif sortie.etatSortie !=6 %}
+    {% elseif sortie.etat.id !=6 %}
 
     <body>
  <h1>{{ title }} {{ sortie.nom }}</h1>
@@ -87,6 +93,7 @@
 
 {{ form_end(updateSortieForm) }}
 
+    {% endif %}
     {% endif %}
     </body>
 {% endblock %}

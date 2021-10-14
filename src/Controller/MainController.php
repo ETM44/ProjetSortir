@@ -27,7 +27,8 @@ class MainController extends AbstractController
         }
         
         return $this->render('main/index.html.twig', [
-            'mainForm' => $form->createView()
+            'mainForm' => $form->createView(),
+            'title' => 'On va sortir !'
         ]);
     }
 }

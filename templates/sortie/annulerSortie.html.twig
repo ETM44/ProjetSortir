@@ -1,25 +1,38 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    {{ title }}
-    <ul>
+{% block title %}
 
+{%endblock%}
+
+        {% block body %}
+            {% if sortie.organisateur.id != app.user.id %}
+            <i>Vous n'êtes pas autorisé à accéder à cette page ! </i>
+            {% else %}
+
+            {% if sortie.etat.id==6 %}
+                <p> Cette sortie a déjà été annulée !<br>
+                    Motif : {{ sortie.infosSortie }}
+                    <br>
+                    <a href="{{ path('app_reactiverSortie',  {'id': sortie.id}) }}" class="lienBouton">Réactiver la sortie ?</a>
+                </p>
+
+            {% elseif sortie.etat.id !=6 %}
+
+            {{ form_start(form) }}
+      <ul>
         <li>Nom de la sortie : {{ sortie.nom }}</li>
         <li>Date de la sortie : {{ sortie.dateHeureDebut|date("D d M Y") }}</li>
         <li>Ville organisatrice :{{ sortie.site.nom }}</li>
-        <li>Lieu :{{ sortie.lieu.nom}} </li>
+        <li>Lieu : {{ sortie.lieu.nom}} </li>
     </ul>
-
-    {{ form(form) }}
-
-{#
-    <form method="post" id="formAnnuler">
-        <p>Motif : <textarea maxlength="150px" id="motifAnnulation">
-
-            </textarea> </p>
-
-<button type="submit">Confirmer l'annulation</button>
-
-<button type="reset">Annuler l'annulation</button>
-    </form>#}
+        <label class="label">Motif d'annulation : </label>
+    {{ form_widget(form.infosSortie,  {'attr':{'class':'textarea'}} ) }}
+    <br>
+    <div class="btn">
+    {{ form_widget(form.Confirmer) }}
+    {{ form_widget(form.Annuler) }}
+    </div>
+            {{ form_end(form) }}
+            {% endif %}
+            {% endif %}
 {% endblock %}
