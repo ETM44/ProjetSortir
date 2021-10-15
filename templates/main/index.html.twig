@@ -10,7 +10,14 @@
     <button class="btn btn-primary" type="submit">Rechercher</button>
     {{ form_end(mainForm) }}
 
-   <table class="table table-striped">
+   <table class="table table-striped"
+          id="table"
+          data-toggle="table"
+          data-search="true"
+          data-filter-control="true"
+          data-show-export="true"
+          data-click-to-select="true"
+          data-toolbar="#toolbar">
        <thead>
             <tr>
                 <th scope="col">Nom de la sortie</th>
@@ -31,9 +38,34 @@
                     <td>{{ result.dateLimiteInscription|date('d/M/Y') }}</td>
                     <td>{{ result.nombreInscription }} / {{ result.nbInscriptionsMax }}</td>
                     <td>{{ result.etat.libelle }}</td>
-                    <td></td>
+                    <td>{% if app.user %}
+                            {% for inscription in result.inscriptions %}
+                                {% if inscription.participant.id == app.user.id %}
+                                    X
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </td>
                     <td>{{ result.organisateur.pseudo }}</td>
-                    <td></td>
+                    <td>{% if app.user %}
+                            {% if result.organisateur.id == app.user.id %}
+                                <a href="">Modifier</a> - <a href="">Publier</a>
+                            {% else %}
+                                <a href="">Afficher</a> -
+                                {% set sinscrire = true %}
+                                {% for uis in userInscrSort %}
+                                    {% if result.id == uis.sortie.id %}
+                                        {% set sinscrire = false %}
+                                    {% endif %}
+                                {% endfor %}
+                                {% if sinscrire %}
+                                    <a href="">S'inscrire'</a>
+                                {% else %}
+                                    <a href="">Se désister</a>
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    </td>
                 </tr>
             {% endfor %}
        </tbody>

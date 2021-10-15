@@ -247,4 +247,9 @@ class Sortie
         return $this->inscriptions->count();
     }
 
+    public function getInscriptions(): ?Collection
+    {
+        return $this->inscriptions;
+    }
+
 }

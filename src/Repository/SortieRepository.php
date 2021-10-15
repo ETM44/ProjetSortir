@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Bo\MainSearch;
 use App\Entity\Sortie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,15 +20,72 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
-    public function findParticipantsInscritsWithFilter($site, $nom, $dateHeureDebut, $dateHeureFin, $sortieOrganisateur, $sortieInscrit, $sortiePasInscrit, $sortiePassees)
+    public function findParticipantsInscritsWithFilter($idUser, MainSearch $mainSearch)
     {
-        return $this->createQueryBuilder('s')
-            /*->from("App\Entity\Inscription","i")*/
+        $statement = $this->statement($mainSearch);
+
+        $sortieOrganisateur = [];
+        if($mainSearch->getSortieOrganisateur()) {
+            $sortieOrganisateur = $this->statement($mainSearch)
+                ->andWhere('s.organisateur = :idUser')
+                ->setParameter('idUser', $idUser)
+                ->getQuery()
+                ->getResult();
+        }
+
+        $sortieInscrit = [];
+        if($mainSearch->getSortieInscrit()) {
+            $sortieInscrit = $this->statement($mainSearch)
+                ->andWhere('p.id = :idUser')
+                ->andWhere('s.organisateur <> :idUser')
+                ->setParameter('idUser', $idUser)
+                ->getQuery()
+                ->getResult();
+        }
+
+        $sortiePasInscrit = [];
+        if($mainSearch->getSortiePasInscrit()) {
+
+            $notStatment = $this->createQueryBuilder('z')
+                ->select('z.id')
+                ->leftJoin('z.inscriptions', 'l')
+                ->leftJoin('l.participant', 'd')
+                ->andWhere('d.id = :idUser')
+            ;
+
+            $sortiePasInscrit = $this->statement($mainSearch)
+                ->andWhere($statement->expr()->notIn('s.id',$notStatment->getDQL()))
+                ->setParameter('idUser', $idUser)
+                ->getQuery()
+                ->getResult();
+        }
+
+        return array_merge($sortieOrganisateur,$sortieInscrit,$sortiePasInscrit);
+    }
+
+    private function statement(MainSearch $mainSearch)
+    {
+        $statement = $this->createQueryBuilder('s')
             ->leftJoin('s.inscriptions', 'i')
             ->addSelect('i')
-            ->getQuery()
-            ->getResult()
-            ;
+            ->andWhere('UPPER(s.nom) LIKE UPPER(:nom)')
+            ->setParameter('nom', '%'.$mainSearch->getNom().'%')
+            ->andWhere('s.dateHeureDebut > :dateHeureDebut')
+            ->setParameter('dateHeureDebut', $mainSearch->getDateHeureDebut())
+            ->andWhere('s.dateHeureDebut < :dateHeureFin')
+            ->setParameter('dateHeureFin', $mainSearch->getDateHeureFin())
+            ->leftJoin('i.participant','p')
+        ;
+
+        if(!$mainSearch->getSortiePassees()) {
+            $statement->andWhere('s.dateHeureDebut > :now')
+                ->setParameter('now', new \DateTime('now'));
+        } else {
+            $statement->andWhere('s.dateHeureDebut < :now')
+                ->setParameter('now', new \DateTime('now'));
+        }
+
+        return $statement;
     }
 
     public function findOneByid($id)

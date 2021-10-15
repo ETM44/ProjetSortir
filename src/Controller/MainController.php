@@ -16,7 +16,7 @@ class MainController extends AbstractController
     /**
      * @Route("/main", name="main")
      */
-    public function index(SortieRepository $ir, Request $request): Response
+    public function index(InscriptionRepository $ir, SortieRepository $sr, Request $request): Response
     {
         $mainSearch = new MainSearch();
 
@@ -29,11 +29,13 @@ class MainController extends AbstractController
         }
 
 
-        $results = $ir->findParticipantsInscritsWithFilter('', '', '', '', true, true, true, true);
+        $results = $sr->findParticipantsInscritsWithFilter($this->getUser()->getId(),$mainSearch);
+        $userInscrSort = $ir->findUserSortie($this->getUser()->getId());
         //dd($results);
         return $this->render('main/index.html.twig', [
             'mainForm' => $form->createView(),
-            'results' => $results
+            'results' => $results,
+            'userInscrSort' => $userInscrSort
         ]);
     }
 }
