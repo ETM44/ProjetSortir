@@ -1,40 +1,129 @@
-{% extends 'layout.html.twig' %}
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/main.css') }}" rel="stylesheet">
+{% endblock %}
 
 {% block title %}On va s'en sortir.com{% endblock %}
 
 {% block body %}
 
-    {{ form_start(mainForm) }}
+    <div id="date-participant">
+        <h3>Date du jour : {{ date|date('d/m/y') }}</h3>
+        <h3>Participant : {{ app.user.pseudo }}</h3>
+    </div>
 
-    {{ form_widget(mainForm) }}
-    <button type="submit">Rechercher</button>
+    {% form_theme mainForm 'bootstrap_5_layout.html.twig' %}
+
+    {{ form_start(mainForm) }}
+    <div class="row">
+        <h3>Filtrer les sorties</h3>
+        <div class="col-9">
+            <div class="row">
+                <div class="col">
+                    {{ form_row(mainForm.site) }}
+                    {{ form_row(mainForm.nom) }}
+                </div>
+                <div class="col">
+                    {{ form_row(mainForm.sortieOrganisateur) }}
+                    {{ form_row(mainForm.sortieInscrit) }}
+                    {{ form_row(mainForm.sortiePasInscrit) }}
+                    {{ form_row(mainForm.sortiePassees) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    {{ form_row(mainForm.dateHeureDebut) }}
+                </div>
+                <div class="col">
+                    {{ form_row(mainForm.dateHeureFin) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <button class="btn btn-warning btn-lg btn-block" type="submit">Rechercher</button>
+        </div>
+    </div>
+
+
     {{ form_end(mainForm) }}
 
-   <table>
-       <thead>
-            <tr>Nom de la sortie</tr>
-            <tr>Date de la sortie</tr>
-            <tr>Clôture</tr>
-            <tr>inscrits/places</tr>
-            <tr>Etat</tr>
-            <tr>Inscrit</tr>
-            <tr>Organisateur</tr>
-            <tr>Actions</tr>
-       </thead>
-       <tbody>
-            {% for result in results %}
-                <tr>
-                    <td>{{ result.sortie.nom }}</td>
-                    <td>{{ result.sortie.dateHeureDebut|date('d/M/Y') }}</td>
-                    <td>{{ result.sortie.dateLimiteInscription|date('d/M/Y') }}</td>
-                    <td>{{ result.sortie.nbInscriptionsMax }}</td>
-                    <td>{{ result.sortie.etat.libelle }}</td>
-                    <td></td>
-                    <td>{{ result.sortie.organisateur.pseudo }}</td>
-                    <td></td>
-                </tr>
-            {% endfor %}
-       </tbody>
-   </table>
+    <table class="table table-striped"
+           id="table"
+           data-toggle="table"
+           data-search="true"
+           data-filter-control="true"
+           data-show-export="true"
+           data-click-to-select="true"
+           data-toolbar="#toolbar">
+        <thead>
+        <tr>
+            <th scope="col">Nom de la sortie</th>
+            <th scope="col">Date de la sortie</th>
+            <th scope="col">Clôture</th>
+            <th scope="col">inscrits/places</th>
+            <th scope="col">Etat</th>
+            <th scope="col">Inscrit</th>
+            <th scope="col">Organisateur</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for result in results %}
+            <tr>
+                <td scope="row">{{ result.nom }}</td>
+                <td>{{ result.dateHeureDebut|date('d/M/Y') }}</td>
+                <td>{{ result.dateLimiteInscription|date('d/M/Y') }}</td>
+                <td>{{ result.nombreInscription }} / {{ result.nbInscriptionsMax }}</td>
+                <td>{{ result.etat.libelle }}</td>
+                <td>{% if app.user %}
+                        {% for inscription in result.inscriptions %}
+                            {% if inscription.participant.id == app.user.id %}
+                                X
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </td>
+                <td><a href="">{{ result.organisateur.pseudo }}</a></td>
+                <td>{% if app.user %}
+                        <div class="row">
+                            {% if result.organisateur.id == app.user.id %}
+                                {% if result.etat.id == 1 %}
+                                    <div class="col"><a class="btn btn-modifier" href="">Modifier</a></div>
+                                    <div class="col"><a class="btn btn-publier" href="">Publier</a></div>
+                                {% elseif result.etat.id == 2 %}
+                                    <div class="col"><a class="btn btn-afficher" href="">Afficher</a></div>
+                                    <div class="col"><a class="btn btn-annuler" href="">Annuler</a></div>
+                                {% else %}
+                                    <div class="col"><a class="btn btn-afficher" href="">Afficher</a></div>
+                                    <div class="col"></div>
+                                {% endif %}
+                            {% else %}
+                                <div class="col"><a class="btn btn-afficher" href="">Afficher</a></div>
+                                {% set sinscrire = true %}
+                                {% for uis in userInscrSort %}
+                                    {% if result.id == uis.sortie.id %}
+                                        {% set sinscrire = false %}
+                                    {% endif %}
+                                {% endfor %}
+                                {% if (result.etat.id == 2 or result.etat.id == 3) %}
+                                    {% if (sinscrire and result.etat.id == 2) %}
+                                        <div class="col"><a class="btn btn-inscrire" href="">S'inscrire</a></div>
+                                    {% elseif sinscrire == false %}
+                                        <div class="col"><a class="btn btn-desister" href="">Se&nbspdésister</a></div>
+                                    {% endif %}
+                                {% else %}
+                                    <div class="col"></div>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        <a class="btn btn-afficher" href="">Afficher</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
 {% endblock %}

@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Bo\MainSearch;
 use App\Entity\Sortie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,10 +20,75 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
-<<<<<<< HEAD
+    public function findParticipantsInscritsWithFilter($idUser, MainSearch $mainSearch)
+    {
+        $statement = $this->statement($mainSearch);
 
-  /*  public function  findOneById($id)
+        $sortieOrganisateur = [];
+        if($mainSearch->getSortieOrganisateur()) {
+            $sortieOrganisateur = $this->statement($mainSearch)
+                ->andWhere('s.organisateur = :idUser')
+                ->setParameter('idUser', $idUser)
+                ->getQuery()
+                ->getResult();
+        }
 
+        $sortieInscrit = [];
+        if($mainSearch->getSortieInscrit()) {
+            $sortieInscrit = $this->statement($mainSearch)
+                ->andWhere('p.id = :idUser')
+                ->andWhere('s.organisateur <> :idUser')
+                ->setParameter('idUser', $idUser)
+                ->getQuery()
+                ->getResult();
+        }
+
+        $sortiePasInscrit = [];
+        if($mainSearch->getSortiePasInscrit()) {
+
+            $notStatement = $this->createQueryBuilder('z')
+                ->select('z.id')
+                ->leftJoin('z.inscriptions', 'l')
+                ->leftJoin('l.participant', 'd')
+                ->andWhere('d.id = :idUser')
+            ;
+
+            $sortiePasInscrit = $this->statement($mainSearch)
+                ->andWhere($statement->expr()->notIn('s.id',$notStatement->getDQL()))
+                ->andWhere('s.organisateur <> :idUser')
+                ->setParameter('idUser', $idUser)
+                ->getQuery()
+                ->getResult();
+        }
+
+        return array_merge($sortieOrganisateur,$sortieInscrit,$sortiePasInscrit);
+    }
+
+    private function statement(MainSearch $mainSearch)
+    {
+        $statement = $this->createQueryBuilder('s')
+            ->leftJoin('s.inscriptions', 'i')
+            ->addSelect('i')
+            ->andWhere('UPPER(s.nom) LIKE UPPER(:nom)')
+            ->setParameter('nom', '%'.$mainSearch->getNom().'%')
+            ->andWhere('s.dateHeureDebut > :dateHeureDebut')
+            ->setParameter('dateHeureDebut', $mainSearch->getDateHeureDebut())
+            ->andWhere('s.dateHeureDebut < :dateHeureFin')
+            ->setParameter('dateHeureFin', $mainSearch->getDateHeureFin())
+            ->leftJoin('i.participant','p')
+            ->leftJoin('s.etat', 'e')
+        ;
+
+        if($mainSearch->getSortiePassees()) {
+            $statement->andWhere('e.id = 5');
+        } else {
+            $statement->andWhere('e.id <> 5');
+        }
+
+        return $statement;
+    }
+
+    public function findOneByid($id)
     {
         return $this->createQueryBuilder('s')
             ->andWhere('s.id=:id')
@@ -31,11 +97,10 @@ class SortieRepository extends ServiceEntityRepository
             ->addSelect('l')
             ->getQuery()
             ->getOneOrNullResult();
+    }
 
-    }*/
 
-
-    public function findParticipantsInscrits($id)
+    /*public function findParticipantsInscrits($id)
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.id=:id')
@@ -49,10 +114,7 @@ class SortieRepository extends ServiceEntityRepository
             ->addSelect('')
             ->getQuery()
             ->getOneOrNullResult();
-    }
-=======
-   
->>>>>>> 266ab23bbfe905b2333c83f8cad864a4237dc8ca
+    }*/
 
     // /**
     //  * @return Sortie[] Returns an array of Sortie objects

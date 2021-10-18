@@ -32,12 +32,14 @@
             </thead>
             <tbody>
             {% for participant in participants %}
-            <tr>
-                <td scope="row">{{ participant.participant.pseudo }}</td>
-                <td>{{ participant.participant.nom }}</td>
-                <td>{{ participant.participant.prenom }}</td>
-            </tr>
+                <tr>
+                    <td scope="row">{{ participant.participant.pseudo }}</td>
+                    <td>{{ participant.participant.nom }}</td>
+                    <td>{{ participant.participant.prenom }}</td>
+                </tr>
 
             {% endfor %}
+            </tbody>
+        </table>
     </div>
 {% endblock %}
