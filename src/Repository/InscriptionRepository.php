@@ -33,6 +33,22 @@ class InscriptionRepository extends ServiceEntityRepository
             ;
     }
 
+    public function findParticipantsInscrits($id)
+    {
+        return $this->createQueryBuilder('i')
+            ->join('i.participant', 'p')
+            ->addSelect('p')
+            ->join('i.sortie', 's')
+            ->addSelect('s')
+            ->join('s.etat', 'e')
+            ->addSelect('e')
+            ->andWhere('s.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     // /**
     //  * @return Inscription[] Returns an array of Inscription objects
     //  */

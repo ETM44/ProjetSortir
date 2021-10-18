@@ -31,17 +31,13 @@
             </tr>
             </thead>
             <tbody>
+            {% for participant in participants %}
             <tr>
-                <th scope="row">1</th>
-                <td></td>
+                <td scope="row">{{ participant.participant.pseudo }}</td>
+                <td>{{ participant.participant.nom }}</td>
+                <td>{{ participant.participant.prenom }}</td>
             </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td></td>
-            </tr>
-            <tr>
-                <th scope="row">3</th>
-                <td></td>
-            </tr>
+
+            {% endfor %}
     </div>
 {% endblock %}

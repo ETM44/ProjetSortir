@@ -2,7 +2,7 @@
 
 {% block title %}Hello SortieController!{% endblock %}
 
-{% block javascripts %}
+{#{% block javascripts %}
     <script>
         $(domcument).ready(function (){
             $("#ville").change(function (){
@@ -16,14 +16,45 @@
             })
         })
     </script>
-{% endblock %}
+{% endblock %}#}
 
-{% block main %}
-<select id="ville">
-    <option value="1">Quimper</option>
-    <option value="2">Nantes</option>
-    <option value="3">Rennes</option>
-</select>
+{% block body %}
+    <h1>Créons une sortie!</h1>
 
+    <p>{{ form_start(CreerSortieForm) }}</p>
+    <p>{{ form_widget(CreerSortieForm.nom) }}</p>
+    <p>{{ form_widget(CreerSortieForm.dateHeureDebut) }}</p>
+    <p>{{ form_widget(CreerSortieForm.dateLimiteInscription) }}</p>
+    <p>{{ form_widget(CreerSortieForm.nbInscriptionsMax) }}</p>
+    <p>{{ form_widget(CreerSortieForm.duree) }}minutes</p>
+    <p>{{ form_widget(CreerSortieForm.infosSortie) }}</p>
+
+    <p>Campus organisateur</p>
+    {#{{ form_label(CreerSortieForm.organisateur) }}#}
+    <select name="villes" id="villes">
+    {% for ville in villes %}
+       {# <option value="{{ ville.nom, {'attr':{'class':'choice'}} }}">{{ ville.codePostal }}</option>#}
+    {% endfor %}
+    </select>
+    {{ form_widget(CreerSortieForm.lieu.nom) }}
+    <label class="label">Rue : {{ sortie.lieu.rue }}</label>
+    <label class="label">Code Postal : {{ sortie.lieu.ville.codePostal }}</label>
+    <label class="label">Latitude :</label>
+    <input type="text" class="position" id="lat">
+    <label class="label">Longitude :</label>
+    <input type="text"class="position" id="lng">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!
+        1d2712.5968569125494!2d-1.5564777840385209!3d47.16574957915793!2m3!1f0!2f0!3f0!3m2!
+        1i1024!2i768!4f13.1!3m3!1m2!1s0x4805e97f6fb1094b%3A0x7d21011fae2eb0ba!2s2%20Rue%20
+        Frida%20Kahlo%2C%2044400%20Rez%C3%A9!5e0!3m2!1sfr!2sfr!4v1634137488608!5m2!1sfr!2sfr"
+            width="450" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+     <iframe src="'https://maps.google.com/maps?q=' + lat + ',' + lng + '&t=&z=15&ie=UTF8&iwloc=&output=embed'" id="carte"
+                width="450" height="300" style="border:0;" allowfullscreen="" loading="lazy"> </iframe>
+
+    <input type="submit" value="Enregistrer">
+    <input type="submit" value="Publier la sortie">
+    <input type="submit" value="Annuler">
+    {{ form_end(CreerSortieForm) }}
+</div>
 
 {% endblock %}
