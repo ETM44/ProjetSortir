@@ -43,9 +43,18 @@ h1{
 }
 
 nav{
-    background-color: aquamarine!important;
     text-align: center!important;
 }
+
+.bg-color {
+    --bs-bg-opacity: 1;
+    background-color: aquamarine!important;
+}
+
+nav button{
+    background-color: #b21f2d;
+}
+
 a{
     text-decoration: none;
     color: brown;
@@ -68,7 +77,6 @@ li{
 textarea {
     vertical-align: top;
 }
-
 
 .form-group {
     width:650px !important;
@@ -120,3 +128,9 @@ input, select, textarea{
          to {top:0; opacity:1}
      }
 /*********************/
+
+#global {
+    margin-left: auto;
+    margin-right: auto;
+}
+

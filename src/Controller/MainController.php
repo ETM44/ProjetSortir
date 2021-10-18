@@ -10,13 +10,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\Date;
 
 class MainController extends AbstractController
 {
     /**
      * @Route("/main", name="main")
      */
-    public function index(InscriptionRepository $ir, Request $request): Response
+    public function index(InscriptionRepository $ir, SortieRepository $sr, Request $request): Response
     {
         $mainSearch = new MainSearch();
 
@@ -28,12 +29,22 @@ class MainController extends AbstractController
             //dd($mainSearch);
         }
 
+        if(empty($this->getUser())) {
+            $results = $sr->findParticipantsInscritsWithFilter(0,$mainSearch);
+            $userInscrSort = $ir->findUserSortie(0);
+        } else {
+            $results = $sr->findParticipantsInscritsWithFilter($this->getUser()->getId(),$mainSearch);
+            $userInscrSort = $ir->findUserSortie($this->getUser()->getId());
+        }
 
-        $results = $ir->findParticipantsInscritsWithFilter('', '', '', '', true, true, true, true);
+
+
         //dd($results);
         return $this->render('main/index.html.twig', [
             'mainForm' => $form->createView(),
-            'results' => $results
+            'results' => $results,
+            'userInscrSort' => $userInscrSort,
+            'date' => new \DateTime('now')
         ]);
     }
 }
