@@ -1,9 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-
+Annuler la sortie
 {%endblock%}
-
+{% block titre %}
+    <h1>Annuler la sortie : {{ sortie.nom }}</h1>
+{% endblock %}
         {% block body %}
             {% if sortie.organisateur.id != app.user.id %}
             <i>Vous n'êtes pas autorisé à accéder à cette page ! </i>
@@ -22,7 +24,7 @@
       <ul>
         <li>Nom de la sortie : {{ sortie.nom }}</li>
         <li>Date de la sortie : {{ sortie.dateHeureDebut|date("D d M Y") }}</li>
-        <li>Ville organisatrice :{{ sortie.site.nom }}</li>
+        <li>Ville organisatrice :{{ sortie.organisateur.site.nom }}</li>
         <li>Lieu : {{ sortie.lieu.nom}} </li>
     </ul>
         <label class="label">Motif d'annulation : </label>

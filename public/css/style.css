@@ -1,12 +1,22 @@
-body
+/*body
 {
-    width:80%;
-    margin-left:auto;
-    margin-right:auto;
+    background: midnightblue;
 }
-main{
-    padding:60px;
-}
+
+.container{
+
+    color:white;
+    background: linear-gradient(orangered, hotpink, #76d7c4);!*
+    margin: 0 auto;*!
+    min-height: 90%;
+
+}*/
+/*#global {
+    margin-left: auto;
+    margin-right: auto;
+    width: auto;
+
+}*/
 
 a{
     text-decoration: none;
@@ -27,13 +37,26 @@ h1{
 
 .boutonsModifSortie{
     display: flex;
+    border-radius: 4px!important;
     margin-left: auto;
     margin-right: auto;
 }
-.lienBouton{
+
+.lienBouton, button{
     color: black;
-    border: 1px solid gray;
-    background-color: lightgray;
+    border: 1px solid darkred;
+    border-radius: 4px !important;
+    background-color: orange;
+    height: 50px;
+    width: 150px;
+    text-align: center;
+}
+.lienBouton a{
+    position: center;
+    text-decoration: none;
+}
+.lienBouton:hover, button:hover{
+    background-color: orangered;
 }
 .lieuAddLieu{
     display: flex;
@@ -47,6 +70,9 @@ a{
     text-decoration: none;
     color: brown;
 }
+a:hover{
+    text-decoration: none;
+}
 .navbar-brand{
     font-size: larger;
 }
@@ -56,14 +82,61 @@ li{
 
 .btn{
     display: flex;
+    background-color: orange!important;
+    margin:4px
 }
 textarea {
     vertical-align: top;
 }
 
 
-#global {
-    margin-left: auto;
-    margin-right: auto;
-    width: 500px;
+.form-group {
+    width:650px !important;
+    text-align: justify;
+    padding:4px;
 }
+img{
+    margin:4px
+}
+
+input, select, textarea{
+    border-radius: 4px;
+}
+
+
+/***************style modal pour quand ça marchera ******/
+.modal {
+    display: none;
+    position: fixed;
+    padding-top: 50px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.5);
+}.modal-content {
+     position: relative;
+     background-color: white;
+     padding: 20px;
+     margin: auto;
+     width: 75%;
+     -webkit-animation-name: animatetop;
+     -webkit-animation-duration: 0.4s;
+     animation-name: animatetop;
+     animation-duration: 0.4s
+ }.close-btn {
+      float: right;
+      color: lightgray;
+      font-size: 24px;
+      font-weight: bold;
+  }.close-btn:hover {
+       color: darkgray;
+   }@-webkit-keyframes animatetop {
+        from {top:-300px; opacity:0}
+        to {top:0; opacity:1}
+    }@keyframes animatetop {
+         from {top:-300px; opacity:0}
+         to {top:0; opacity:1}
+     }
+/*********************/
