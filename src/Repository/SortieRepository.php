@@ -19,6 +19,7 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
+<<<<<<< HEAD
 
   /*  public function  findOneById($id)
 
@@ -49,6 +50,9 @@ class SortieRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+=======
+   
+>>>>>>> 266ab23bbfe905b2333c83f8cad864a4237dc8ca
 
     // /**
     //  * @return Sortie[] Returns an array of Sortie objects

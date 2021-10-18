@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div>
+        <h1>Mon Profil</h1>
+    </div>
+    <div>
+        <p>{{ form_start(ModifierProfilFormType) }}</p>
+        <p>{{ form_widget(ModifierProfilFormType.pseudo) }}</p>
+        <p>{{ form_widget(ModifierProfilFormType.prenom) }}</p>
+        <p>{{ form_widget(ModifierProfilFormType.nom) }}</p>
+        <p>{{ form_widget(ModifierProfilFormType.telephone) }}</p>
+        <p>{{ form_widget(ModifierProfilFormType.email) }}</p>
+        <p>{{ form_widget(ModifierProfilFormType.password) }}</p>
+        {#<select name="sites" id="sites">
+            {% for site in sites %}
+            #}{#<option value="{{ form_widget(ModifierProfilFormType.site.nom, {'attr':{'class':'choice'}}) }}">{{ site.nom }}</option>#}{#
+            {% endfor %}
+        </select>#}
+
+    </div>
+    <div class="btnModifProfil">
+        {{ form_row(ModifierProfilFormType.modifier) }}
+        {{ form_row(ModifierProfilFormType.annuler) }}
+    </div>
+   {{ form_end(ModifierProfilFormType) }}
+{% endblock %}

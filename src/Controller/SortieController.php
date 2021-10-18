@@ -6,7 +6,9 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Repository\SortieRepository;
 use App\Repository\EtatRepository;
-use App\Repository\LieuRepository;
+use App\Repository\VilleRepository;
+use App\Repository\InscriptionRepository;
+use App\Form\CreerSortieFormType;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -24,6 +26,8 @@ use App\Entity\Site;
 use App\Entity\Lieu;
 use App\Form\NouveauLieuType;
 use App\Form\UpdateSortieType;
+use App\Entity\Ville;
+
 use Symfony\Component\WebLink\Link;
 
 class SortieController extends AbstractController
@@ -39,10 +43,32 @@ class SortieController extends AbstractController
     }
 
     /**
-     * @Route("/creerSortie", name="creerSortie")
+     * @Route("sortie/creerSortie", name="creerSortie")
      */
-    public function creerSortie(): Response
+    public function creerSortie (Request $request, EntityManagerInterface  $em, EtatRepository $er, VilleRepository $vr): Response
     {
+        $sortie = new Sortie();
+        $form = $this->createForm(CreerSortieFormType::class, $sortie);
+        $form->handleRequest($request);
+        $orga = $this->getUser();
+        $villes = $vr->findAll();
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+                $sortie->setInfosSortie($sortie->getInfosSortie());
+                $sortie->setEtat($er->findOneBy(["id"=>1]));
+                $sortie->setOrganisateur($this->getUser());
+                $em->persist($sortie);
+                $em->flush();
+                $this->addFlash('success', 'Votre sortie a bien été créée. 😢 ');
+                return $this->redirectToRoute("main");
+            }
+
+        return $this->render("sortie/creerSortie.html.twig", [
+            "title" => "Creer une sortie :",
+            "CreerSortieForm" => $form->createView(),
+            'orga' => $orga,
+            'villes' => $villes
+        ]);
 
     }
 
@@ -166,15 +192,17 @@ class SortieController extends AbstractController
     /**
      * @Route("sortie/afficherSortie/{id}", name="afficherSortie")
      */
-    public function afficherSortie(SortieRepository $sr, LieuRepository $lr, $id=0): Response
+    public function afficherSortie(SortieRepository $sr, InscriptionRepository $ir, $id=0): Response
     {
         $sortie = $sr->find($id);
+        $participants = $ir->findParticipantsInscrits($id);
+        //dd($participants);
         $lieu = $sortie->getLieu();
         //dd($sortie);
         $title= "Afficher une sortie";
-        $tab = compact("title", "sortie", "lieu");
-
+        $tab = compact("title", "sortie", "lieu", "participants");
         //dd($sortie);
+
         return $this->render('sortie/afficherSortie.html.twig', $tab);
     }
 
