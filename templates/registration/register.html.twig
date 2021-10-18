@@ -1,23 +1,56 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
-
+{% block title %}Inscription{% endblock %}
+{% block titre %}<h1>Inscription</h1> {% endblock %}
 {% block body %}
-    <h1>Register</h1>
 
-    {{ form_start(registrationForm) }}
+    <form class="inscription">
+        {{ form_start(registrationForm) }}
 
-        {{ form_row(registrationForm.nom) }}
-    {{ form_row(registrationForm.prenom) }}
-    {{ form_row(registrationForm.telephone) }}
-    {{ form_row(registrationForm.pseudo) }}
-    {{ form_row(registrationForm.email) }}
-    {{ form_row(registrationForm.plainPassword, {
-        label: 'Password'
-    }) }}
-    {{ form_row(registrationForm.site, {'attr':{'class':'select'}}) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+                <div class="form-group">
+                    {{ form_widget(registrationForm.nom, {'attr':{'class':'input', 'type':'text', 'placeholder':'Nom'}}) }}
+                </div>
 
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+                <div class="form-group">
+                    {{ form_widget(registrationForm.prenom, {'attr':{'class':'input', 'type':'text', 'placeholder':'Prénom'}}) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_widget(registrationForm.telephone, {'attr':{'class':'input', 'type':'numer', 'placeholder':'Numéro de téléphone'}}) }}
+                </div>
+
+                <div class="form-group">
+
+                    {{ form_widget(registrationForm.email, {'attr':{'class':'input', 'type':'email', 'placeholder':'E-mail'}}) }}
+                </div>
+
+                <div class="form-group">
+
+                    {{ form_widget(registrationForm.pseudo, {'attr':{'class':'input', 'type':'text', 'placeholder':'Pseudo'}}) }}
+                </div>
+
+
+                <div class="form-group">
+                    <label for="password">Mot de passe : </label><br>
+                    {{ form_widget(registrationForm.plainPassword, { label: 'Password','placeholder':'Mot de passe' }) }}
+                </div>
+                <div class="form-group">
+                    <label for="password">Confirmer mot de passe : </label><br>
+                    <input type="password">
+                </div>
+        <div class="form-group">
+            <label for="site">Campus : </label><br>
+            {{ form_widget(registrationForm.site, {'attr':{'class':'select'}}) }}
+        </div>
+        <br>
+        <div class="form-check">
+            <label for="checkbox">J'accepte les termes et conditions</label>
+            {{ form_widget(registrationForm.agreeTerms, {'attr':{'class':'checkbox'}}) }}
+        </div>
+        <br>
+        <button type="submit" class="btn">C'est parti</button>
+
+        {{ form_end(registrationForm) }}
+    </form>
+
 {% endblock %}

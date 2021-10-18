@@ -24,7 +24,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Sortie;
 use App\Entity\Site;
 use App\Entity\Lieu;
+use App\Form\NouveauLieuType;
+use App\Form\UpdateSortieType;
 use App\Entity\Ville;
+
 use Symfony\Component\WebLink\Link;
 
 class SortieController extends AbstractController
@@ -80,29 +83,34 @@ class SortieController extends AbstractController
     public function annulerSortie($id,SortieRepository $repository, EtatRepository $etatrepo, Request $request, EntityManagerInterface $em): Response{
         $sortie=$repository->find($id);
         $etatSortie=$etatrepo->find(6);
-
-
-        $newSortie = new Sortie();
-        $form = $this->createFormBuilder($newSortie)
-            ->add('infosSortie', TextareaType::class)
-            ->add('Confirmer',SubmitType::class)
-            ->add('Annuler',ResetType::class)
-            ->getForm();
-        $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid()){
-            $sortie->setInfosSortie($newSortie->getInfosSortie());
-            $sortie->setEtat($etatSortie);
-            $em->flush();
-            $this->addFlash('success', 'Votre sortie a bien été annulée. 😢 ');
+//Si l'utilisateur en session n'est pas l'organisateur de la sortie, on lui refuse l'accès
+        if($this->getUser()->getId() !== $sortie->getOrganisateur()->getId() ) {
+            $this->addFlash('warning', 'Accès refusé : vous n\'avez pas les droits.');
             return $this->redirectToRoute("main");
-        }
+        }else {
 
-        return $this->render("sortie/annulerSortie.html.twig", [
-            "title" => "Annuler une sortie",
-            "sortie"=>$sortie,
-            "form"=>$form->createView()
+            $newSortie = new Sortie();
+            $form = $this->createFormBuilder($newSortie)
+                ->add('infosSortie', TextareaType::class)
+                ->add('Confirmer', SubmitType::class)
+                ->add('Annuler', ResetType::class)
+                ->getForm();
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $sortie->setInfosSortie($newSortie->getInfosSortie());
+                $sortie->setEtat($etatSortie);
+                $em->flush();
+                $this->addFlash('success', 'Votre sortie a bien été annulée. 😢 ');
+                return $this->redirectToRoute("main");
+            }
+
+            return $this->render("sortie/annulerSortie.html.twig", [
+                "title" => "Annuler une sortie",
+                "sortie" => $sortie,
+                "form" => $form->createView()
             ]);
+        }
     }
 
     /**
@@ -132,37 +140,26 @@ class SortieController extends AbstractController
      * @param SortieRepository $repository
      * @return Response
      */
-    public function modifierSortie($id,SortieRepository $repository,Request $request, EntityManagerInterface $em)
+    public function modifierSortie($id=0,SortieRepository $repository,Request $request, EntityManagerInterface $em)
     {
+      //  $newSortie = new Sortie();
         $sortie = $repository->find($id);
+        $updateSortieForm = $this->createForm(UpdateSortieType::class, $sortie);
+//Si l'utilisateur en session n'est pas l'organisateur de la sortie, on lui refuse l'accès
 
-        $updateSortieForm = $this->createFormBuilder($sortie)
-            ->add('nom')
-            ->add('dateHeureDebut')
-            ->add('duree')
-            ->add('dateLimiteInscription')
-            ->add('nbInscriptionsMax')
-            ->add('infosSortie')
-            ->add('site',EntityType::class,[
-                'class' => Site::class,
-                'choice_label' => function ($site) {
-                    return $site->getNom();
-                }
-            ])
-            ->add('lieu', EntityType::class, [
-                'class'=> Lieu::class,
-                'choice_label'=>function($lieu){
-                return $lieu->getNom();
-                }
-
-            ])
-            ->add('Enregistrer', SubmitType::class)
-            ->add('PublierLaSortie', SubmitType::class)
-            ->add('AnnulerLesModifications', ResetType::class)
-            ->getForm();
+       if($this->getUser() && $this->getUser()->getId() !== $sortie->getOrganisateur()->getId() ) {
+           $this->addFlash('warning', 'Accès refusé : vous n\'avez pas les droits.');
+           return $this->redirectToRoute("main");
+       }else{
         $updateSortieForm->handleRequest($request);
 
+        ///////
+           $lieu = new Lieu();
+    $nouveauLieuForm = $this->createForm(NouveauLieuType::class, $lieu);
+   // $nouveauLieuForm->handleRequest($request);
+/////////////////
         if ($updateSortieForm->isSubmitted() && $updateSortieForm->isValid()) {
+
             $em->persist($sortie);
             $em->flush();
             $this->addFlash('success', 'Votre sortie a bien été modifiée.');
@@ -172,8 +169,10 @@ class SortieController extends AbstractController
         return $this->render("sortie/modifierSortie.html.twig", [
             "title" => "Modifier la sortie :",
             "sortie" => $sortie,
-            "updateSortieForm" => $updateSortieForm->createView()
+            "updateSortieForm" => $updateSortieForm->createView(),
+            "nouveauLieuForm"=>$nouveauLieuForm->createView()
             ]);
+        }
     }
     
 
