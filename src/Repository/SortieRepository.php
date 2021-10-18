@@ -46,7 +46,7 @@ class SortieRepository extends ServiceEntityRepository
         $sortiePasInscrit = [];
         if($mainSearch->getSortiePasInscrit()) {
 
-            $notStatment = $this->createQueryBuilder('z')
+            $notStatement = $this->createQueryBuilder('z')
                 ->select('z.id')
                 ->leftJoin('z.inscriptions', 'l')
                 ->leftJoin('l.participant', 'd')
@@ -54,7 +54,8 @@ class SortieRepository extends ServiceEntityRepository
             ;
 
             $sortiePasInscrit = $this->statement($mainSearch)
-                ->andWhere($statement->expr()->notIn('s.id',$notStatment->getDQL()))
+                ->andWhere($statement->expr()->notIn('s.id',$notStatement->getDQL()))
+                ->andWhere('s.organisateur <> :idUser')
                 ->setParameter('idUser', $idUser)
                 ->getQuery()
                 ->getResult();
@@ -75,14 +76,13 @@ class SortieRepository extends ServiceEntityRepository
             ->andWhere('s.dateHeureDebut < :dateHeureFin')
             ->setParameter('dateHeureFin', $mainSearch->getDateHeureFin())
             ->leftJoin('i.participant','p')
+            ->leftJoin('s.etat', 'e')
         ;
 
-        if(!$mainSearch->getSortiePassees()) {
-            $statement->andWhere('s.dateHeureDebut > :now')
-                ->setParameter('now', new \DateTime('now'));
+        if($mainSearch->getSortiePassees()) {
+            $statement->andWhere('e.id = 5');
         } else {
-            $statement->andWhere('s.dateHeureDebut < :now')
-                ->setParameter('now', new \DateTime('now'));
+            $statement->andWhere('e.id <> 5');
         }
 
         return $statement;

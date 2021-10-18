@@ -1,0 +1,45 @@
+.btn-desister {
+    color: #fff;
+    background-color: salmon;
+    border-color: salmon;
+    margin: 1px;
+}
+
+.btn-afficher {
+    color: #fff;
+    background-color: mediumorchid;
+    border-color: mediumorchid;
+    margin: 1px;
+}
+
+.btn-inscrire {
+    color: #fff;
+    background-color: dodgerblue;
+    border-color: dodgerblue;
+    margin: 1px;
+}
+
+.btn-modifier {
+    color: #fff;
+    background-color: darkorange;
+    border-color: darkorange;
+    margin: 1px;
+}
+
+.btn-publier {
+    color: #fff;
+    background-color: yellowgreen;
+    border-color: yellowgreen;
+    margin: 1px;
+}
+
+.btn-annuler {
+    color: #fff;
+    background-color: firebrick;
+    border-color: firebrick;
+    margin: 1px;
+}
+
+#date-participant {
+    float: right;
+}
