@@ -15,7 +15,7 @@ Annuler la sortie
                 <p> Cette sortie a déjà été annulée !<br>
                     Motif : {{ sortie.infosSortie }}
                     <br>
-                    <a href="{{ path('app_reactiverSortie',  {'id': sortie.id}) }}" class="lienBouton">Réactiver la sortie ?</a>
+                    <a href="{{ path('app_publierSortie',  {'id': sortie.id}) }}" class="lienBouton">Réactiver la sortie ?</a>
                 </p>
 
             {% elseif sortie.etat.id !=6 %}

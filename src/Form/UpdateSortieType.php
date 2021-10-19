@@ -10,6 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Entity\Sortie;
 use App\Entity\Lieu;
 use App\Entity\Site;
+use App\Entity\Ville;
 
 
 class UpdateSortieType extends AbstractType
@@ -30,6 +31,11 @@ class UpdateSortieType extends AbstractType
                 'expanded'=>false,
                 'multiple'=>false,
             ])
+/*            ->add('ville', EntityType::class, [
+                'class' => Ville::class,
+                'choice_label' => "nomVille",
+                'label' => "Ville"
+            ])*/
             ->add('lieu', EntityType::class, [
                 'label'=>'Lieu',
                 'class' => Lieu::class,
@@ -38,8 +44,7 @@ class UpdateSortieType extends AbstractType
                 'multiple'=>false,
                 ])
             ->add('Enregistrer', SubmitType::class)
-            ->add('PublierLaSortie', SubmitType::class)
-            ->add('AnnulerLesModifications', ResetType::class)
+            ->add('reset', ResetType::class)
             ;
     }
 

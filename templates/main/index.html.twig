@@ -89,17 +89,17 @@
                         <div class="row">
                             {% if result.organisateur.id == app.user.id %}
                                 {% if result.etat.id == 1 %}
-                                    <div class="col"><a class="btn btn-modifier" href="">Modifier</a></div>
-                                    <div class="col"><a class="btn btn-publier" href="">Publier</a></div>
+                                    <div class="col"><a class="btn btn-modifier" href="{{ path('app_modifierSortie',  {'id': result.id})}}">Modifier</a></div>
+                                    <div class="col"><a class="btn btn-publier" href="{{ path('app_publierSortie',  {'id': result.id})}}">Publier</a></div>
                                 {% elseif result.etat.id == 2 %}
-                                    <div class="col"><a class="btn btn-afficher" href="">Afficher</a></div>
-                                    <div class="col"><a class="btn btn-annuler" href="">Annuler</a></div>
+                                    <div class="col"><a class="btn btn-afficher" href="{{ path('afficherSortie',  {'id': result.id})}}">Afficher</a></div>
+                                    <div class="col"><a class="btn btn-annuler" href="{{ path('app_annulerSortie',  {'id': result.id})}}">Annuler</a></div>
                                 {% else %}
-                                    <div class="col"><a class="btn btn-afficher" href="">Afficher</a></div>
+                                    <div class="col"><a class="btn btn-afficher" href="{{ path('afficherSortie',  {'id': result.id})}}">Afficher</a></div>
                                     <div class="col"></div>
                                 {% endif %}
                             {% else %}
-                                <div class="col"><a class="btn btn-afficher" href="">Afficher</a></div>
+                                <div class="col"><a class="btn btn-afficher" href="{{ path('afficherSortie',  {'id': result.id})}}">Afficher</a></div>
                                 {% set sinscrire = true %}
                                 {% for uis in userInscrSort %}
                                     {% if result.id == uis.sortie.id %}
