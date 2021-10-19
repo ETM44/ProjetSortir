@@ -8,6 +8,39 @@
 
 {% endblock %}
 
+{% block javascripts %}
+    <script>
+        function onLieu(e){
+            // recupérer la valeur de select
+            let id = e.value;
+            // créer une requette http
+            const http = new XMLHttpRequest();
+            // spécifier le type de reponse en json
+            http.responseType="json";
+            // la fonction se déclenche une fois que le serveur a repondu
+            http.onload = function(){
+/*                console.log(this.response);
+                return;*/
+                const data = JSON.parse(this.response);
+                document.getElementById("rue").innerHTML = data.rue;
+                document.getElementById("ville").innerText = data.ville;
+                document.getElementById("cp").innerText = data.cp;
+            };
+            // choisir la méthode et l'URL
+            http.open("GET","/get-adresse/"+id);
+            // envoyer la requete http vers le serveur
+            http.send();
+        }
+
+        window.addEventListener("load", function(event) {
+            onLieu(document.getElementById("update_sortie_lieu"));
+        });
+    </script>
+
+{% endblock %}
+
+
+
 {% block body %}
 
     {% if app.user and sortie.organisateur.id != app.user.id %}
@@ -18,7 +51,7 @@
             <p> Cette sortie a été annulée !<br>
                 Motif : {{ sortie.infosSortie }}
                 <br>
-                <a href="{{ path('app_reactiverSortie',  {'id': sortie.id}) }}" class="lienBouton">Réactiver la sortie ?</a>
+                <a href="{{ path('app_publierSortie',  {'id': sortie.id}) }}" class="lienBouton">Réactiver la sortie ?</a>
             </p>
 
         {% elseif sortie.etat.id !=6 %}
@@ -54,7 +87,7 @@
                     {{ form_widget(updateSortieForm.site) }}
                     <div class="lieuAddLieu">
                         <label class="label">Lieu : </label>
-                        {{ form_widget(updateSortieForm.lieu, {'attr':{'class':'choice'}}) }}
+                        {{ form_widget(updateSortieForm.lieu, {'attr':{'class':'choice', 'id':"lieu" , 'value':'lieu', 'onload':'onLieu(this);'  , 'onchange':"onLieu(this);"}}) }}
 
 
 
@@ -69,18 +102,25 @@
 
                     </div><!-- Fin de la div lieuNouveauLieu-->
 
-                    <p>Ville : {{sortie.lieu.ville.nomVille }} </p>
+<!-------------------------------------------------------------------------->
+
+                    <p id="rue"></p>
+                    <p id="ville"></p>
+                    <p id="cp"></p>
+{#                    <input type="text" readonly value="" id="ville">
+                    <input type="text" readonly value="" id="cp">#}
+                  {#  <p>Ville : {{sortie.lieu.ville.nomVille }} </p>
                     <label class="label">Rue : {{ sortie.lieu.rue }}</label>
-                    <label class="label">Code postal : {{ sortie.lieu.ville.codePostal }}</label>
+                    <label class="label">Code postal : {{ sortie.lieu.ville.codePostal }}</label>#}
 
 
                     {% if sortie.lieu.latitude %}
                         <label class="label">Latitude :</label>
-                        <input type="text" class="position" id="lat" value=" {{ sortie.lieu.latitude }}">
+                        <p id="lattitude"></p>
                     {% endif %}
                     {% if sortie.lieu.longitude %}
                         <label class="label">Longitude :</label>
-                        <input type="text"class="position" id="lng" value=" {{ sortie.lieu.longitude }}">
+                        <p id="longitude"></p>
                     {% endif %}
                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!
         1d2712.5968569125494!2d-1.5564777840385209!3d47.16574957915793!2m3!1f0!2f0!3f0!3m2!
@@ -99,9 +139,9 @@
 
             <div class="boutonsModifSortie">
                 {{ form_widget(updateSortieForm.Enregistrer) }}
-                {{ form_widget(updateSortieForm.PublierLaSortie) }}
+                <a class="lienBouton" href="{{ path('app_publierSortie',  {'id':sortie.id}) }}">Publier</a>
                 <a class="lienBouton" href="{{ path('app_annulerSortie',  {'id':sortie.id}) }}">Annuler la sortie</a>
-                {{ form_widget(updateSortieForm.AnnulerLesModifications) }}
+                {{ form_widget(updateSortieForm.reset) }}
             </div>
 
             {{ form_end(updateSortieForm) }}

@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Repository\SortieRepository;
 use App\Repository\EtatRepository;
+use App\Repository\LieuRepository;
 use App\Repository\VilleRepository;
 use App\Repository\InscriptionRepository;
 use App\Form\CreerSortieFormType;
@@ -114,21 +115,21 @@ class SortieController extends AbstractController
     }
 
     /**
-     *  @Route("sortie/reactiver/{id}", name="app_reactiverSortie")
+     *  @Route("sortie/publier/{id}", name="app_publierSortie")
      * @param $id
      * @param SortieRepository $repository
      * @param EtatRepository $etatrepo
      * @param EntityManagerInterface $em
      * @return Response
      */
-    public function reactiverSortie($id,SortieRepository $repository, EtatRepository $etatrepo, EntityManagerInterface $em):Response{
+    public function publierSortie($id,SortieRepository $repository, EtatRepository $etatrepo, EntityManagerInterface $em):Response{
         $sortie=$repository->find($id);
-        $etatSortie=$etatrepo->find(1);
+        $etatSortie=$etatrepo->find(2);
 
         $sortie->setEtat($etatSortie);
         $em->flush();
-        $this->addFlash('success', 'Votre sortie a bien été remise en route ! 😊 ');
-        return $this->redirectToRoute("app_modifierSortie", [
+        $this->addFlash('success', 'Votre sortie est publiée ! 😊 ');
+        return $this->redirectToRoute("afficherSortie", [
             "sortie"=>$sortie,
             "id"=>$id,
         ]);
@@ -205,5 +206,37 @@ class SortieController extends AbstractController
 
         return $this->render('sortie/afficherSortie.html.twig', $tab);
     }
+    /**
+     * @Route("/get-code-p/{id}", name="getCode")
+     */
+    public function getCodeP(Request $request,$id=0): Response
+    {
+        $tab=[
+            "0"=>"error",
+            "1"=>"44500",
+            "3"=>"75222",
+            "2"=>"35500"
+        ];
+        return $this->json('{"code": '.$tab[$id].'}');
+    }
+    /**
+     * @Route("/get-adresse/{id}", name="getAdresse")
+     */
+    public function getAdresse(SortieRepository $sr, LieuRepository $lieuRepository, Request $request,$id=0): Response
+    {
+        $sortie = $sr->find($id);
+
+        $lieu = $lieuRepository->find($sortie->getId());
+
+       // return $this->json('{"rue": "'.$lieu->getRue().'"}');
+         return $this->json('{
+                                   "rue":"'.$lieu->getRue().'",
+                                   "ville":"'.$lieu->getVille()->getNomVille().'",
+                                   "cp":"'.$lieu->getVille()->getCodePostal().'",
+                                   "latitude":"'.$lieu->getLatitude().'",
+                                   "longitude":"'.$lieu->getLongitude().'"
+                                }');
+    }
+
 
 }

@@ -25,21 +25,27 @@ class MainFormType extends AbstractType
                 'label' => 'Le nom de la sortie contient:'
             ])
             ->add('dateHeureDebut', DateTimeType::class, [
-                'label' => 'Entre'
+                'label' => 'Entre',
+                'data' => new \DateTime("now -1 week")
             ])
             ->add('dateHeureFin', DateTimeType::class, [
-                'label' => 'et'
+                'label' => 'et',
+                'data' => new \DateTime("now +2 month")
             ])
             ->add('sortieOrganisateur', CheckboxType::class, [
                 'required' => false,
+                'data' => true,
                 'label' => "Sorties dont je suis l'organisateur/trice"
             ])
             ->add('sortieInscrit', CheckboxType::class, [
                 'required' => false,
+                'data' => true,
                 'label' => 'Sorties auxquelles je suis inscrit/e'
             ])
             ->add('sortiePasInscrit', CheckboxType::class, [
                 'required' => false,
+                'data' => true,
+               // 'attr' => array('checked'   => 'checked'),
                 'label' => 'Sorties auxquelles je ne suis pas inscrit/e'
             ])
             ->add('sortiePassees', CheckboxType::class, [
