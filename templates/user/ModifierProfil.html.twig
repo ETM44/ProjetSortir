@@ -32,12 +32,7 @@
         <p>{{ form_widget(ModifierProfilFormType.telephone) }}</p>
         <p>{{ form_widget(ModifierProfilFormType.email) }}</p>
         <p>{{ form_widget(ModifierProfilFormType.password) }}</p>
-        {#<select name="sites" id="sites">
-            {% for site in sites %}
-            #}{#<option value="{{ form_widget(ModifierProfilFormType.site.nom, {'attr':{'class':'choice'}}) }}">{{ site.nom }}</option>#}{#
-            {% endfor %}
-        </select>#}
-
+        {{ form_widget(ModifierProfilFormType.site, {'attr':{'class':'choice'}}) }}
     </div>
     <div class="btnModifProfil">
         {{ form_row(ModifierProfilFormType.modifier) }}

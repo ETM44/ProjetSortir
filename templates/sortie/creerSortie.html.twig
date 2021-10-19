@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello SortieController!{% endblock %}
+{% block title %}Créons une sortie!{% endblock %}
 
 {#{% block javascripts %}
     <script>
@@ -19,30 +19,60 @@
 {% endblock %}#}
 
 {% block body %}
-    <h1>Créons une sortie!</h1>
 
-    <p>{{ form_start(CreerSortieForm) }}</p>
-    <p>{{ form_widget(CreerSortieForm.nom) }}</p>
-    <p>{{ form_widget(CreerSortieForm.dateHeureDebut) }}</p>
-    <p>{{ form_widget(CreerSortieForm.dateLimiteInscription) }}</p>
-    <p>{{ form_widget(CreerSortieForm.nbInscriptionsMax) }}</p>
-    <p>{{ form_widget(CreerSortieForm.duree) }}minutes</p>
-    <p>{{ form_widget(CreerSortieForm.infosSortie) }}</p>
+    <body>
+    <h1>{{ title }} {{ sortie.nom }}</h1>
 
-    <p>Campus organisateur</p>
+<div class="GaucheDroite">
+
+    <div class="gauche">
+        {{ form_start(CreerSortieForm) }}
+        <label class="label">Nom de la sortie : </label>
+        {{ form_widget(CreerSortieForm.nom) }}
+        <br>
+        <label class="label">Date et heure de la sortie : </label>
+        {{ form_widget(CreerSortieForm.dateHeureDebut) }}
+
+        <label class="label">Date limite d'inscription :</label>
+        {{ form_widget(CreerSortieForm.dateLimiteInscription) }}
+
+        <label class="label">Nombre de places :</label>
+        {{ form_widget(CreerSortieForm.nbInscriptionsMax) }}
+        <br>
+        <label class="label">Durée :</label>
+        {{ form_widget(CreerSortieForm.duree) }} minutes.
+        <br>
+        <label class="label">Description et infos :</label>
+        {{ form_widget(CreerSortieForm.infosSortie,  {'attr':{'class':'textarea'}} ) }}
+    </div>
+
+    <div class="droite">
+        <label class="label">Campus organisateur : </label>
+        {{ form_widget(CreerSortieForm.site) }}
+        <div class="lieuAddLieu">
+            <label class="label">Lieu : </label>
+            {{ form_widget(CreerSortieForm.lieu, {'attr':{'class':'choice'}}) }}
+
+        </div><!-- Fin de la div lieuNouveauLieu-->
+
     {#{{ form_label(CreerSortieForm.organisateur) }}#}
     <select name="villes" id="villes">
     {% for ville in villes %}
        {# <option value="{{ ville.nom, {'attr':{'class':'choice'}} }}">{{ ville.codePostal }}</option>#}
     {% endfor %}
     </select>
-    {{ form_widget(CreerSortieForm.lieu.nom) }}
-    <label class="label">Rue : {{ sortie.lieu.rue }}</label>
-    <label class="label">Code Postal : {{ sortie.lieu.ville.codePostal }}</label>
+
+    <label class="label">Rue : </label>
+    <label class="label">Code Postal : </label>
+
+   {# {% if sortie.lieu.latitude %}#}
     <label class="label">Latitude :</label>
     <input type="text" class="position" id="lat">
+       {# {% endif %}
+        {% if sortie.lieu.longitude %}#}
     <label class="label">Longitude :</label>
     <input type="text"class="position" id="lng">
+      {#  {% endif %}#}
     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!
         1d2712.5968569125494!2d-1.5564777840385209!3d47.16574957915793!2m3!1f0!2f0!3f0!3m2!
         1i1024!2i768!4f13.1!3m3!1m2!1s0x4805e97f6fb1094b%3A0x7d21011fae2eb0ba!2s2%20Rue%20

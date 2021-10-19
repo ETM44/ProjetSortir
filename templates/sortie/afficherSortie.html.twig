@@ -4,24 +4,54 @@
 
 {% block body %}
     <div>
-        <ul>
-            <li>{{ sortie.nom }} </li>
-            <li>{{ sortie.dateHeureDebut | date('d/m/Y H:i') }} </li>
-            <li>{{ sortie.dateLimiteInscription | date('d/m/Y H:i') }}</li>
-            <li>{{ sortie.nbInscriptionsMax }}</li>
-            <li>{{ sortie.duree | date('H:i') }}</li>
-            <li>{{ sortie.infosSortie }}</li>
-        </ul>
-    </div>
-    <div>
-        <ul>
-            <li>{{ sortie.lieu.ville.nomVille }}</li>
-            <li>{{ sortie.lieu.ville.codePostal }}</li>
-        </ul>
-    </div>
+        <h1>{{ sortie.nom }}</h1>
+        <table class="table">
+           <thead>
+            <tr>
+                <th scope="row">date de la sortie</th>
+                <td>{{ sortie.dateHeureDebut | date('d/m/Y H:i') }}</td>
+            </tr>
+            <tr>
+                <th scope="row">date limite d'inscription</th>
+                <td>{{ sortie.dateLimiteInscription | date('d/m/Y H:i') }}</td>
+            </tr>
+            <tr>
+                <th scope="row">nombre de places</th>
+                <td>{{ sortie.nbInscriptionsMax }}</td>
+            </tr>
+            <tr>
+                <th scope="row">durée</th>
+                <td>{{ sortie.nbInscriptionsMax }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Les infos</th>
+                <td>{{ sortie.infosSortie }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Campus Organisateur</th>
+                <td>{{ sortie.organisateur.site.nom }}</td>
+            </tr>
+           <tr>
+               <th scope="row">Lieu</th>
+               <td>{{ sortie.lieu.nom }}</td>
+           </tr>
+           <tr>
+               <th scope="row">Rue</th>
+               <td>{{ sortie.lieu.rue }}</td>
+           </tr>
+            <tr>
+                <th scope="row">Code Postal</th>
+                <td>{{ sortie.lieu.ville.codePostal }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Ville</th>
+                <td>{{ sortie.lieu.ville.nomVille }}</td>
+            </tr>
+           </thead>
+        </table>
 
     <div>
-        <h1>Liste des participants inscrits</h1>
+        <h3>Liste des participants inscrits</h3>
         <table class="table">
             <thead>
             <tr>
@@ -41,5 +71,6 @@
             {% endfor %}
             </tbody>
         </table>
+
     </div>
 {% endblock %}
