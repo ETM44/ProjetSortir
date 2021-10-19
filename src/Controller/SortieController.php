@@ -67,7 +67,9 @@ class SortieController extends AbstractController
             "title" => "Creer une sortie :",
             "CreerSortieForm" => $form->createView(),
             'orga' => $orga,
-            'villes' => $villes
+            'villes' => $villes,
+            'sortie' => $sortie
+
         ]);
 
     }
