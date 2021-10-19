@@ -6,6 +6,14 @@ Annuler la sortie
 {% block titre %}
     <h1>Annuler la sortie : {{ sortie.nom }}</h1>
 {% endblock %}
+
+{% block javascript %}
+<script>
+    document.getElementById('go-back').addEventListener('click', () => {
+    history.back()
+});
+</script>
+{% endblock %}
         {% block body %}
             {% if sortie.organisateur.id != app.user.id %}
             <i>Vous n'êtes pas autorisé à accéder à cette page ! </i>
@@ -30,9 +38,9 @@ Annuler la sortie
         <label class="label">Motif d'annulation : </label>
     {{ form_widget(form.infosSortie,  {'attr':{'class':'textarea'}} ) }}
     <br>
-    <div class="btn">
-    {{ form_widget(form.Confirmer) }}
-    {{ form_widget(form.Annuler) }}
+    <div>
+    {{ form_widget(form.Confirmer ,  {'attr':{'class':'"btn btn-danger'}} ) }}
+        <input type="button" id="go-back" class="btn btn-warning" value="Annuler" onclick="history.back()">
     </div>
             {{ form_end(form) }}
             {% endif %}

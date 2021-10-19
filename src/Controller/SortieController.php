@@ -94,7 +94,6 @@ class SortieController extends AbstractController
             $form = $this->createFormBuilder($newSortie)
                 ->add('infosSortie', TextareaType::class)
                 ->add('Confirmer', SubmitType::class)
-                ->add('Annuler', ResetType::class)
                 ->getForm();
             $form->handleRequest($request);
 
@@ -141,8 +140,12 @@ class SortieController extends AbstractController
      * @param SortieRepository $repository
      * @return Response
      */
-    public function modifierSortie($id=0,SortieRepository $repository,Request $request, EntityManagerInterface $em)
+    public function modifierSortie($id=0,SortieRepository $repository, VilleRepository $villeRepo, Request $request, EntityManagerInterface $em)
     {
+
+        $villes= $villeRepo->findAll('nom_ville');
+
+
       //  $newSortie = new Sortie();
         $sortie = $repository->find($id);
         $updateSortieForm = $this->createForm(UpdateSortieType::class, $sortie);
@@ -164,14 +167,18 @@ class SortieController extends AbstractController
             $em->persist($sortie);
             $em->flush();
             $this->addFlash('success', 'Votre sortie a bien été modifiée.');
-            return $this->redirectToRoute("afficherSortie");
+            return $this->redirectToRoute("afficherSortie" ,[
+                                            "sortie"=>$sortie,
+                                            "id"=>$id,
+                          ]);
         }
 
         return $this->render("sortie/modifierSortie.html.twig", [
             "title" => "Modifier la sortie :",
             "sortie" => $sortie,
             "updateSortieForm" => $updateSortieForm->createView(),
-            "nouveauLieuForm"=>$nouveauLieuForm->createView()
+            "nouveauLieuForm"=>$nouveauLieuForm->createView(),
+            "villes"=>$villes
             ]);
         }
     }
@@ -222,11 +229,11 @@ class SortieController extends AbstractController
     /**
      * @Route("/get-adresse/{id}", name="getAdresse")
      */
-    public function getAdresse(SortieRepository $sr, LieuRepository $lieuRepository, Request $request,$id=0): Response
+    public function getAdresse( LieuRepository $lieuRepository, Request $request,$id=0): Response
     {
-        $sortie = $sr->find($id);
 
-        $lieu = $lieuRepository->find($sortie->getId());
+
+        $lieu = $lieuRepository->find($id);
 
        // return $this->json('{"rue": "'.$lieu->getRue().'"}');
          return $this->json('{
@@ -236,6 +243,19 @@ class SortieController extends AbstractController
                                    "latitude":"'.$lieu->getLatitude().'",
                                    "longitude":"'.$lieu->getLongitude().'"
                                 }');
+    }
+    /**
+     * @Route("/get-lieux/{id}", name="getLieux")
+     */
+    public function getLieux( LieuRepository $lieuRepo,$id=0): Response{
+
+        $lieux =  $lieuRepo->findBy(["ville"=>$id]);
+        $tab = [];
+        foreach ($lieux as $lieu){
+            array_push($tab,["nom"=>$lieu->getNom(),"id"=>$lieu->getId()]);
+        }
+
+        return $this->json(json_encode($tab));
     }
 
 

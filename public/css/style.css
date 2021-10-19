@@ -23,21 +23,56 @@ h1{
 }
 
 .lienBouton, button{
-    color: black;
-    border: 1px solid darkred;
     border-radius: 4px !important;
-    background-color: orange;
-    height: 50px;
-    width: 150px;
     text-align: center;
 }
 .lienBouton a{
     position: center;
     text-decoration: none;
 }
-.lienBouton:hover, button:hover{
-    background-color: orangered;
+
+.btn-desister {
+    color: #fff;
+    background-color: salmon;
+    border-color: salmon;
+    margin: 1px;
 }
+
+.btn-afficher {
+    color: #fff;
+    background-color: mediumorchid;
+    border-color: mediumorchid;
+    margin: 1px;
+}
+
+.btn-inscrire {
+    color: #fff;
+    background-color: dodgerblue;
+    border-color: dodgerblue;
+    margin: 1px;
+}
+
+.btn-modifier {
+    color: #fff;
+    background-color: darkorange;
+    border-color: darkorange;
+    margin: 1px;
+}
+
+.btn-publier {
+    color: #fff;
+    background-color: yellowgreen;
+    border-color: yellowgreen;
+    margin: 1px;
+}
+
+.btn-annuler {
+    color: #fff;
+    background-color: firebrick;
+    border-color: firebrick;
+    margin: 1px;
+}
+
 .lieuAddLieu{
     display: flex;
 }
