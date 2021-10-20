@@ -23,10 +23,12 @@ class MainController extends AbstractController
      */
     public function accueil(InscriptionRepository $ir, SortieRepository $sr, Request $request): Response
     {
+        if (!empty($this->getUser())) {
+            return $this->redirectToRoute('main');
+        }
+
         $mainSearch = new MainSearch();
-
         $form = $this->createForm(AccueilFormType::class, $mainSearch);
-
         $form->handleRequest($request);
 
         $results = [];
