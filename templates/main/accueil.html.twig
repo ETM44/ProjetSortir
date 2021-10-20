@@ -64,8 +64,8 @@
                 <td>{{ result.dateLimiteInscription|date('d/M/Y') }}</td>
                 <td>{{ result.nombreInscription }} / {{ result.nbInscriptionsMax }}</td>
                 <td>{{ result.etat.libelle }}</td>
-                <td><a href="">{{ result.organisateur.pseudo }}</a></td>
-                <td><a class="btn btn-afficher" href="">Afficher</a></td>
+                <td>{{ result.organisateur.pseudo }}</td>
+                <td><a class="btn btn-afficher" href="{{ path('afficherSortie',  {'id': result.id})}}">Afficher</a></td>
             </tr>
         {% endfor %}
         </tbody>

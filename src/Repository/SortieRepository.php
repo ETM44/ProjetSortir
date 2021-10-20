@@ -112,6 +112,8 @@ class SortieRepository extends ServiceEntityRepository
             ->setParameter('dateHeureDebut', $mainSearch->getDateHeureDebut())
             ->andWhere('s.dateHeureDebut < :dateHeureFin')
             ->setParameter('dateHeureFin', $mainSearch->getDateHeureFin())
+            ->andWhere('s.dateHeureDebut > :nowLessMonth')
+            ->setParameter('nowLessMonth', new \DateTime('now - 1 month'))
         ;
 
         if($mainSearch->getSortiePassees()) {
