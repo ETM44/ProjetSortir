@@ -66,9 +66,8 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     private $prenom;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=50, unique=true)
      * @Assert\NotBlank(message="You must choose a pseudo")
-     * @Assert\Unique
      * @Assert\Length(min="2", max="50",
      *     minMessage="Too short ! At least 2 caracters !",
      *     maxMessage="Too long ! Max 50 caracters !")

@@ -36,13 +36,24 @@ class ModifierProfilFormType extends AbstractType
             ->add('email', TextType::class, [
                 'label' => "Email :"
             ])
-            ->add('plainpassword', RepeatedType::class, [
-                'type' => PasswordType::class,
-                'mapped'=>false,
+            ->add('password', RepeatedType::class, [
+                'type' => PasswordType::class,'mapped'=>false,
                 'attr'=>['autocomplete'=>'new-password'],
-                "required"=>false,
-                'first_options' => ['label' => "Nouveau mot de passe"],
-                'second_options' => ['label' => "Confirmez votre mot de passe"],
+                'constraints'=>[
+                    new NotBlank([
+                        'message'=>'Vous devez entrer un mot de passe',
+                    ]),
+                    new Length([
+                        'min'=>6,
+                        'minMessage'=>'Le mot de passe doit contenir au moins {{limit}} caractères',
+                        //max length allowed by Symfony for security reasons
+                        'max'=>4096,
+                    ]),
+                ],
+                'invalid_message'=>"mot de passe invalide",
+                'required'=>false,
+                'first_options'  => ['label' => 'Nouveau mot de passe :', 'attr'=> ['class' => 'text-muted f-w-400 form-control'],],
+                'second_options' => ['label' => 'Confirmez votre mot de passe :', 'attr'=> ['class' => 'text-muted f-w-400 form-control'],],
             ])
             ->add('site', EntityType::class, [
                 'class' => Site::class,
