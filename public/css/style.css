@@ -122,6 +122,9 @@ input, select, textarea{
     border-radius: 4px;
 }
 
+footer{
+    text-align: center;
+}
 
 /***************style modal pour quand ça marchera ******/
 .modal {
