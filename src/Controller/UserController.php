@@ -44,4 +44,15 @@ class UserController extends AbstractController
             "ModifierProfilFormType" => $form->createView()
         ]);
     }
+
+
+    /**
+     * @Route("user/profil/{id}", name="app_afficherProfil")
+     */
+    public function afficherProfil(ParticipantRepository $participantRepository, $id=0):Response {
+        $user = $participantRepository->find($id);
+        return $this->render('user/AfficherUnProfil.html.twig',[
+                                "user"=>$user
+        ]);
+    }
 }

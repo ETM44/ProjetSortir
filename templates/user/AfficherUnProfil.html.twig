@@ -1,1 +1,35 @@
 {% extends 'base.html.twig' %}
+
+{% block titre %}
+   <h1> Profil de {{ user.pseudo }}</h1>
+{% endblock %}
+
+{% block javascript %}
+<script>
+    document.getElementById('go-back').addEventListener('click', () => {
+    history.back()
+});
+</script>
+{% endblock %}
+
+{% block body %}
+
+    <div class="profile-picc">
+        <label class="-label" for="file">
+            <span class="glyphicon glyphicon-camera"></span>
+        </label>
+        <img src="{{ asset('img/logosortieheh.png') }}" id="output" width="200" />
+    </div>
+<div class="profil">
+    <p> Prénom :      <b>{{ user.prenom }}</b>  </p>
+    <p>Nom :     <b>{{ user.nom}}</b>  </p>
+        {% if user.telephone %}
+    <p>Téléphone :      <b>{{ user.telephone }}</b></p>
+        {% endif %}
+    <p>Email :      <b>{{ user.email }}</b></p>
+
+    <p>Campus de rattachement : <b>{{ user.site.nom }}</b></p>
+</div>
+<input type="button" id="go-back" class="btn btn-warning" value="Retour" onclick="history.back()">
+
+{% endblock %}
