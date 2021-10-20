@@ -36,9 +36,9 @@
        {# <option value="{{ ville.nom, {'attr':{'class':'choice'}} }}">{{ ville.codePostal }}</option>#}
     {% endfor %}
     </select>
-    {{ form_widget(CreerSortieForm.lieu.nom) }}
-    <label class="label">Rue : {{ sortie.lieu.rue }}</label>
-    <label class="label">Code Postal : {{ sortie.lieu.ville.codePostal }}</label>
+    {{ form_widget(CreerSortieForm.lieu) }}
+    <label class="label">Rue : </label>
+    <label class="label">Code Postal : </label>
     <label class="label">Latitude :</label>
     <input type="text" class="position" id="lat">
     <label class="label">Longitude :</label>

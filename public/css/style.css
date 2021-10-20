@@ -69,11 +69,6 @@ li{
     list-style: none;
 }
 
-.btn{
-    display: flex;
-    background-color: orange!important;
-    margin:4px
-}
 textarea {
     vertical-align: top;
 }
@@ -83,6 +78,7 @@ textarea {
     text-align: justify;
     padding:4px;
 }
+
 img{
     margin:4px
 }
