@@ -13,6 +13,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ModifierProfilFormType extends AbstractType
 {
@@ -34,18 +36,14 @@ class ModifierProfilFormType extends AbstractType
             ->add('email', TextType::class, [
                 'label' => "Email :"
             ])
-            ->add('password', RepeatedType::class, array(
+            ->add('plainpassword', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'required'=>false,
-                'first_options'  => array('label' => 'Nouveau mot de passe :'),
-                'second_options' => array('label' => 'Confirmez votre mot de passe :'),
-            ))
-            /*   ->add('password1', PasswordType::class, [
-                   'label' => "Entrez votre mot de passe"
-           ])
-            ->add('password2', PasswordType::class, [
-                'label' => "Confirmez votre mot de passe"
-            ])*/
+                'mapped'=>false,
+                'attr'=>['autocomplete'=>'new-password'],
+                "required"=>false,
+                'first_options' => ['label' => "Nouveau mot de passe"],
+                'second_options' => ['label' => "Confirmez votre mot de passe"],
+            ])
             ->add('site', EntityType::class, [
                 'class' => Site::class,
                 'choice_label' => "nom",

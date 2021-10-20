@@ -34,7 +34,6 @@ class MainController extends AbstractController
         if($form->isSubmitted()) {
             $mainSearch->setSortiePasInscrit(true);
             $results = $sr->findSortieOuverteWithFilter($mainSearch);
-            $userInscrSort = $ir->findUserSortie(0);
         }
 
         return $this->render('main/accueil.html.twig', [

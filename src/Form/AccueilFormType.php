@@ -24,10 +24,12 @@ class AccueilFormType extends AbstractType
                 'label' => 'Le nom de la sortie contient:'
             ])
             ->add('dateHeureDebut', DateTimeType::class, [
-                'label' => 'Entre'
+                'label' => 'Entre',
+                'data' => new \DateTime("now -1 week")
             ])
             ->add('dateHeureFin', DateTimeType::class, [
-                'label' => 'et'
+                'label' => 'et',
+                'data' => new \DateTime("now +2 month")
             ])
         ;
     }

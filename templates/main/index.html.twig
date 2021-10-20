@@ -123,7 +123,7 @@
                             {% endif %}
                         </div>
                     {% else %}
-                        <a class="btn btn-afficher" href="">Afficher</a>
+                        <a class="btn btn-afficher" href="{{ path('afficherSortie',  {'id': result.id})}}">Afficher</a>
                     {% endif %}
                 </td>
             </tr>
