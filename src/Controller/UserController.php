@@ -17,6 +17,17 @@ use App\Entity\UpdatePassword;
 
 class UserController extends AbstractController
 {
+    /**
+     * @Route("user/monProfil", name="app_monProfil")
+     */
+    public function afficherMonProfil(ParticipantRepository $pr): Response
+    {
+        $participant = $pr->find($this->getUser()->getId());
+        return $this->render('user/afficherMonProfil.html.twig', [
+            "participant" => $participant
+        ]);
+
+    }
 
     /**
      * @Route("user/modifierProfil", name="modifier_profil")
@@ -27,11 +38,9 @@ class UserController extends AbstractController
 
         $form = $this->createForm(ModifierProfilFormType::class, $participant);
         $form->handlerequest($request);
-        //dd($form);
-
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if(!empty($form->get('plainpassword')->getData())){
+            if (!empty($form->get('plainpassword')->getData())) {
                 $participant->setPassword(
                     $passwordEncoder->hashPassword(
                         $participant,
@@ -54,16 +63,22 @@ class UserController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("user/monProfil/{id}", name="app_monProfil")
-     */
-    public function afficherMonProfil (ParticipantRepository $pr): Response
-    {
-        $participant = $pr->find($this->getUser()->getId());
-        return $this->render('user/afficherMonProfil.html.twig', [
-            "participant"=>$participant
-        ]);
+/*return $this->render('user/ModifierProfil.html.twig', [
+'form' => $form->createView(),
+'updatePassword'=>$this->$updatePassword
+]);
+}*/
 
+
+     /**
+     * @Route("user/profil/{id}", name="app_afficherProfil")
+     */
+    public function afficherProfil(ParticipantRepository $participantRepository, $id = 0): Response
+    {
+        $user = $participantRepository->find($id);
+        return $this->render('user/AfficherUnProfil.html.twig', [
+            "user" => $user
+        ]);
     }
 
 

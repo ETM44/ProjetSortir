@@ -113,6 +113,7 @@ textarea {
     text-align: justify;
     padding:4px;
 }
+
 img{
     margin:4px
 }
@@ -162,9 +163,11 @@ input, select, textarea{
 #global {
     margin-left: auto;
     margin-right: auto;
+    height: 80%;
 }
+
 /***************************style profile pic****************************/
-.profile-pic {
+.profile-pic, .profile-picc {
     color: transparent;
     transition: all 0.3s ease;
     display: flex;
@@ -173,19 +176,21 @@ input, select, textarea{
     position: relative;
     transition: all 0.3s ease;
 }
+
 .profile-pic input {
     display: none;
 }
-.profile-pic img {
+.profile-pic img, .profile-picc img {
     position: absolute;
     object-fit: cover;
     width: 165px;
     height: 165px;
     box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.35);
     border-radius: 100px;
+    border:black 1px solid;
     z-index: 0;
 }
-.profile-pic .-label {
+.profile-pic .-label, .profile-picc .-label {
     cursor: pointer;
     height: 165px;
     width: 165px;
@@ -201,7 +206,7 @@ input, select, textarea{
     border-radius: 100px;
     margin-bottom: 0;
 }
-.profile-pic span {
+.profile-pic span, .profile-picc span {
     display: inline-flex;
     padding: 0.2em;
     height: 2em;

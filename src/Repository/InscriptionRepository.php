@@ -29,6 +29,18 @@ class InscriptionRepository extends ServiceEntityRepository
             ;
     }
 
+    public function findUserIdAndSortieId($userId, $sortieId)
+    {
+        return $this->createQueryBuilder('i')
+            ->andWhere('i.participant = :userId')
+            ->setParameter('userId', $userId)
+            ->andWhere('i.sortie = :sortieId')
+            ->setParameter('sortieId', $sortieId)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
     public function findParticipantsInscrits($id)
     {
         return $this->createQueryBuilder('i')

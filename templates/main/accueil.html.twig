@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/main.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block title %}Bienvenue{% endblock %}
+
+{% block body %}
+
+    {% form_theme mainForm 'bootstrap_5_layout.html.twig' %}
+
+    {{ form_start(mainForm) }}
+    <div class="row">
+        <h3>Filtrer les sorties</h3>
+        <div class="col-9">
+            <div class="row">
+                <div class="col">
+                    {{ form_row(mainForm.site) }}
+                    {{ form_row(mainForm.nom) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    {{ form_row(mainForm.dateHeureDebut) }}
+                </div>
+                <div class="col">
+                    {{ form_row(mainForm.dateHeureFin) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <button class="btn btn-warning btn-lg btn-block" type="submit">Rechercher</button>
+        </div>
+    </div>
+
+
+    {{ form_end(mainForm) }}
+
+    <table class="table table-striped"
+           id="table"
+           data-toggle="table"
+           data-search="true"
+           data-filter-control="true"
+           data-show-export="true"
+           data-click-to-select="true"
+           data-toolbar="#toolbar">
+        <thead>
+        <tr>
+            <th scope="col">Nom de la sortie</th>
+            <th scope="col">Date de la sortie</th>
+            <th scope="col">Clôture</th>
+            <th scope="col">inscrits/places</th>
+            <th scope="col">Etat</th>
+            <th scope="col">Organisateur</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for result in results %}
+            <tr>
+                <td scope="row">{{ result.nom }}</td>
+                <td>{{ result.dateHeureDebut|date('d/M/Y') }}</td>
+                <td>{{ result.dateLimiteInscription|date('d/M/Y') }}</td>
+                <td>{{ result.nombreInscription }} / {{ result.nbInscriptionsMax }}</td>
+                <td>{{ result.etat.libelle }}</td>
+                <td>{{ result.organisateur.pseudo }}</td>
+                <td><a class="btn btn-afficher" href="{{ path('afficherSortie',  {'id': result.id})}}">Afficher</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

@@ -2,8 +2,8 @@
 
 namespace App\Bo;
 
-class MainSearch {
-
+class MainSearch
+{
     private $site;
 
     private $nom;

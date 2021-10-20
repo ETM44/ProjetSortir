@@ -50,6 +50,9 @@
            </thead>
         </table>
 
+    {% if participants is empty %}
+    <p> Il n'y a pas encore de participant pour cette sortie ! </p>
+    {% else %}
     <div>
         <h3>Liste des participants inscrits</h3>
         <table class="table">
@@ -60,6 +63,8 @@
                 <th scope="col">Prenom</th>
             </tr>
             </thead>
+
+
             <tbody>
             {% for participant in participants %}
                 <tr>
@@ -67,10 +72,15 @@
                     <td>{{ participant.participant.nom }}</td>
                     <td>{{ participant.participant.prenom }}</td>
                 </tr>
-
             {% endfor %}
             </tbody>
         </table>
+        {% endif %}
 
     </div>
+
+    {% if sortie.organisateur == app.user %}
+    <a class="btn btn-modifier" href="{{ path('app_modifierSortie',  {'id': sortie.id})}}">Modifier votre sortie</a>
+    {% endif %}
+
 {% endblock %}

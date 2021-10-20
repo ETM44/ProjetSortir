@@ -70,7 +70,6 @@ class SortieController extends AbstractController
             'orga' => $orga,
             'villes' => $villes,
             'sortie' => $sortie
-
         ]);
 
     }
@@ -155,7 +154,7 @@ class SortieController extends AbstractController
 
        if($this->getUser() && $this->getUser()->getId() !== $sortie->getOrganisateur()->getId() ) {
            $this->addFlash('warning', 'Accès refusé : vous n\'avez pas les droits.');
-           return $this->redirectToRoute("main");
+           return $this->redirectToRoute("accueil");
        }else{
         $updateSortieForm->handleRequest($request);
 

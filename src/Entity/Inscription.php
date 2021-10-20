@@ -23,13 +23,13 @@ class Inscription
     private $date_inscription;
 
     /**
-     * @ORM\ManyToOne  (targetEntity=Participant::class, inversedBy="inscription", cascade={"persist", "remove"})
+     * @ORM\ManyToOne  (targetEntity=Participant::class, inversedBy="inscription", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $participant;
 
     /**
-     * @ORM\ManyToOne (targetEntity=Sortie::class, inversedBy="inscriptions", cascade={"persist", "remove"})
+     * @ORM\ManyToOne (targetEntity=Sortie::class, inversedBy="inscriptions", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $sortie;

@@ -50,3 +50,10 @@ function onVille(v){
 // window.addEventListener("load", function(event) {
 //     onVille(document.getElementById("update_sortie_ville"));
 // });
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+//gros javascript pompé sur projet précédent pour faire apparaître une image
+
+
