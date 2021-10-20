@@ -136,6 +136,45 @@ class SortieController extends AbstractController
     }
 
     /**
+     * @Route("sortie/reactiver/{id}", name="app_reactiverSortie")
+     * @param $id
+     * @param SortieRepository $repository
+     * @return Response
+     */
+    public function reactiverSortie($id,SortieRepository $repository, EtatRepository $etatrepo, Request $request, EntityManagerInterface $em): Response{
+        $sortie=$repository->find($id);
+        $etatSortie=$etatrepo->find(2);
+//Si l'utilisateur en session n'est pas l'organisateur de la sortie, on lui refuse l'accès
+        if($this->getUser()->getId() !== $sortie->getOrganisateur()->getId() ) {
+            $this->addFlash('warning', 'Accès refusé : vous n\'avez pas les droits.');
+            return $this->redirectToRoute("main");
+        }else {
+
+            $newSortie = new Sortie();
+            $form = $this->createFormBuilder($newSortie)
+                ->add('infosSortie', TextareaType::class)
+                ->add('Confirmer', SubmitType::class)
+                ->getForm();
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $sortie->setInfosSortie($newSortie->getInfosSortie());
+                $sortie->setEtat($etatSortie);
+                $em->flush();
+                $this->addFlash('success', 'Votre sortie a bien été remise sur le marché ! 😊 ');
+                return $this->redirectToRoute("main");
+            }
+
+            return $this->render("sortie/reactiverSortie.html.twig", [
+                "title" => "Réactiver une sortie",
+                "sortie" => $sortie,
+                "form" => $form->createView()
+            ]);
+        }
+    }
+
+
+    /**
      * @Route("sortie/modifier/{id}", name="app_modifierSortie")
      * @param $id
      * @param SortieRepository $repository

@@ -42,17 +42,18 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if (!empty($form->get('plainpassword')->getData())) {
                 $participant->setPassword(
-                    $passwordEncoder->hashPassword(
+                    $passwordEncoder->encodePassword(
                         $participant,
                         $form->get('plainpassword')->getData()
                     )
                 );
-            }
+
             $participant = $form->getData();
             $em->persist($participant);
             $em->flush();
             $this->addFlash('success', 'Votre profil a bien été modifié.');
-            return $this->redirectToRoute("main");
+            return $this->redirectToRoute("app_monProfil");
+            }
         }
 
 

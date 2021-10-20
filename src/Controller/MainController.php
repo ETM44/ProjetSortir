@@ -31,7 +31,7 @@ class MainController extends AbstractController
 
         $results = [];
         $userInscrSort = [];
-        if($form->isSubmitted()) {
+        if ($form->isSubmitted()) {
             $mainSearch->setSortiePasInscrit(true);
             $results = $sr->findSortieOuverteWithFilter($mainSearch);
         }
@@ -57,12 +57,12 @@ class MainController extends AbstractController
 
         $results = [];
         $userInscrSort = [];
-        if($form->isSubmitted()) {
-            if(empty($this->getUser())) {
-                $results = $sr->findParticipantsInscritsWithFilter(0,$mainSearch);
+        if ($form->isSubmitted()) {
+            if (empty($this->getUser())) {
+                $results = $sr->findParticipantsInscritsWithFilter(0, $mainSearch);
                 $userInscrSort = $ir->findUserSortie(0);
             } else {
-                $results = $sr->findParticipantsInscritsWithFilter($this->getUser()->getId(),$mainSearch);
+                $results = $sr->findParticipantsInscritsWithFilter($this->getUser()->getId(), $mainSearch);
                 $userInscrSort = $ir->findUserSortie($this->getUser()->getId());
             }
         }
@@ -78,26 +78,41 @@ class MainController extends AbstractController
     /**
      * @Route("main/inscrire/{id}", name="app_inscrire")
      */
-    public function inscrire(EntityManagerInterface $em, SortieRepository $sortieRepository, $id=0):Response{
+    public function inscrire(EntityManagerInterface $em, SortieRepository $sortieRepository, $id = 0): Response
+    {
 
         $sortie = $sortieRepository->find($id);
         $inscription = new Inscription();
 
-        $inscription->setParticipant($this->getUser());
-        $inscription->setDateInscription(new \DateTime('now'));
-        $inscription->setSortie($sortie);
+        if(count($sortie->getInscriptions()) >= $sortie->getNbInscriptionsMax()){
+            $this->addFlash('warning', 'Le nombre maximal de participants a déjà été atteint ! ');
+            return $this->redirectToRoute("main");
+        }
 
-        $em->persist($inscription);
-        $em->flush();
+        if ($sortie->getEtat()->getId() < 2) {
+            $this->addFlash('warning', 'Vous ne pouvez pas encore vous inscrire à cet événement ! ');
+            return $this->redirectToRoute("main");
+          } elseif ($sortie->getEtat()->getId() >= 3) {
+            $this->addFlash('warning', 'Les inscriptions sont terminées pour cet événement ! ');
+            return $this->redirectToRoute("main");
+          } else {
+            $inscription->setParticipant($this->getUser());
+            $inscription->setDateInscription(new \DateTime('now'));
+            $inscription->setSortie($sortie);
 
-        $this->addFlash('success', 'Votre inscription a bien été prise en compte ! ');
-        return $this->redirectToRoute("main");
+            $em->persist($inscription);
+            $em->flush();
+
+            $this->addFlash('success', 'Votre inscription a bien été prise en compte ! ');
+            return $this->redirectToRoute("main");
+        }
     }
 
     /**
      * @Route("main/desister/{id}", name="app_desister")
      */
-    public function desister(EntityManagerInterface $em, InscriptionRepository $inscriptionRepository, $id=0):Response{
+    public function desister(EntityManagerInterface $em, InscriptionRepository $inscriptionRepository, $id = 0): Response
+    {
         $inscription = $inscriptionRepository->findUserIdAndSortieId($this->getUser()->getId(), $id);
 
         $em->remove($inscription);
@@ -106,5 +121,5 @@ class MainController extends AbstractController
         $this->addFlash('success', 'Vous avez été désinscrit de cette sortie. ');
         return $this->redirectToRoute("main");
 
-}
+    }
 }

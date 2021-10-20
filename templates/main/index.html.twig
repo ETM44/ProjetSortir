@@ -85,7 +85,7 @@
                     {% endif %}
                 </td>
                 {% if app.user.id == result.organisateur.id %}
-                    <td><a href="{{ path('modifier_profil', {'id': app.user.id }) }}">{{ result.organisateur.pseudo }}</a></td>
+                    <td><a href="{{ path('app_monProfil')}}">{{ result.organisateur.pseudo }}</a></td>
                 {% else %}
                     <td><a href="{{ path('app_afficherProfil', {'id': result.organisateur.id }) }}">{{ result.organisateur.pseudo }}</a></td>
                     {% endif %}

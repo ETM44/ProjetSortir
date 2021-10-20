@@ -82,12 +82,11 @@
             <p> Cette sortie a été annulée !<br>
                 Motif : {{ sortie.infosSortie }}
                 <br>
-                <a href="{{ path('app_publierSortie',  {'id': sortie.id}) }}" class="lienBouton">Réactiver la sortie ?</a>
+                <a href="{{ path('app_reactiverSortie',  {'id': sortie.id}) }}" class="lienBouton">Réactiver la sortie ?</a>
             </p>
 
         {% elseif sortie.etat.id !=6 %}
 
-            <body>
             <h1>{{ title }} {{ sortie.nom }}</h1>
 
             <div class="GaucheDroite">
@@ -227,5 +226,5 @@
 
         {% endif %}
     {% endif %}
-    </body>
+
 {% endblock %}

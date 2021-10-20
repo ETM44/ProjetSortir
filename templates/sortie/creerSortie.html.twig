@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Créons une sortie!{% endblock %}
+{% block titre %}Créons une sortie!{% endblock %}
 
 {#{% block javascripts %}
     <script>
@@ -18,10 +18,73 @@
     </script>
 {% endblock %}#}
 
+
+{% block javascripts %}
+    <script defer>
+        function onLieu(e){
+            // recupérer la valeur de select
+            let id = e.value;
+
+            // créer une requette http
+            const http = new XMLHttpRequest();
+            // spécifier le type de reponse en json
+            http.responseType="json";
+            // la fonction se déclenche une fois que le serveur a repondu
+            http.onload = function(){
+
+                const data = JSON.parse(this.response);
+                document.getElementById("rue").innerHTML = data.rue;
+                document.getElementById("ville").innerText = data.ville;
+                document.getElementById("cp").innerText = data.cp;
+            };
+            // choisir la méthode et l'URL
+            http.open("GET","/get-adresse/"+id);
+            // envoyer la requete http vers le serveur
+            http.send();
+        }
+
+        window.addEventListener("load", function(event) {
+            onLieu(document.getElementById("creer_sortie_lieu"));
+        });
+
+        //fonction pour changer les lieux disponibles selon la sélection de la ville :
+
+        function onVille(v){
+            // recupérer la valeur de option
+            let id = v.value;
+
+            // créer une requette http
+            const http = new XMLHttpRequest();
+            // spécifier le type de reponse en json
+            http.responseType="json";
+            // la fonction se déclenche une fois que le serveur a repondu
+            http.onload = function(){
+                const data = JSON.parse(this.response);
+                var option ='<option value="0"disabled > Choisis un lieu </option>' ;
+                for( let e of data){
+                    option += '<option value="'+e.id+'" >'+e.nom+'</option>';
+                }
+                document.getElementById("creer_sortie_lieu").innerHTML = option;
+
+            };
+            // choisir la méthode et l'URL
+            http.open("GET","/get-lieux/"+id);
+            // envoyer la requete http vers le serveur
+            http.send();
+        }
+
+        window.addEventListener("load", function(event) {
+            onVille(document.getElementById("creer_sortie_ville"));
+        });
+
+    </script>
+
+{% endblock %}
+
 {% block body %}
 
     <body>
-    <h1>{{ title }} {{ sortie.nom }}</h1>
+    <h1>{{ titre }}</h1>
 
 <div class="GaucheDroite">
 
@@ -88,3 +151,4 @@
 </div>
 
 {% endblock %}
+

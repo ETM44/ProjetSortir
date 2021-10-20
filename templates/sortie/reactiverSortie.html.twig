@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Annuler la sortie
+{%endblock%}
+{% block titre %}
+    <h1>Réactiver la sortie : {{ sortie.nom }}</h1>
+{% endblock %}
+
+{% block javascript %}
+<script>
+    document.getElementById('go-back').addEventListener('click', () => {
+    history.back()
+});
+</script>
+{% endblock %}
+        {% block body %}
+            {% if sortie.organisateur.id != app.user.id %}
+                <i>Vous n'êtes pas autorisé à accéder à cette page ! </i>
+            {% else %}
+
+                    {{ form_start(form) }}
+                    <ul>
+                        <li>Nom de la sortie : {{ sortie.nom }}</li>
+                        <li>Date de la sortie : {{ sortie.dateHeureDebut|date("D d M Y") }}</li>
+                        <li>Ville organisatrice :{{ sortie.organisateur.site.nom }}</li>
+                        <li>Lieu : {{ sortie.lieu.nom}} </li>
+                    </ul>
+                    <label class="label">Motif de réactivation : </label>
+                    {{ form_widget(form.infosSortie,  {'attr':{'class':'textarea'}} ) }}
+                    <br>
+                    <div>
+                        {{ form_widget(form.Confirmer ,  {'attr':{'class':'"btn btn-danger'}} ) }}
+
+                    </div>
+                    {{ form_end(form) }}
+            {% endif %}
+
+        {% endblock %}
