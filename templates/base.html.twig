@@ -38,13 +38,13 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             {% if app.user %}
                 <div class="navbar-nav">
-                    <a class="nav-item nav-link" href="{{ path('app_logout') }}">Déconnexion</a>
-                </div>
-                <div class="navbar-nav">
+                    <a class="nav-item nav-link" href="{{ path('main') }}">Accueil</a>
                     <a class="nav-item nav-link" href="{{ path('app_monProfil') }}">Mon profil</a>
+                    <a class="nav-item nav-link" href="{{ path('app_logout') }}">Déconnexion</a>
                 </div>
             {% else %}
                 <div class="navbar-nav">
+                    <a class="nav-item nav-link" href="{{ path('accueil') }}">Accueil</a>
                     <a class="nav-item nav-link" href="{{ path('app_login') }}">Connexion</a>
                     <a class="nav-item nav-link" href="{{ path('app_register') }}">Inscription</a>
                 </div>

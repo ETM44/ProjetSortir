@@ -23,15 +23,17 @@ class MainController extends AbstractController
      */
     public function accueil(InscriptionRepository $ir, SortieRepository $sr, Request $request): Response
     {
+        if (!empty($this->getUser())) {
+            return $this->redirectToRoute('main');
+        }
+
         $mainSearch = new MainSearch();
-
         $form = $this->createForm(AccueilFormType::class, $mainSearch);
-
         $form->handleRequest($request);
 
         $results = [];
         $userInscrSort = [];
-        if($form->isSubmitted()) {
+        if ($form->isSubmitted()) {
             $mainSearch->setSortiePasInscrit(true);
             $results = $sr->findSortieOuverteWithFilter($mainSearch);
         }
@@ -57,12 +59,12 @@ class MainController extends AbstractController
 
         $results = [];
         $userInscrSort = [];
-        if($form->isSubmitted()) {
-            if(empty($this->getUser())) {
-                $results = $sr->findParticipantsInscritsWithFilter(0,$mainSearch);
+        if ($form->isSubmitted()) {
+            if (empty($this->getUser())) {
+                $results = $sr->findParticipantsInscritsWithFilter(0, $mainSearch);
                 $userInscrSort = $ir->findUserSortie(0);
             } else {
-                $results = $sr->findParticipantsInscritsWithFilter($this->getUser()->getId(),$mainSearch);
+                $results = $sr->findParticipantsInscritsWithFilter($this->getUser()->getId(), $mainSearch);
                 $userInscrSort = $ir->findUserSortie($this->getUser()->getId());
             }
         }
@@ -78,7 +80,8 @@ class MainController extends AbstractController
     /**
      * @Route("main/inscrire/{id}", name="app_inscrire")
      */
-    public function inscrire(EntityManagerInterface $em, SortieRepository $sortieRepository, $id=0):Response{
+    public function inscrire(EntityManagerInterface $em, SortieRepository $sortieRepository, $id = 0): Response
+    {
 
         $sortie = $sortieRepository->find($id);
         $inscription = new Inscription();
@@ -97,7 +100,8 @@ class MainController extends AbstractController
     /**
      * @Route("main/desister/{id}", name="app_desister")
      */
-    public function desister(EntityManagerInterface $em, InscriptionRepository $inscriptionRepository, $id=0):Response{
+    public function desister(EntityManagerInterface $em, InscriptionRepository $inscriptionRepository, $id = 0): Response
+    {
         $inscription = $inscriptionRepository->findUserIdAndSortieId($this->getUser()->getId(), $id);
 
         $em->remove($inscription);
@@ -106,5 +110,5 @@ class MainController extends AbstractController
         $this->addFlash('success', 'Vous avez été désinscrit de cette sortie. ');
         return $this->redirectToRoute("main");
 
-}
+    }
 }

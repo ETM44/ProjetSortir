@@ -47,7 +47,18 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/lieu, roles: ROLE_USER }
+        - { path: ^/lieu/ajouter/^, roles: ROLE_USER }
+
         - { path: ^/main, roles: ROLE_USER }
+
+        - { path: ^/user/monProfil, roles: ROLE_USER }
+        - { path: ^/user/modifierProfil, roles: ROLE_USER }
+        - { path: ^/user/profil/^, roles: ROLE_USER }
+
+        - { path: ^/sortie, roles: ROLE_USER }
+        - { path: ^/sortie/publier/^, roles: ROLE_USER }
         - { path: ^/sortie/modifier, roles: ROLE_USER }
         - { path: ^/sortie/annuler, roles: ROLE_USER }
         - { path: ^/sortie/creerSortie, roles: ROLE_USER }
+        - { path: ^/sortie/afficherSortie/^, roles: ROLE_USER }
