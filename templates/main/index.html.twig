@@ -84,7 +84,12 @@
                         {% endfor %}
                     {% endif %}
                 </td>
-                <td><a href="#">{{ result.organisateur.pseudo }}</a></td>
+                {% if app.user.id == result.organisateur.id %}
+                    <td><a href="{{ path('modifier_profil', {'id': app.user.id }) }}">{{ result.organisateur.pseudo }}</a></td>
+                {% else %}
+                    <td><a href="{{ path('app_afficherProfil', {'id': result.organisateur.id }) }}">{{ result.organisateur.pseudo }}</a></td>
+                    {% endif %}
+
                 <td>{% if app.user %}
                         <div class="row">
                             {% if result.organisateur.id == app.user.id %}
@@ -108,9 +113,9 @@
                                 {% endfor %}
                                 {% if (result.etat.id == 2 or result.etat.id == 3) %}
                                     {% if (sinscrire and result.etat.id == 2) %}
-                                        <div class="col"><a class="btn btn-inscrire" href="">S'inscrire</a></div>
+                                        <div class="col"><a class="btn btn-inscrire" href="{{ path('app_inscrire',  {'id': result.id})}}">S'inscrire</a></div>
                                     {% elseif sinscrire == false %}
-                                        <div class="col"><a class="btn btn-desister" href="">Se&nbspdésister</a></div>
+                                        <div class="col"><a class="btn btn-desister" href="{{ path('app_desister',  {'id': result.id})}}">Se&nbspdésister</a></div>
                                     {% endif %}
                                 {% else %}
                                     <div class="col"></div>

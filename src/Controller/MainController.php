@@ -8,11 +8,13 @@ use App\Form\MainFormType;
 use App\Bo\MainSearch;
 use App\Repository\InscriptionRepository;
 use App\Repository\SortieRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\Date;
+use App\Entity\Inscription;
 
 class MainController extends AbstractController
 {
@@ -73,4 +75,37 @@ class MainController extends AbstractController
             'date' => new \DateTime('now')
         ]);
     }
+
+    /**
+     * @Route("main/inscrire/{id}", name="app_inscrire")
+     */
+    public function inscrire(EntityManagerInterface $em, SortieRepository $sortieRepository, $id=0):Response{
+
+        $sortie = $sortieRepository->find($id);
+        $inscription = new Inscription();
+
+        $inscription->setParticipant($this->getUser());
+        $inscription->setDateInscription(new \DateTime('now'));
+        $inscription->setSortie($sortie);
+
+        $em->persist($inscription);
+        $em->flush();
+
+        $this->addFlash('success', 'Votre inscription a bien été prise en compte ! ');
+        return $this->redirectToRoute("main");
+    }
+
+    /**
+     * @Route("main/desister/{id}", name="app_desister")
+     */
+    public function desister(EntityManagerInterface $em, InscriptionRepository $inscriptionRepository, $id=0):Response{
+        $inscription = $inscriptionRepository->findUserIdAndSortieId($this->getUser()->getId(), $id);
+
+        $em->remove($inscription);
+        $em->flush();
+
+        $this->addFlash('success', 'Vous avez été désinscrit de cette sortie. ');
+        return $this->redirectToRoute("main");
+
+}
 }

@@ -12,6 +12,19 @@
 
     </script>
 
+    <script src="{{ asset('js/main.js') }}"></script>
+
+	<script type="text/javascript">
+
+function PreviewImage() {
+var oFReader = new FileReader();
+oFReader.readAsDataURL(document.getElementById("file").files[0]);
+oFReader.onload = function (oFREvent) {
+	document.getElementById("output").src = oFREvent.target.result;
+	};
+};
+</script>
+
     {#<script>
         function onLieu(e){
             // recupérer la valeur de select
@@ -53,7 +66,7 @@
             <span>Change Image</span>
         </label>
         <input id="file" type="file" onchange="loadFile(event)"/>
-        <img src="https://cdn.pixabay.com/photo/2017/08/06/21/01/louvre-2596278_960_720.jpg" id="output" width="200" />
+        <img src="https://cdn.pixabay.com/photo/2017/08/06/21/01/louvre-2596278_960_720.jpg" id="output" width="150" />
     </div>
 
 <div class="profil">
