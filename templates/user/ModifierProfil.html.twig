@@ -74,10 +74,7 @@
     {{ form_widget(ModifierProfilFormType.email) }}
     <br>
     <label class="label">Mot de passe : </label>
-    {{ form_widget(ModifierProfilFormType.password.first) }}
-    <br>
-    <label class="label">Confirmation : </label>
-    {{ form_widget(ModifierProfilFormType.password.second) }}
+    {{ form_widget(ModifierProfilFormType.plainpassword) }}
     <br>
     <label class="label">Mon campus de rattachement :</label>
     {{ form_widget(ModifierProfilFormType.site, {'attr':{'class':'choice'}}) }}

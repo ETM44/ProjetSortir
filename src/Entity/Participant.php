@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints\Unique;
 
 /**
  * @ORM\Entity(repositoryClass=ParticipantRepository::class)
- * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ * @UniqueEntity(fields={"email", "pseudo"}, message="There is already an account with this email or pseudo")
  */
 class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -66,10 +66,10 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     private $prenom;
 
     /**
-     * @ORM\Column(type="string", length=50, unique=true)
+     * @ORM\Column(type="string", length=50)
      * @Assert\NotBlank(message="You must choose a pseudo")
-     * @Assert\Unique(message="Ce pseudo existe déjà!")
-     *  @Assert\Length(min="2", max="50",
+     * @Assert\Unique
+     * @Assert\Length(min="2", max="50",
      *     minMessage="Too short ! At least 2 caracters !",
      *     maxMessage="Too long ! Max 50 caracters !")
      */
