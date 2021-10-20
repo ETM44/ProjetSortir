@@ -23,21 +23,56 @@ h1{
 }
 
 .lienBouton, button{
-    color: black;
-    border: 1px solid darkred;
     border-radius: 4px !important;
-    background-color: orange;
-    height: 50px;
-    width: 150px;
     text-align: center;
 }
 .lienBouton a{
     position: center;
     text-decoration: none;
 }
-.lienBouton:hover, button:hover{
-    background-color: orangered;
+
+.btn-desister {
+    color: #fff;
+    background-color: salmon;
+    border-color: salmon;
+    margin: 1px;
 }
+
+.btn-afficher {
+    color: #fff;
+    background-color: mediumorchid;
+    border-color: mediumorchid;
+    margin: 1px;
+}
+
+.btn-inscrire {
+    color: #fff;
+    background-color: dodgerblue;
+    border-color: dodgerblue;
+    margin: 1px;
+}
+
+.btn-modifier {
+    color: #fff;
+    background-color: darkorange;
+    border-color: darkorange;
+    margin: 1px;
+}
+
+.btn-publier {
+    color: #fff;
+    background-color: yellowgreen;
+    border-color: yellowgreen;
+    margin: 1px;
+}
+
+.btn-annuler {
+    color: #fff;
+    background-color: firebrick;
+    border-color: firebrick;
+    margin: 1px;
+}
+
 .lieuAddLieu{
     display: flex;
 }
@@ -127,5 +162,48 @@ input, select, textarea{
 #global {
     margin-left: auto;
     margin-right: auto;
+}
+/***************************style profile pic****************************/
+.profile-pic {
+    color: transparent;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    transition: all 0.3s ease;
+}
+.profile-pic input {
+    display: none;
+}
+.profile-pic img {
+    position: absolute;
+    object-fit: cover;
+    width: 165px;
+    height: 165px;
+    box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.35);
+    border-radius: 100px;
+    z-index: 0;
+}
+.profile-pic .-label {
+    cursor: pointer;
+    height: 165px;
+    width: 165px;
+}
+.profile-pic:hover .-label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 10000;
+    color: #fafafa;
+    transition: background-color 0.2s ease-in-out;
+    border-radius: 100px;
+    margin-bottom: 0;
+}
+.profile-pic span {
+    display: inline-flex;
+    padding: 0.2em;
+    height: 2em;
 }
 

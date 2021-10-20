@@ -9,18 +9,18 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script>
+    <script defer>
         function onLieu(e){
             // recupérer la valeur de select
             let id = e.value;
+
             // créer une requette http
             const http = new XMLHttpRequest();
             // spécifier le type de reponse en json
             http.responseType="json";
             // la fonction se déclenche une fois que le serveur a repondu
             http.onload = function(){
-/*                console.log(this.response);
-                return;*/
+
                 const data = JSON.parse(this.response);
                 document.getElementById("rue").innerHTML = data.rue;
                 document.getElementById("ville").innerText = data.ville;
@@ -35,6 +35,37 @@
         window.addEventListener("load", function(event) {
             onLieu(document.getElementById("update_sortie_lieu"));
         });
+
+//fonction pour changer les lieux disponibles selon la sélection de la ville :
+
+        function onVille(v){
+            // recupérer la valeur de option
+            let id = v.value;
+
+            // créer une requette http
+            const http = new XMLHttpRequest();
+            // spécifier le type de reponse en json
+            http.responseType="json";
+            // la fonction se déclenche une fois que le serveur a repondu
+            http.onload = function(){
+                 const data = JSON.parse(this.response);
+                var option ='<option value="0"disabled > Choisis un lieu </option>' ;
+                 for( let e of data){
+                     option += '<option value="'+e.id+'" >'+e.nom+'</option>';
+                 }
+                document.getElementById("update_sortie_lieu").innerHTML = option;
+
+            };
+            // choisir la méthode et l'URL
+            http.open("GET","/get-lieux/"+id);
+            // envoyer la requete http vers le serveur
+            http.send();
+        }
+
+        window.addEventListener("load", function(event) {
+            onVille(document.getElementById("update_sortie_ville"));
+        });
+
     </script>
 
 {% endblock %}
@@ -85,14 +116,21 @@
                 <div class="droite">
                     <label class="label">Campus organisateur : </label>
                     {{ form_widget(updateSortieForm.site) }}
+
+                    <label class="label">Ville de la sortie : </label>
+                        <select id="update_sortie_ville" onchange="onVille(this);">
+                            {% for ville in villes %}
+                            <option value="{{ ville.id }}">{{ ville.nomVille }}</option>
+                            {% endfor %}
+                        </select>
+
+
                     <div class="lieuAddLieu">
-                        <label class="label">Lieu : </label>
-                        {{ form_widget(updateSortieForm.lieu, {'attr':{'class':'choice', 'id':"lieu" , 'value':'lieu', 'onload':'onLieu(this);'  , 'onchange':"onLieu(this);"}}) }}
+                        <label class="label">Lieu de la sortie : </label>
+                        {{ form_widget(updateSortieForm.lieu, {'attr':{'class':'choice' , 'onchange':"onLieu(this);"}}) }}
 
 
 
-                        <!------ Début de l'insersion de Modal ------->
-                        <!-- Button trigger modal -->
 
                         <a data-bs-toggle="modal" data-bs-target="#MyModalLieu" href="#MyModalLieu">
                             <img src="{{ asset('img/16057.png') }}" width="30px"/>
@@ -107,12 +145,6 @@
                     <p id="rue"></p>
                     <p id="ville"></p>
                     <p id="cp"></p>
-{#                    <input type="text" readonly value="" id="ville">
-                    <input type="text" readonly value="" id="cp">#}
-                  {#  <p>Ville : {{sortie.lieu.ville.nomVille }} </p>
-                    <label class="label">Rue : {{ sortie.lieu.rue }}</label>
-                    <label class="label">Code postal : {{ sortie.lieu.ville.codePostal }}</label>#}
-
 
                     {% if sortie.lieu.latitude %}
                         <label class="label">Latitude :</label>
@@ -138,10 +170,10 @@
             </div>
 
             <div class="boutonsModifSortie">
-                {{ form_widget(updateSortieForm.Enregistrer) }}
-                <a class="lienBouton" href="{{ path('app_publierSortie',  {'id':sortie.id}) }}">Publier</a>
-                <a class="lienBouton" href="{{ path('app_annulerSortie',  {'id':sortie.id}) }}">Annuler la sortie</a>
-                {{ form_widget(updateSortieForm.reset) }}
+                {{ form_widget(updateSortieForm.Enregistrer  ,  {'attr':{'class':'"btn btn-afficher'}} ) }}
+                <a class="btn btn-publier "  href="{{ path('app_publierSortie',  {'id':sortie.id}) }}">Publier</a>
+                <a class="btn btn-annuler" href="{{ path('app_annulerSortie',  {'id':sortie.id}) }}">Annuler la sortie</a>
+                {{ form_widget(updateSortieForm.reset, {'attr':{'class':'btn-modifier'}} ) }}
             </div>
 
             {{ form_end(updateSortieForm) }}
@@ -181,11 +213,11 @@
                         </div>
                         <div class="modal-footer">
                                 <div class="form-group">
-                                    {{ form_widget(nouveauLieuForm.enregistrer,{'attr':{'class':'button'}}) }}
+                                    {{ form_widget(nouveauLieuForm.enregistrer,{'attr':{'class':'btn-success'}}) }}
                                 </div>
                                 <div class="form-group">
                                     {#{{ form_widget(nouveauLieuForm.annuler,{'attr':{'class':'uabb-modal-close'}})}}#}
-                                    <button type="button" data-bs-dismiss="modal">Annuler</button>
+                                    <button class="btn-warning" data-bs-dismiss="modal">Annuler</button>
                                 </div>
                             {{ form_end(nouveauLieuForm) }}
                         </div>

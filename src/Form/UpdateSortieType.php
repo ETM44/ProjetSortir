@@ -3,6 +3,7 @@ namespace App\Form;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -31,11 +32,6 @@ class UpdateSortieType extends AbstractType
                 'expanded'=>false,
                 'multiple'=>false,
             ])
-/*            ->add('ville', EntityType::class, [
-                'class' => Ville::class,
-                'choice_label' => "nomVille",
-                'label' => "Ville"
-            ])*/
             ->add('lieu', EntityType::class, [
                 'label'=>'Lieu',
                 'class' => Lieu::class,
