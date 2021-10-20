@@ -1,18 +1,51 @@
 {% extends 'base.html.twig' %}
-{% block javascript %}
-<script>
-    var loadFile = function (event) {
-    var image = document.getElementById("output");
-    image.src = URL.createObjectURL(event.target.files[0]);
-};
 
 
-</script>
+{% block javascripts %}
+
+    <script>
+        var loadFile = function (event) {
+            var image = document.getElementById("output");
+            image.src = URL.createObjectURL(event.target.files[0]);
+        };
+
+
+    </script>
+
+    {#<script>
+        function onLieu(e){
+            // recupérer la valeur de select
+            let id = e.value;
+            // créer une requette http
+            const http = new XMLHttpRequest();
+            // spécifier le type de reponse en json
+            http.responseType="json";
+            // la fonction se déclenche une fois que le serveur a repondu
+            http.onload = function(){
+                /*                console.log(this.response);
+                                return;*/
+                const data = JSON.parse(this.response);
+                document.getElementById("rue").innerHTML = data.rue;
+                document.getElementById("ville").innerText = data.ville;
+                document.getElementById("cp").innerText = data.cp;
+            };
+            // choisir la méthode et l'URL
+            http.open("GET","/get-adresse/"+id);
+            // envoyer la requete http vers le serveur
+            http.send();
+        }
+
+        window.addEventListener("load", function(event) {
+            onLieu(document.getElementById("update_sortie_lieu"));
+        });
+    </script>#}
+
 {% endblock %}
+
 {% block body %}
-    <div>
-        <h1>Mon Profil</h1>
-    </div>
+
+    <body>
+    <h1>{{ title }} {{ participant.pseudo }}</h1>
 
     <div class="profile-pic">
         <label class="-label" for="file">
@@ -23,20 +56,37 @@
         <img src="https://cdn.pixabay.com/photo/2017/08/06/21/01/louvre-2596278_960_720.jpg" id="output" width="200" />
     </div>
 
+<div class="profil">
+    {{ form_start(ModifierProfilFormType) }}
+    <label class="label">Pseudo : </label>
+    {{ form_widget(ModifierProfilFormType.pseudo) }}
+    <br>
+    <label class="label">Prénom : </label>
+    {{ form_widget(ModifierProfilFormType.prenom) }}
+    <br>
+    <label class="label">Nom : </label>
+    {{ form_widget(ModifierProfilFormType.nom) }}
+    <br>
+    <label class="label">Téléphone : </label>
+    {{ form_widget(ModifierProfilFormType.telephone) }}
+    <br>
+    <label class="label">email : </label>
+    {{ form_widget(ModifierProfilFormType.email) }}
+    <br>
+    <label class="label">Mot de passe : </label>
+    {{ form_widget(ModifierProfilFormType.password.first) }}
+    <br>
+    <label class="label">Confirmation : </label>
+    {{ form_widget(ModifierProfilFormType.password.second) }}
+    <br>
+    <label class="label">Mon campus de rattachement :</label>
+    {{ form_widget(ModifierProfilFormType.site, {'attr':{'class':'choice'}}) }}
 
-    <div>
-        <p>{{ form_start(ModifierProfilFormType) }}</p>
-        <p>{{ form_widget(ModifierProfilFormType.pseudo) }}</p>
-        <p>{{ form_widget(ModifierProfilFormType.prenom) }}</p>
-        <p>{{ form_widget(ModifierProfilFormType.nom) }}</p>
-        <p>{{ form_widget(ModifierProfilFormType.telephone) }}</p>
-        <p>{{ form_widget(ModifierProfilFormType.email) }}</p>
-        <p>{{ form_widget(ModifierProfilFormType.password) }}</p>
-        {{ form_widget(ModifierProfilFormType.site, {'attr':{'class':'choice'}}) }}
-    </div>
+</div>
     <div class="btnModifProfil">
         {{ form_row(ModifierProfilFormType.modifier) }}
         {{ form_row(ModifierProfilFormType.annuler) }}
     </div>
-   {{ form_end(ModifierProfilFormType) }}
+    {{ form_end(ModifierProfilFormType) }}
+
 {% endblock %}

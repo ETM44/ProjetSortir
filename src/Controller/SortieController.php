@@ -70,7 +70,6 @@ class SortieController extends AbstractController
             'orga' => $orga,
             'villes' => $villes,
             'sortie' => $sortie
-
         ]);
 
     }

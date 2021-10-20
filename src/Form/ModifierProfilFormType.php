@@ -36,9 +36,16 @@ class ModifierProfilFormType extends AbstractType
             ])
             ->add('password', RepeatedType::class, array(
                 'type' => PasswordType::class,
-                'first_options'  => array('label' => 'Nouveau pot de passe :'),
+                'required'=>false,
+                'first_options'  => array('label' => 'Nouveau mot de passe :'),
                 'second_options' => array('label' => 'Confirmez votre mot de passe :'),
             ))
+            /*   ->add('password1', PasswordType::class, [
+                   'label' => "Entrez votre mot de passe"
+           ])
+            ->add('password2', PasswordType::class, [
+                'label' => "Confirmez votre mot de passe"
+            ])*/
             ->add('site', EntityType::class, [
                 'class' => Site::class,
                 'choice_label' => "nom",
