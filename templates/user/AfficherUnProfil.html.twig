@@ -20,16 +20,34 @@
         </label>
         <img src="{{ asset('img/logosortieheh.png') }}" id="output" width="200" />
     </div>
-<div class="profil">
-    <p> Prénom :      <b>{{ user.prenom }}</b>  </p>
-    <p>Nom :     <b>{{ user.nom}}</b>  </p>
-        {% if user.telephone %}
-    <p>Téléphone :      <b>{{ user.telephone }}</b></p>
-        {% endif %}
-    <p>Email :      <b>{{ user.email }}</b></p>
 
-    <p>Campus de rattachement : <b>{{ user.site.nom }}</b></p>
-</div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="row">Prénom</th>
+            <td>{{ user.prenom }}</td>
+        </tr>
+        <tr>
+            <th scope="row">Nom</th>
+            <td>{{user.nom }}</td>
+        </tr>
+        <tr>
+            {% if user.telephone %}
+                <th scope="row"Téléphone</th>
+                <td>{{ user.telephone }}</td>
+            {% endif %}
+        </tr>
+        <tr>
+            <th scope="row">Email</th>
+            <td>{{ user.email }}</td>
+        </tr>
+        <tr>
+            <th scope="row">Campus de rattachement</th>
+            <td>{{ user.site.nom }}</td>
+        </tr>
+        </thead>
+    </table>
+
 <input type="button" id="go-back" class="btn btn-warning" value="Retour" onclick="history.back()">
 
 {% endblock %}
