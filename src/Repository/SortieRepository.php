@@ -20,6 +20,33 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
+    public function findSortieOuverteWithFilter($mainSearch)
+    {
+        return $this->createQueryBuilder('s')
+            ->leftJoin('s.inscriptions', 'i')
+            ->addSelect('i')
+            ->leftJoin('i.participant','p')
+            ->addSelect('p')
+            ->leftJoin('s.organisateur','o')
+            ->addSelect('o')
+            ->leftJoin('o.site','os')
+            ->addSelect('os')
+            ->leftJoin('s.etat', 'e')
+            ->addSelect('e')
+            ->andWhere('UPPER(s.nom) LIKE UPPER(:nom)')
+            ->setParameter('nom', '%'.$mainSearch->getNom().'%')
+            ->andWhere('UPPER(os.nom) = UPPER(:nomsite)')
+            ->setParameter('nomsite', $mainSearch->getSite()->getNom())
+            ->andWhere('s.dateHeureDebut > :dateHeureDebut')
+            ->setParameter('dateHeureDebut', $mainSearch->getDateHeureDebut())
+            ->andWhere('s.dateHeureDebut < :dateHeureFin')
+            ->setParameter('dateHeureFin', $mainSearch->getDateHeureFin())
+            ->andWhere('e.id = 2')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     public function findParticipantsInscritsWithFilter($idUser, MainSearch $mainSearch)
     {
         $statement = $this->statement($mainSearch);
@@ -69,14 +96,22 @@ class SortieRepository extends ServiceEntityRepository
         $statement = $this->createQueryBuilder('s')
             ->leftJoin('s.inscriptions', 'i')
             ->addSelect('i')
+            ->leftJoin('i.participant','p')
+            ->addSelect('p')
+            ->leftJoin('s.organisateur','o')
+            ->addSelect('o')
+            ->leftJoin('o.site','os')
+            ->addSelect('os')
+            ->leftJoin('s.etat', 'e')
+            ->addSelect('e')
             ->andWhere('UPPER(s.nom) LIKE UPPER(:nom)')
             ->setParameter('nom', '%'.$mainSearch->getNom().'%')
+            ->andWhere('UPPER(os.nom) = UPPER(:nomsite)')
+            ->setParameter('nomsite', $mainSearch->getSite()->getNom())
             ->andWhere('s.dateHeureDebut > :dateHeureDebut')
             ->setParameter('dateHeureDebut', $mainSearch->getDateHeureDebut())
             ->andWhere('s.dateHeureDebut < :dateHeureFin')
             ->setParameter('dateHeureFin', $mainSearch->getDateHeureFin())
-            ->leftJoin('i.participant','p')
-            ->leftJoin('s.etat', 'e')
         ;
 
         if($mainSearch->getSortiePassees()) {
@@ -86,6 +121,42 @@ class SortieRepository extends ServiceEntityRepository
         }
 
         return $statement;
+    }
+
+    public function findOuvertToCloturee() {
+        return $this->createQueryBuilder('s')
+            ->leftJoin('s.etat','e')
+            ->addSelect('e')
+            ->andWhere('e.id = 2') //id de état "ouvert" = 2
+            ->andWhere('s.dateLimiteInscription < :now')
+            ->setParameter('now', new \DateTime('now + 2 hours'))
+            ->getQuery()
+            ->getResult();
+        ;
+    }
+
+    public function findClotureeToEnCours() {
+        return $this->createQueryBuilder('s')
+            ->leftJoin('s.etat','e')
+            ->addSelect('e')
+            ->andWhere('e.id = 3') //id de état "cloturée" = 3
+            ->andWhere('s.dateHeureDebut < :now')
+            ->setParameter('now', new \DateTime('now + 2 hours'))
+            ->getQuery()
+            ->getResult();
+        ;
+    }
+
+    public function findEnCoursToPassee() {
+        return $this->createQueryBuilder('s')
+            ->leftJoin('s.etat','e')
+            ->addSelect('e')
+            ->andWhere('e.id = 4') //id de état "En cours" = 4
+            ->andWhere('s.dateHeureDebut < :now')
+            ->setParameter('now', new \DateTime('now + 2 hours'))
+            ->getQuery()
+            ->getResult();
+        ;
     }
 
     public function findOneByid($id)
