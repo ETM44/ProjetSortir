@@ -7,87 +7,95 @@
     {# Run `composer require symfony/webpack-encore-bundle`
            and uncomment the following Encore helpers to start using Symfony UX #}
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa&family=Nunito:wght@300&family=Rampart+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa&family=Nunito:wght@300&family=Rampart+One&display=swap"
+          rel="stylesheet">
     {% block stylesheets %}
-       {# <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        {# <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
               integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-              crossorigin="anonymous">#}
+              crossorigin="anonymous"> #}
     {% endblock %}
 
-    <script defer src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script defer src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script defer src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script defer src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+            integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+            crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+            integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+            crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
 </head>
 <body>
-<div class="fond">
-<header>
-    {% if app.user %}
-        <h2>Bonjour {{ app.user.pseudo }} ! On sort ? </h2>
-    {% else %}
-        <h2>Bonjour ! On sort ? </h2>
-    {% endif %}
+    <div class="fond">
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-light bg-color">
+                {% if app.user %}
+                    <a class="navbar-brand" href="{{ path('main') }}"><img src="{{ asset('img/logosortie.png') }}"
+                                                                           width="100"/></a>
+                {% else %}
+                    <a class="navbar-brand" href="{{ path('accueil') }}"><img src="{{ asset('img/logosortie.png') }}"
+                                                                              width="100"/></a>
+                {% endif %}
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    {% if app.user %}
+                        <div class="navbar-nav">
+                            <a class="nav-item nav-link" href="{{ path('main') }}">Accueil</a>
+                            <a class="nav-item nav-link" href="{{ path('app_monProfil') }}">Mon profil</a>
+                            <a class="nav-item nav-link" href="{{ path('app_logout') }}">Déconnexion</a>
+                            <a class="nav-item nav-link" href="{{ path('creerSortie') }}">Créer sortie</a>
+                        </div>
+                    {% else %}
+                        <div class="navbar-nav">
+                            <a class="nav-item nav-link" href="{{ path('accueil') }}">Accueil</a>
+                            <a class="nav-item nav-link" href="{{ path('app_login') }}">Connexion</a>
+                            <a class="nav-item nav-link" href="{{ path('app_register') }}">Inscription</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </nav>
+            <hr>
+        </header>
+        <div class="container">
+            {% for categorie, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ categorie }}" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-color">
-        {% if app.user %}
-            <a class="navbar-brand" href="{{ path('main') }}"><img src="{{ asset('img/logosortie.png') }}"width="100" /></a>
-        {% else %}
-            <a class="navbar-brand" href="{{ path('accueil') }}"><img src="{{ asset('img/logosortie.png') }}"width="100" /></a>
-        {% endif %}
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
-                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            {% if app.user %}
-                <div class="navbar-nav">
-                    <a class="nav-item nav-link" href="{{ path('main') }}">Accueil</a>
-                    <a class="nav-item nav-link" href="{{ path('app_monProfil') }}">Mon profil</a>
-                    <a class="nav-item nav-link" href="{{ path('app_logout') }}">Déconnexion</a>
-                    <a class="nav-item nav-link" href="{{ path('creerSortie') }}">Créer sortie</a>
-                </div>
-            {% else %}
-                <div class="navbar-nav">
-                    <a class="nav-item nav-link" href="{{ path('accueil') }}">Accueil</a>
-                    <a class="nav-item nav-link" href="{{ path('app_login') }}">Connexion</a>
-                    <a class="nav-item nav-link" href="{{ path('app_register') }}">Inscription</a>
-                </div>
-            {% endif %}
-        </div>
-    </nav>
-    <hr>
-</header>
-<div class="container">
-    {% for categorie, messages in app.flashes %}
-        {% for message in messages %}
-            <div class="alert alert-{{ categorie }}" role="alert">
-                {{ message }}
+
+
+            {% block titre %}{% endblock %}
+            <div id="global">
+                {% block body %}{% endblock %}
             </div>
-        {% endfor %}
-    {% endfor %}
 
-
-    <main>
-        {% block titre %}{% endblock %}
-        <div id="global">
-            {% block body %}{% endblock %}
         </div>
-    </main>
-</div>
-<footer>
-    <hr>
-    @Sortir.com&#169;, {{ "now"|date("Y") }}
-</footer>
 
-{% block javascripts %}
-    {# <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>#}
-    {# {{ encore_entry_script_tags('app') }} #}
-{% endblock %}
-</div>
+        {% block javascripts %}
+            {# <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> #}
+            {# {{ encore_entry_script_tags('app') }} #}
+        {% endblock %}
+    </div>
+    <footer>
+        <hr>
+        @Sortir.com&#169;, {{ "now"|date("Y") }}
+    </footer>
 </body>
 </html>
