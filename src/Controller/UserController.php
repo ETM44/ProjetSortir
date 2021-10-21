@@ -9,10 +9,15 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\ParticipantRepository;
 use App\Form\ModifierProfilFormType;
+use App\Form\NewPasswordFormType;
 use App\Entity\UpdatePassword;
+use App\Entity\Participant;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+
 
 
 class UserController extends AbstractController
@@ -32,29 +37,40 @@ class UserController extends AbstractController
     /**
      * @Route("user/modifierProfil", name="modifier_profil")
      */
-    public function modifierProfil(ParticipantRepository $pr, Request $request, EntityManagerInterface $em): Response
+    public function modifierProfil(ParticipantRepository $pr, UserPasswordHasherInterface $passwordEncoder, Request $request, EntityManagerInterface $em, AuthenticationUtils $authenticationUtils): Response
     {
         $participant = $pr->find($this->getUser()->getId());
 
+        // get the login error if there is one
+        $error = $authenticationUtils->getLastAuthenticationError();
+
         $form = $this->createForm(ModifierProfilFormType::class, $participant);
         $form->handlerequest($request);
-
+/////////////////nouveau formulaire changement de mdp
+       // $newUser=new Participant();
+        $newMdpForm = $this->createForm(NewPasswordFormType::class, $participant);
+/////////////////
         if ($form->isSubmitted() && $form->isValid()) {
+            // encode the plain password
+           /* $participant->setPassword(
+                $passwordEncoder->encodePassword(
+                    $participant,
+                    $form->get('plainPassword')->getData()
+                )
+            );*/
+          //  $participant->upgradePassword($participant,$newmdp=$form->get('plainPassword')->getData() );
                 $participant = $form->getData();
                 $em->persist($participant);
                 $em->flush();
                 $this->addFlash('success', 'Votre profil a bien été modifié.');
                 return $this->redirectToRoute("main");
             }
-        if(!$participant){
-            return $this->render("security/login.html.twig");
-
-        }
 
         return $this->render("user/ModifierProfil.html.twig", [
             "title" => "Modifier mon profil :",
             "participant" => $participant,
             "ModifierProfilFormType" => $form->createView(),
+            "newMdpForm" => $newMdpForm->createView(),
         ]);
     }
 

@@ -51,3 +51,4 @@ security:
         - { path: ^/sortie/modifier, roles: ROLE_USER }
         - { path: ^/sortie/annuler, roles: ROLE_USER }
         - { path: ^/sortie/creerSortie, roles: ROLE_USER }
+        - { path: ^/user/modifierProfil, roles: ROLE_USER }

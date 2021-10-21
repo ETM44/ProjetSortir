@@ -19,6 +19,9 @@ use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
  */
 class ParticipantRepository extends ServiceEntityRepository implements PasswordUpgraderInterface, UserLoaderInterface
 {
+
+
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Participant::class);
@@ -34,9 +37,19 @@ class ParticipantRepository extends ServiceEntityRepository implements PasswordU
         }
 
         $user->setPassword($newHashedPassword);
-        $this->_em->persist($user);
-        $this->_em->flush();
+        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush();
     }
+
+/*    public function upgradePassword(UserInterface $user, string $newHashedPassword): void
+    {
+        // set the new hashed password on the User object
+        $user->setPassword($newHashedPassword);
+
+        // execute the queries on the database
+        $this->getEntityManager()->flush();
+    }
+}*/
 
     public function loadUserByUsername($pseudoOrEmail): ?Participant
     {
