@@ -14,16 +14,16 @@
 
     <script src="{{ asset('js/main.js') }}"></script>
 
-	<script type="text/javascript">
+    <script type="text/javascript">
 
-function PreviewImage() {
-var oFReader = new FileReader();
-oFReader.readAsDataURL(document.getElementById("file").files[0]);
-oFReader.onload = function (oFREvent) {
-	document.getElementById("output").src = oFREvent.target.result;
-	};
-};
-</script>
+        function PreviewImage() {
+            var oFReader = new FileReader();
+            oFReader.readAsDataURL(document.getElementById("file").files[0]);
+            oFReader.onload = function (oFREvent) {
+                document.getElementById("output").src = oFREvent.target.result;
+            };
+        };
+    </script>
 
 {% endblock %}
 
@@ -38,33 +38,38 @@ oFReader.onload = function (oFREvent) {
             <span>Change Image</span>
         </label>
         <input id="file" type="file" onchange="loadFile(event)"/>
-        <img src="{{ asset('img/profilepic.png') }}" id="output" width="150" />
+        <img src="{{ asset('img/profilepic.png') }}" id="output" width="150"/>
     </div>
 
-<div class="profil">
-    {{ form_start(ModifierProfilFormType) }}
-    <label class="label">Pseudo : </label>
-    {{ form_widget(ModifierProfilFormType.pseudo) }}
-    <br>
-    <label class="label">Prénom : </label>
-    {{ form_widget(ModifierProfilFormType.prenom) }}
-    <br>
-    <label class="label">Nom : </label>
-    {{ form_widget(ModifierProfilFormType.nom) }}
-    <br>
-    <label class="label">Téléphone : </label>
-    {{ form_widget(ModifierProfilFormType.telephone) }}
-    <br>
-    <label class="label">email : </label>
-    {{ form_widget(ModifierProfilFormType.email) }}
-    <br>
-    <label class="label">Mot de passe : </label>
-    {{ form_widget(ModifierProfilFormType.password) }}
-    <br>
-    <label class="label">Mon campus de rattachement :</label>
-    {{ form_widget(ModifierProfilFormType.site, {'attr':{'class':'choice'}}) }}
-
-</div>
+    <div class="profil">
+        {{ form_start(ModifierProfilFormType) }}
+        <label class="label">Pseudo : </label>
+        {{ form_widget(ModifierProfilFormType.pseudo) }}
+        {{ form_errors(ModifierProfilFormType.pseudo) }}
+        <br>
+        <label class="label">Prénom : </label>
+        {{ form_widget(ModifierProfilFormType.prenom) }}
+        {{ form_errors(ModifierProfilFormType.prenom) }}
+        <br>
+        <label class="label">Nom : </label>
+        {{ form_widget(ModifierProfilFormType.nom) }}
+        {{ form_errors(ModifierProfilFormType.nom) }}
+        <br>
+        <label class="label">Téléphone : </label>
+        {{ form_widget(ModifierProfilFormType.telephone) }}
+        {{ form_errors(ModifierProfilFormType.telephone) }}
+        <br>
+        <label class="label">email : </label>
+        {{ form_widget(ModifierProfilFormType.email) }}
+        {{ form_errors(ModifierProfilFormType.email) }}
+        <br>
+        {{ form_widget(ModifierProfilFormType.plainPassword) }}
+        {{ form_errors(ModifierProfilFormType.plainPassword) }}
+        <br>
+        <label class="label">Mon campus de rattachement :</label>
+        {{ form_widget(ModifierProfilFormType.site, {'attr':{'class':'choice'}}) }}
+        {{ form_errors(ModifierProfilFormType.site) }}
+    </div>
     <div class="btnModifProfil">
         {{ form_row(ModifierProfilFormType.modifier) }}
         {{ form_row(ModifierProfilFormType.annuler) }}

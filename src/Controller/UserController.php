@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Participant;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -40,13 +41,18 @@ class UserController extends AbstractController
         $form->handlerequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            if(password_verify($form->get('plainPassword')->getData(),$participant->getPassword())) {
                 $participant = $form->getData();
                 $em->persist($participant);
                 $em->flush();
                 $this->addFlash('success', 'Votre profil a bien été modifié.');
-                return $this->redirectToRoute("main");
+                return $this->redirectToRoute("app_monProfil");
+            } else {
+                $this->addFlash('warning','Votre mot de passe est incorrect');
             }
-        if(!$participant){
+        }
+        if (!$participant) {
             return $this->render("security/login.html.twig");
 
         }
