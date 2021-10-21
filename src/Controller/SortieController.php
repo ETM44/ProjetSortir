@@ -63,7 +63,7 @@ class SortieController extends AbstractController
                 $sortie->setOrganisateur($this->getUser());
                 $em->persist($sortie);
                 $em->flush();
-                $this->addFlash('success', 'Votre sortie a bien été créée. 😢 ');
+                $this->addFlash('success', 'Votre sortie a bien été créée. :-) ');
                 return $this->redirectToRoute("main");
             }
 
