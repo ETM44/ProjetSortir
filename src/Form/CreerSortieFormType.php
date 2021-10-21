@@ -58,7 +58,9 @@ class CreerSortieFormType extends AbstractType
                 return $lieu-> getNom();
                 }
             ])
-            ->add('Enregistrer', SubmitType::class)
+            ->add('Enregistrer', SubmitType::class, [
+                'attr' => ['class' => 'btn btn-warning']
+            ])
             ->add('annuler', ResetType::class)
 
         ;
