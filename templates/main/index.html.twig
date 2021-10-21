@@ -70,8 +70,8 @@
         </thead>
         <tbody>
         {% for result in results %}
-            <tr>
-                <td scope="row">{{ result.nom }}</td>
+            <tr class="table">
+                <td scope="row"><a href="{{ path('afficherSortie', {'id':result.id})}}">{{ result.nom }}</td>
                 <td>{{ result.dateHeureDebut|date('d/M/Y') }}</td>
                 <td>{{ result.dateLimiteInscription|date('d/M/Y') }}</td>
                 <td>{{ result.nombreInscription }} / {{ result.nbInscriptionsMax }}</td>

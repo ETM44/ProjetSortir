@@ -72,6 +72,7 @@ class SortieController extends AbstractController
 
                 $em->persist($sortie);
                 $em->flush();
+
                 $this->addFlash('success', 'Votre sortie a bien été créée. 😊 ');
                 return $this->redirectToRoute("main");
             }

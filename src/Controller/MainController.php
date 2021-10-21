@@ -86,7 +86,7 @@ class MainController extends AbstractController
         $sortie = $sortieRepository->find($id);
         $inscription = new Inscription();
 
-        if(count($sortie->getInscriptions()) >= $sortie->getNbInscriptionsMax()){
+        if (count($sortie->getInscriptions()) >= $sortie->getNbInscriptionsMax()) {
             $this->addFlash('warning', 'Le nombre maximal de participants a déjà été atteint ! ');
             return $this->redirectToRoute("main");
         }
@@ -94,10 +94,10 @@ class MainController extends AbstractController
         if ($sortie->getEtat()->getId() < 2) {
             $this->addFlash('warning', 'Vous ne pouvez pas encore vous inscrire à cet événement ! ');
             return $this->redirectToRoute("main");
-          } elseif ($sortie->getEtat()->getId() >= 3) {
+        } elseif ($sortie->getEtat()->getId() >= 3) {
             $this->addFlash('warning', 'Les inscriptions sont terminées pour cet événement ! ');
             return $this->redirectToRoute("main");
-          } else {
+        } else {
             $inscription->setParticipant($this->getUser());
             $inscription->setDateInscription(new \DateTime('now'));
             $inscription->setSortie($sortie);

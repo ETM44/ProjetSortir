@@ -3,6 +3,7 @@
 {% block title %}{{sortie.nom}}{% endblock %}
 
 {% block body %}
+    <div class="fond">
 
     {% if sortie.etat.id==6 %}
     <p> Cette sortie a été annulée !<br>
@@ -81,7 +82,7 @@
             <tbody>
             {% for participant in participants %}
                 <tr>
-                    <td scope="row">{{ participant.participant.pseudo }}</td>
+                    <td scope="row"><a href="{{path ('app_afficherProfil', {'id':participant.id})}}">{{ participant.participant.pseudo }}</td>
                     <td>{{ participant.participant.nom }}</td>
                     <td>{{ participant.participant.prenom }}</td>
                 </tr>
@@ -97,4 +98,5 @@
     {% endif %}
 
     {% endif %}
+    </div>
 {% endblock %}
