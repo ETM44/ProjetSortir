@@ -82,10 +82,7 @@
 {% endblock %}
 
 {% block body %}
-
     <body>
-    <h1>{{ titre }}</h1>
-
 <div class="GaucheDroite">
 
     <div class="gauche">
@@ -103,7 +100,7 @@
         {{ form_widget(CreerSortieForm.nbInscriptionsMax) }}
         <br>
         <label class="label">Durée :</label>
-        {{ form_widget(CreerSortieForm.duree) }} minutes.
+        {{ form_widget(CreerSortieForm.duree) }} heures.
         <br>
         <label class="label">Description et infos :</label>
         {{ form_widget(CreerSortieForm.infosSortie,  {'attr':{'class':'textarea'}} ) }}
@@ -111,43 +108,105 @@
 
     <div class="droite">
         <label class="label">Campus organisateur : </label>
-        {{ form_widget(CreerSortieForm.site) }}
+
+        <label class="label">Ville de la sortie : </label>
+        <select id="update_sortie_ville" onchange="onVille(this);">
+            {% for ville in villes %}
+                <option value="{{ ville.id }}">{{ ville.nomVille }}</option>
+            {% endfor %}
+        </select>
+
         <div class="lieuAddLieu">
-            <label class="label">Lieu : </label>
-            {{ form_widget(CreerSortieForm.lieu, {'attr':{'class':'choice'}}) }}
+            <label class="label">Lieu de la sortie : </label>
+            {{ form_widget(CreerSortieForm.lieu, {'attr':{'class':'choice' , 'onchange':"onLieu(this);"}}) }}
+
+
+
+
+            <a data-bs-toggle="modal" data-bs-target="#MyModalLieu" href="#MyModalLieu">
+                <img src="{{ asset('img/16057.png') }}" width="30px"/>
+            </a>
+
+
 
         </div><!-- Fin de la div lieuNouveauLieu-->
 
-    {#{{ form_label(CreerSortieForm.organisateur) }}#}
-    <select name="villes" id="villes">
-    {% for ville in villes %}
-       {# <option value="{{ ville.nom, {'attr':{'class':'choice'}} }}">{{ ville.codePostal }}</option>#}
-    {% endfor %}
-    </select>
+        <!-------------------------------------------------------------------------->
 
-    <label class="label">Rue : </label>
-    <label class="label">Code Postal : </label>
+        <p id="rue"></p>
+        <p id="ville"></p>
+        <p id="cp"></p>
 
-   {# {% if sortie.lieu.latitude %}#}
-    <label class="label">Latitude :</label>
-    <input type="text" class="position" id="lat">
-       {# {% endif %}
-        {% if sortie.lieu.longitude %}#}
-    <label class="label">Longitude :</label>
-    <input type="text"class="position" id="lng">
-      {#  {% endif %}#}
-    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!
+
+            <label class="label">Latitude :</label>
+            <p id="lattitude"></p>
+
+            <label class="label">Longitude :</label>
+            <p id="longitude"></p>
+
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!
         1d2712.5968569125494!2d-1.5564777840385209!3d47.16574957915793!2m3!1f0!2f0!3f0!3m2!
         1i1024!2i768!4f13.1!3m3!1m2!1s0x4805e97f6fb1094b%3A0x7d21011fae2eb0ba!2s2%20Rue%20
         Frida%20Kahlo%2C%2044400%20Rez%C3%A9!5e0!3m2!1sfr!2sfr!4v1634137488608!5m2!1sfr!2sfr"
-            width="450" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-     <iframe src="'https://maps.google.com/maps?q=' + lat + ',' + lng + '&t=&z=15&ie=UTF8&iwloc=&output=embed'" id="carte"
-                width="450" height="300" style="border:0;" allowfullscreen="" loading="lazy"> </iframe>
+                width="450" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+        {# <iframe src="'https://maps.google.com/maps?q=' + lat + ',' + lng + '&t=&z=15&ie=UTF8&iwloc=&output=embed'" id="carte"
+                width="450" height="300" style="border:0;" allowfullscreen="" loading="lazy"> </iframe>#}
 
-    <input type="submit" value="Enregistrer">
-    <input type="submit" value="Publier la sortie">
-    <input type="submit" value="Annuler">
+    </div>
+
+    {#<div class="boutonsModifSortie">
+        {{ form_widget(CreerSortieForm ,  {'attr':{'class':'"btn btn-afficher'}} ) }}
+        <a class="btn btn-publier "  href="{{ path('app_publierSortie',  {'id':sortie.id}) }}">Publier</a>
+        <a class="btn btn-annuler" href="{{ path('app_annulerSortie',  {'id':sortie.id}) }}">Annuler la sortie</a>
+        {{ form_widget(CreerSortieForm, {'attr':{'class':'btn-modifier'}} ) }}
+    </div>#}
+
     {{ form_end(CreerSortieForm) }}
+
+    <!-- Modal -->
+    <div class="modal fade" id="MyModalLieu" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabel">Ajouter un lieu</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {{form_start(nouveauLieuForm, {'action': path('nouveauLieu')}) }}
+                    <div class="form-group">
+                        {{ form_widget(nouveauLieuForm.nom, {'attr':{'class':'input', 'type':'text', 'placeholder':'Nom *'}}) }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form_widget(nouveauLieuForm.rue, {'attr':{'class':'input', 'type':'text', 'placeholder':'Rue *'}}) }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form_widget(nouveauLieuForm.latitude, {'attr':{'class':'input', 'type':'text', 'placeholder':'Latitude'}}) }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form_widget(nouveauLieuForm.longitude, {'attr':{'class':'input', 'type':'text', 'placeholder':'Longitude'}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_widget(nouveauLieuForm.ville,{'attr':{'class':'choice'}}) }}
+                        <a href="#">Ajouter une ville</a>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="form-group">
+                        {{ form_widget(nouveauLieuForm.enregistrer,{'attr':{'class':'btn-success'}}) }}
+                    </div>
+                    <div class="form-group">
+                       {# {{ form_widget(nouveauLieuForm.annuler,{'attr':{'class':'uabb-modal-close'}})}}#}
+                        <button class="btn-warning" data-bs-dismiss="modal">Annuler</button>
+                    </div>
+                    {{ form_end(nouveauLieuForm) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 {% endblock %}

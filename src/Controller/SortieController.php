@@ -53,6 +53,9 @@ class SortieController extends AbstractController
         $form->handleRequest($request);
         $orga = $this->getUser();
         $villes = $vr->findAll();
+        ///////
+        $lieu = new Lieu();
+        $nouveauLieuForm = $this->createForm(NouveauLieuType::class, $lieu);
         
         if ($form->isSubmitted() && $form->isValid()) {
                 $sortie->setInfosSortie($sortie->getInfosSortie());
@@ -67,6 +70,7 @@ class SortieController extends AbstractController
         return $this->render("sortie/creerSortie.html.twig", [
             "title" => "Creer une sortie :",
             "CreerSortieForm" => $form->createView(),
+            "nouveauLieuForm" => $nouveauLieuForm->createView(),
             'orga' => $orga,
             'villes' => $villes,
             'sortie' => $sortie
