@@ -28,9 +28,9 @@
 <div class="fond">
 <header>
     {% if app.user %}
-        <h2>Bonjour {{ app.user.pseudo }} ! On sort ? </h2>
+        <h2 class="blockTitle">Bonjour {{ app.user.pseudo }} ! On sort ? </h2>
     {% else %}
-        <h2>Bonjour ! On sort ? </h2>
+        <h2 class="blockTitle">Bonjour ! On sort ? </h2>
     {% endif %}
 
     <nav class="navbar navbar-expand-lg navbar-light bg-color">
@@ -79,7 +79,7 @@
         </div>
     </main>
 </div>
-<footer>
+<footer class="table">
     <hr>
     @Sortir.com&#169;, {{ "now"|date("Y") }}
 </footer>

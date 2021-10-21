@@ -64,8 +64,7 @@
 
 {% block body %}
 
-    <body>
-    <h1>{{ title }} {{ participant.pseudo }}</h1>
+    <h1 class="table">{{ title }} {{ participant.pseudo }}</h1>
 
     <div class="profile-pic">
         <label class="-label" for="file">
@@ -76,7 +75,7 @@
         <img src="{{ asset('img/profilepic.jpg') }}" id="output" width="150"/>
     </div>
 
-    <div class="profil">
+    <div class="blockTitle">
         {{ form_start(ModifierProfilFormType) }}
         <label class="label">Pseudo : </label>
         {{ form_widget(ModifierProfilFormType.pseudo) }}
