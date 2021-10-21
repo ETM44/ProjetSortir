@@ -1,23 +1,9 @@
 {% extends 'base.html.twig' %}
+{% block titre %}<h1 class="table">Créons une sortie!</h1>{% endblock %}
 
-{% block titre %}<h1>Créons une sortie!</h1>{% endblock %}
-
-{#{% block javascripts %}
-    <script>
-        $(domcument).ready(function (){
-            $("#ville").change(function (){
-                var id = $(this).val();
-                //alert($(this).val)
-                $.get("/", function (data, status){
-                    //alert("Data: "+data+"\nStatus: "+status);
-                    var res=JSON.parse(data);
-                    $("#CP").val(res.code);
-                })
-            })
-        })
-    </script>
-{% endblock %}#}
-
+{% block stylesheets %}
+    <link href="{{ asset('css/select.css') }}" rel="stylesheet">
+{% endblock %}
 
 {% block javascripts %}
     <script defer>
@@ -82,7 +68,7 @@
 {% endblock %}
 
 {% block body %}
-    <body class="fond">
+    <div class="table">
 <div class="GaucheDroite">
 
     <div class="gauche">
@@ -91,10 +77,14 @@
         {{ form_widget(CreerSortieForm.nom) }}
         <br>
         <label class="label">Date et heure de la sortie : </label>
+        <div class="select">
         {{ form_widget(CreerSortieForm.dateHeureDebut) }}
+        </div>
 
         <label class="label">Date limite d'inscription :</label>
+        <div class="select">
         {{ form_widget(CreerSortieForm.dateLimiteInscription) }}
+        </div>
 
         <label class="label">Nombre de places :</label>
         {{ form_widget(CreerSortieForm.nbInscriptionsMax) }}
@@ -108,17 +98,24 @@
 
     <div class="droite">
         <label class="label">Campus organisateur : </label>
+        <div class="select">
+            {{ form_widget(CreerSortieForm.site) }}
+        </div>
 
         <label class="label">Ville de la sortie : </label>
+        <div class="select">
         <select id="update_sortie_ville" onchange="onVille(this);">
             {% for ville in villes %}
                 <option value="{{ ville.id }}">{{ ville.nomVille }}</option>
             {% endfor %}
         </select>
+        </div>
 
         <div class="lieuAddLieu">
             <label class="label">Lieu de la sortie : </label>
+            <div class="select">
             {{ form_widget(CreerSortieForm.lieu, {'attr':{'class':'choice' , 'onchange':"onLieu(this);"}}) }}
+            </div>
 
 
 
@@ -153,7 +150,7 @@
                 width="450" height="300" style="border:0;" allowfullscreen="" loading="lazy"> </iframe>#}
 
     </div>
-
+</div>
     {#<div class="boutonsModifSortie">
         {{ form_widget(CreerSortieForm ,  {'attr':{'class':'"btn btn-afficher'}} ) }}
         <a class="btn btn-publier "  href="{{ path('app_publierSortie',  {'id':sortie.id}) }}">Publier</a>
@@ -206,7 +203,6 @@
             </div>
         </div>
     </div>
-
 </div>
 
 {% endblock %}

@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block titre %}
-    <h1> {{ participant.pseudo }}, mon profil</h1>
+    <h1 class="table"> {{ participant.pseudo }}, mon profil</h1>
 {% endblock %}
 
 {% block javascript %}
@@ -19,7 +19,7 @@
         <label class="-label" for="file">
             <span class="glyphicon glyphicon-camera"></span>
         </label>
-        <img src="{{ asset('img/profilepic.png') }}" id="output" width="200" />
+        <img src="{{ asset('img/profilepic.jpg') }}" id="output" width="200" />
     </div>
 
     <table class="table">
@@ -33,8 +33,8 @@
             <td>{{participant.nom }}</td>
         </tr>
         <tr>
-            {% if participant.telephone %}
-                <th scope="row"Téléphone></th>
+            {% if app.user.telephone %}
+                <th scope="row">Téléphone</th>
                 <td>{{ participant.telephone }}</td>
             {% endif %}
         </tr>

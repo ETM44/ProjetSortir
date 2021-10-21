@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
-
+{% block stylesheets %}
+    <link href="{{ asset('css/select.css') }}" rel="stylesheet">
+{% endblock %}
 
 {% block javascripts %}
 
@@ -64,8 +66,7 @@
 
 {% block body %}
 
-    <body>
-    <h1>{{ title }} {{ participant.pseudo }}</h1>
+    <h1 class="table">{{ title }} {{ participant.pseudo }}</h1>
 
     <div class="profile-pic">
         <label class="-label" for="file">
@@ -76,7 +77,7 @@
         <img src="{{ asset('img/profilepic.jpg') }}" id="output" width="150"/>
     </div>
 
-    <div class="profil">
+    <div class="blockTitle">
         {{ form_start(ModifierProfilFormType) }}
         <label class="label">Pseudo : </label>
         {{ form_widget(ModifierProfilFormType.pseudo) }}
@@ -99,9 +100,10 @@
         {{ form_errors(ModifierProfilFormType.email) }}
 
         <label class="label">Mon campus de rattachement :</label>
+        <div class="select">
         {{ form_widget(ModifierProfilFormType.site, {'attr':{'class':'choice'}}) }}
         {{ form_errors(ModifierProfilFormType.site) }}
-
+        </div>
         <br>
         <label class="label">Entrez votre mot de passe pour valider les modifications :</label>
         {{ form_widget(ModifierProfilFormType.plainPassword) }}

@@ -42,4 +42,17 @@
 
 #date-participant {
     float: right;
+    color: white;!important;
 }
+
+
+table {
+    border-collapse: collapse;
+    border-radius: 1em;
+    overflow: hidden;
+    background-color: darkblue;
+}
+td, tr{
+    color:white;
+}
+
