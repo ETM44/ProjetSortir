@@ -10,7 +10,7 @@
 
     color: white;
 
-    max-width: 1280px;
+    /*max-width: 1280px;*/
     min-height: 100%;
     margin: 0 auto;
     position: relative;
@@ -302,12 +302,18 @@ body, html {
     height: 100%;
 }
 
+header {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
 footer {
-    background: #ccc;
     position: absolute;
     bottom: 0;
     width: 100%;
-    padding-top: 50px;
-    height: 50px;
+
+    padding-top: 16px;
 }
+
+
 

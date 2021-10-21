@@ -38,7 +38,8 @@
 </head>
 <body>
     <div class="fond">
-        <header>
+        <header class="bg-color">
+            <div class="container">
             <nav class="navbar navbar-expand-lg navbar-light bg-color">
                 {% if app.user %}
                     <a class="navbar-brand" href="{{ path('main') }}"><img src="{{ asset('img/logosortie.png') }}"
@@ -68,7 +69,7 @@
                     {% endif %}
                 </div>
             </nav>
-            <hr>
+            </div>
         </header>
         <div class="container">
             {% for categorie, messages in app.flashes %}
@@ -93,9 +94,8 @@
             {# {{ encore_entry_script_tags('app') }} #}
         {% endblock %}
     </div>
-    <footer>
-        <hr>
-        @Sortir.com&#169;, {{ "now"|date("Y") }}
+    <footer class="bg-color">
+        <p class="bg-color">@Sortir.com&#169;, {{ "now"|date("Y") }}</p>
     </footer>
 </body>
 </html>
