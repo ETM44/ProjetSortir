@@ -46,8 +46,9 @@ class SortieController extends AbstractController
     /**
      * @Route("sortie/creerSortie", name="creerSortie")
      */
-    public function creerSortie (Request $request, EntityManagerInterface  $em, EtatRepository $er, VilleRepository $vr): Response
+    public function creerSortie(Request $request, EntityManagerInterface $em, EtatRepository $er, VilleRepository $vr): Response
     {
+        $now = new \DateTime("now");
         $sortie = new Sortie();
         $form = $this->createForm(CreerSortieFormType::class, $sortie);
         $form->handleRequest($request);
@@ -56,16 +57,25 @@ class SortieController extends AbstractController
         ///////
         $lieu = new Lieu();
         $nouveauLieuForm = $this->createForm(NouveauLieuType::class, $lieu);
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
-                $sortie->setInfosSortie($sortie->getInfosSortie());
-                $sortie->setEtat($er->findOneBy(["id"=>1]));
-                $sortie->setOrganisateur($this->getUser());
+            $sortie->setInfosSortie($sortie->getInfosSortie());
+            $sortie->setEtat($er->findOneBy(["id" => 1]));
+            $sortie->setOrganisateur($this->getUser());
+
+            if ($sortie->getDateLimiteInscription() > $sortie->getDateHeureDebut()) {
+                $this->addFlash('warning', 'Votre sortie ne peut pas commencer avant la date limite d\'inscription.');
+
+            } elseif ($sortie->getDateHeureDebut() < $now) {
+                $this->addFlash('warning', 'Votre sortie ne peut pas commencer avant la date d\'aujourd\'hui !');
+            } else {
+
                 $em->persist($sortie);
                 $em->flush();
-                $this->addFlash('success', 'Votre sortie a bien été créée. 😢 ');
+                $this->addFlash('success', 'Votre sortie a bien été créée. 😊 ');
                 return $this->redirectToRoute("main");
             }
+        }
 
         return $this->render("sortie/creerSortie.html.twig", [
             "title" => "Creer une sortie :",
@@ -73,7 +83,7 @@ class SortieController extends AbstractController
             "nouveauLieuForm" => $nouveauLieuForm->createView(),
             'orga' => $orga,
             'villes' => $villes,
-            'sortie' => $sortie
+            'sortie' => $sortie,
         ]);
 
     }
@@ -85,15 +95,16 @@ class SortieController extends AbstractController
      * @param SortieRepository $repository
      * @return Response
      */
-    
-    public function annulerSortie($id,SortieRepository $repository, EtatRepository $etatrepo, Request $request, EntityManagerInterface $em): Response{
-        $sortie=$repository->find($id);
-        $etatSortie=$etatrepo->find(6);
+
+    public function annulerSortie($id, SortieRepository $repository, EtatRepository $etatrepo, Request $request, EntityManagerInterface $em): Response
+    {
+        $sortie = $repository->find($id);
+        $etatSortie = $etatrepo->find(6);
 //Si l'utilisateur en session n'est pas l'organisateur de la sortie, on lui refuse l'accès
-        if($this->getUser()->getId() !== $sortie->getOrganisateur()->getId() ) {
+        if ($this->getUser()->getId() !== $sortie->getOrganisateur()->getId()) {
             $this->addFlash('warning', 'Accès refusé : vous n\'avez pas les droits.');
             return $this->redirectToRoute("main");
-        }else {
+        } else {
 
             $newSortie = new Sortie();
             $form = $this->createFormBuilder($newSortie)
@@ -119,23 +130,24 @@ class SortieController extends AbstractController
     }
 
     /**
-     *  @Route("sortie/publier/{id}", name="app_publierSortie")
+     * @Route("sortie/publier/{id}", name="app_publierSortie")
      * @param $id
      * @param SortieRepository $repository
      * @param EtatRepository $etatrepo
      * @param EntityManagerInterface $em
      * @return Response
      */
-    public function publierSortie($id,SortieRepository $repository, EtatRepository $etatrepo, EntityManagerInterface $em):Response{
-        $sortie=$repository->find($id);
-        $etatSortie=$etatrepo->find(2);
+    public function publierSortie($id, SortieRepository $repository, EtatRepository $etatrepo, EntityManagerInterface $em): Response
+    {
+        $sortie = $repository->find($id);
+        $etatSortie = $etatrepo->find(2);
 
         $sortie->setEtat($etatSortie);
         $em->flush();
         $this->addFlash('success', 'Votre sortie est publiée ! 😊 ');
         return $this->redirectToRoute("afficherSortie", [
-            "sortie"=>$sortie,
-            "id"=>$id,
+            "sortie" => $sortie,
+            "id" => $id,
         ]);
     }
 
@@ -145,14 +157,15 @@ class SortieController extends AbstractController
      * @param SortieRepository $repository
      * @return Response
      */
-    public function reactiverSortie($id,SortieRepository $repository, EtatRepository $etatrepo, Request $request, EntityManagerInterface $em): Response{
-        $sortie=$repository->find($id);
-        $etatSortie=$etatrepo->find(2);
+    public function reactiverSortie($id, SortieRepository $repository, EtatRepository $etatrepo, Request $request, EntityManagerInterface $em): Response
+    {
+        $sortie = $repository->find($id);
+        $etatSortie = $etatrepo->find(2);
 //Si l'utilisateur en session n'est pas l'organisateur de la sortie, on lui refuse l'accès
-        if($this->getUser()->getId() !== $sortie->getOrganisateur()->getId() ) {
+        if ($this->getUser()->getId() !== $sortie->getOrganisateur()->getId()) {
             $this->addFlash('warning', 'Accès refusé : vous n\'avez pas les droits.');
             return $this->redirectToRoute("main");
-        }else {
+        } else {
 
             $newSortie = new Sortie();
             $form = $this->createFormBuilder($newSortie)
@@ -184,97 +197,110 @@ class SortieController extends AbstractController
      * @param SortieRepository $repository
      * @return Response
      */
-    public function modifierSortie($id=0,SortieRepository $repository, VilleRepository $villeRepo, Request $request, EntityManagerInterface $em)
+    public function modifierSortie($id = 0, SortieRepository $repository, VilleRepository $villeRepo, Request $request, EntityManagerInterface $em)
     {
 
-        $villes= $villeRepo->findAll('nom_ville');
+        $villes = $villeRepo->findAll('nom_ville');
 
 
-      //  $newSortie = new Sortie();
+        //  $newSortie = new Sortie();
         $sortie = $repository->find($id);
         $updateSortieForm = $this->createForm(UpdateSortieType::class, $sortie);
 //Si l'utilisateur en session n'est pas l'organisateur de la sortie, on lui refuse l'accès
 
-       if($this->getUser() && $this->getUser()->getId() !== $sortie->getOrganisateur()->getId() ) {
-           $this->addFlash('warning', 'Accès refusé : vous n\'avez pas les droits.');
-           return $this->redirectToRoute("accueil");
-       }else{
-        $updateSortieForm->handleRequest($request);
-          // dd($updateSortieForm );
-        ///////
-           $lieu = new Lieu();
-    $nouveauLieuForm = $this->createForm(NouveauLieuType::class, $lieu);
-   // $nouveauLieuForm->handleRequest($request);
+        if ($this->getUser() && $this->getUser()->getId() !== $sortie->getOrganisateur()->getId()) {
+            $this->addFlash('warning', 'Accès refusé : vous n\'avez pas les droits.');
+            return $this->redirectToRoute("accueil");
+        } else {
+            $updateSortieForm->handleRequest($request);
+            // dd($updateSortieForm );
+            ///////
+            $lieu = new Lieu();
+            $nouveauLieuForm = $this->createForm(NouveauLieuType::class, $lieu);
+            // $nouveauLieuForm->handleRequest($request);
 /////////////////
-        if ($updateSortieForm->isSubmitted() && $updateSortieForm->isValid()) {
+            if ($updateSortieForm->isSubmitted() && $updateSortieForm->isValid()) {
 
-            $em->persist($sortie);
-            $em->flush();
-            $this->addFlash('success', 'Votre sortie a bien été modifiée.');
-            return $this->redirectToRoute("afficherSortie" ,[
-                                            "sortie"=>$sortie,
-                                            "id"=>$id,
-                          ]);
-        }
+                if ($sortie->getDateLimiteInscription() > $sortie->getDateHeureDebut()) {
+                    $this->addFlash('warning', 'Votre sortie ne peut pas commencer avant la date limite d\'inscription.');
+
+                } elseif ($sortie->getDateHeureDebut() < $now = new \DateTime("now")) {
+                    $this->addFlash('warning', 'Votre sortie ne peut pas commencer avant la date d\'aujourd\'hui !');
+                } else {
+
+                    $em->persist($sortie);
+                    $em->flush();
+                    $this->addFlash('success', 'Votre sortie a bien été modifiée.');
+                    return $this->redirectToRoute("afficherSortie", [
+                        "sortie" => $sortie,
+                        "id" => $id,
+                    ]);
+                }
+            }
 
         return $this->render("sortie/modifierSortie.html.twig", [
             "title" => "Modifier la sortie :",
             "sortie" => $sortie,
             "updateSortieForm" => $updateSortieForm->createView(),
-            "nouveauLieuForm"=>$nouveauLieuForm->createView(),
-            "villes"=>$villes
-            ]);
-        }
+            "nouveauLieuForm" => $nouveauLieuForm->createView(),
+            "villes" => $villes
+        ]);
     }
+}
 
-    /**
-     * @Route("sortie/afficherSortie/{id}", name="afficherSortie")
-     */
-    public function afficherSortie(SortieRepository $sr, InscriptionRepository $ir, $id=0): Response
-    {
-        $sortie = $sr->find($id);
-        $participants = $ir->findParticipantsInscrits($id);
-        //dd($participants);
-        $lieu = $sortie->getLieu();
-        //dd($sortie);
-        $title= "Afficher une sortie";
-        $tab = compact("title", "sortie", "lieu", "participants");
-        //dd($sortie);
+/**
+ * @Route("sortie/afficherSortie/{id}", name="afficherSortie")
+ */
+public
+function afficherSortie(SortieRepository $sr, InscriptionRepository $ir, $id = 0): Response
+{
+    $sortie = $sr->find($id);
+    $participants = $ir->findParticipantsInscrits($id);
+    //dd($participants);
+    $lieu = $sortie->getLieu();
+    //dd($sortie);
+    $title = "Afficher une sortie";
+    $tab = compact("title", "sortie", "lieu", "participants");
+    //dd($sortie);
 
-        return $this->render('sortie/afficherSortie.html.twig', $tab);
-    }
+    return $this->render('sortie/afficherSortie.html.twig', $tab);
+}
 
-    /**
-     * @Route("/get-adresse/{id}", name="getAdresse")
-     */
-    public function getAdresse( LieuRepository $lieuRepository, Request $request,$id=0): Response
-    {
+/**
+ * @Route("/get-adresse/{id}", name="getAdresse")
+ */
+public
+function getAdresse(LieuRepository $lieuRepository, Request $request, $id = 0): Response
+{
 
 
-        $lieu = $lieuRepository->find($id);
+    $lieu = $lieuRepository->find($id);
 
-       // return $this->json('{"rue": "'.$lieu->getRue().'"}');
-         return $this->json('{
-                                   "rue":"'.$lieu->getRue().'",
-                                   "ville":"'.$lieu->getVille()->getNomVille().'",
-                                   "cp":"'.$lieu->getVille()->getCodePostal().'",
-                                   "latitude":"'.$lieu->getLatitude().'",
-                                   "longitude":"'.$lieu->getLongitude().'"
+    // return $this->json('{"rue": "'.$lieu->getRue().'"}');
+    return $this->json('{
+                                   "rue":"' . $lieu->getRue() . '",
+                                   "ville":"' . $lieu->getVille()->getNomVille() . '",
+                                   "cp":"' . $lieu->getVille()->getCodePostal() . '",
+                                   "latitude":"' . $lieu->getLatitude() . '",
+                                   "longitude":"' . $lieu->getLongitude() . '"
                                 }');
-    }
-    /**
-     * @Route("/get-lieux/{id}", name="getLieux")
-     */
-    public function getLieux( LieuRepository $lieuRepo,$id=0): Response{
+}
 
-        $lieux =  $lieuRepo->findBy(["ville"=>$id]);
-        $tab = [];
-        foreach ($lieux as $lieu){
-            array_push($tab,["nom"=>$lieu->getNom(),"id"=>$lieu->getId()]);
-        }
+/**
+ * @Route("/get-lieux/{id}", name="getLieux")
+ */
+public
+function getLieux(LieuRepository $lieuRepo, $id = 0): Response
+{
 
-        return $this->json(json_encode($tab));
+    $lieux = $lieuRepo->findBy(["ville" => $id]);
+    $tab = [];
+    foreach ($lieux as $lieu) {
+        array_push($tab, ["nom" => $lieu->getNom(), "id" => $lieu->getId()]);
     }
+
+    return $this->json(json_encode($tab));
+}
 
 
 }

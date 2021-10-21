@@ -27,10 +27,12 @@ class CreerSortieFormType extends AbstractType
                 'label' => "Nom de la sortie :"
             ])
             ->add('dateHeureDebut', DateTimeType::class, [
-                'label' => "Date et heure de la sortie :"
+                'label' => "Date et heure de la sortie :",
+                'data' => new \DateTime("now")
             ])
             ->add('dateLimiteInscription', DateTimeType::class, [
-                'label' => "Date limite pour vous inscrire :"
+                'label' => "Date limite pour vous inscrire :",
+                'data' => new \DateTime("now")
             ])
             ->add('nbInscriptionsMax', IntegerType::class, [
                 'label' => "Nombre de places"
