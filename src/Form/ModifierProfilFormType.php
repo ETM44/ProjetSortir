@@ -21,48 +21,32 @@ class ModifierProfilFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('pseudo', TextType::class, [
+            ->add('pseudo', null, [
                 'label' => "Pseudo :"
             ])
-            ->add('prenom', TextType::class, [
+            ->add('prenom', null, [
                 'label' => "Prénom :"
             ])
-            ->add('nom', TextType::class, [
+            ->add('nom', null, [
                 'label' => "Nom :"
             ])
-
-            ->add('telephone', TextType::class, [
-                'label' => "Téléphone :",
-                'constraints'=>[
-        new Length([
-            'min'=>10,
-            'minMessage'=>'Le numéro de téléphone doit contenir au moins {{limit}} caractères',
-            //max length allowed by Symfony for security reasons
-            'max'=>4096,
-        ])
-            ]])
-            ->add('email', TextType::class, [
+            ->add('telephone', null, [
+                'label' => "Téléphone :"
+            ])
+            ->add('email', null, [
                 'label' => "Email :"
             ])
-            /*->add('password', RepeatedType::class, [
-                'type' => PasswordType::class,'mapped'=>false,
-                'attr'=>['autocomplete'=>'new-password'],
-                'constraints'=>[
+            ->add('plainPassword', PasswordType::class, [
+                // instead of being set onto the object directly,
+                // this is read and encoded in the controller
+                'mapped' => false,
+                'attr' => ['autocomplete' => 'password'],
+                'constraints' => [
                     new NotBlank([
-                        'message'=>'Vous devez entrer un mot de passe',
-                    ]),
-                    new Length([
-                        'min'=>6,
-                        'minMessage'=>'Le mot de passe doit contenir au moins {{limit}} caractères',
-                        //max length allowed by Symfony for security reasons
-                        'max'=>4096,
+                        'message' => 'Please enter your password',
                     ]),
                 ],
-                'invalid_message'=>"mot de passe invalide",
-                'required'=>false,
-                'first_options'  => ['label' => 'Nouveau mot de passe :', 'attr'=> ['class' => 'text-muted f-w-400 form-control'],],
-                'second_options' => ['label' => 'Confirmez votre mot de passe :', 'attr'=> ['class' => 'text-muted f-w-400 form-control'],],
-            ])*/
+            ])
             ->add('site', EntityType::class, [
                 'class' => Site::class,
                 'choice_label' => "nom",

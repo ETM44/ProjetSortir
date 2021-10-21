@@ -31,21 +31,22 @@ class LieuController extends AbstractController
      * @return mixed
      * @Route("lieu/ajouter/{sortie_id}", name="nouveauLieu")
      */
-    public function addLieu(Request $request, EntityManagerInterface $em, $sortie_id){
+    public function addLieu(Request $request, EntityManagerInterface $em, $sortie_id)
+    {
         $lieu = new Lieu();
         $nouveauLieuForm = $this->createForm(NouveauLieuType::class, $lieu);
         $nouveauLieuForm->handleRequest($request);
 
         if ($nouveauLieuForm->isSubmitted() && $nouveauLieuForm->isValid()) {
 
-          //  $em = $this->getDoctrine()->getManager();
+            //  $em = $this->getDoctrine()->getManager();
             $em->persist($lieu);
             $em->flush();
             $this->addFlash('success', 'Ce lieu a été ajouté à la liste des lieux de retrouvailles.');
         }
         return $this->redirectToRoute('app_modifierSortie', [
-            "id"=>$sortie_id
-       ]);
+            "id" => $sortie_id
+        ]);
         /*        return $this->render('sortie/modifierSortie.html.twig', [
                     'registrationForm' => $nouveauLieuForm->createView([
                         "sortie" => $sortie,
@@ -54,5 +55,28 @@ class LieuController extends AbstractController
                 ]);*/
 
 
+    }
+
+    /**
+     * @param LieuRepository $repository
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @return mixed
+     * @Route("lieu/ajouter", name="nouveauLieu")
+     */
+    public function addLieu2(Request $request, EntityManagerInterface $em)
+    {
+        $lieu = new Lieu();
+        $nouveauLieuForm = $this->createForm(NouveauLieuType::class, $lieu);
+        $nouveauLieuForm->handleRequest($request);
+
+        if ($nouveauLieuForm->isSubmitted() && $nouveauLieuForm->isValid()) {
+
+            //  $em = $this->getDoctrine()->getManager();
+            $em->persist($lieu);
+            $em->flush();
+            $this->addFlash('success', 'Ce lieu a été ajouté à la liste des lieux de retrouvailles.');
+        }
+        return $this->redirectToRoute('creerSortie');
     }
 }

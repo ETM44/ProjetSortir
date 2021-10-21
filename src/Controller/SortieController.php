@@ -53,6 +53,9 @@ class SortieController extends AbstractController
         $form->handleRequest($request);
         $orga = $this->getUser();
         $villes = $vr->findAll();
+        ///////
+        $lieu = new Lieu();
+        $nouveauLieuForm = $this->createForm(NouveauLieuType::class, $lieu);
         
         if ($form->isSubmitted() && $form->isValid()) {
                 $sortie->setInfosSortie($sortie->getInfosSortie());
@@ -67,6 +70,7 @@ class SortieController extends AbstractController
         return $this->render("sortie/creerSortie.html.twig", [
             "title" => "Creer une sortie :",
             "CreerSortieForm" => $form->createView(),
+            "nouveauLieuForm" => $nouveauLieuForm->createView(),
             'orga' => $orga,
             'villes' => $villes,
             'sortie' => $sortie
@@ -222,20 +226,6 @@ class SortieController extends AbstractController
             ]);
         }
     }
-    
-
-    /**
-     * @Route("/creerSortie/getCP/{id}", name="creerSortie_getCP")
-     */
-    public function getCP(Request $request, $id): Response
-    {
-        $tab=[
-            "1"=>"29000",
-            "2"=>"44000",
-            "3"=>"35000"
-    ];
-        return $this->json('{"code":'.$tab[$id].'}');
-    }
 
     /**
      * @Route("sortie/afficherSortie/{id}", name="afficherSortie")
@@ -253,19 +243,7 @@ class SortieController extends AbstractController
 
         return $this->render('sortie/afficherSortie.html.twig', $tab);
     }
-    /**
-     * @Route("/get-code-p/{id}", name="getCode")
-     */
-    public function getCodeP(Request $request,$id=0): Response
-    {
-        $tab=[
-            "0"=>"error",
-            "1"=>"44500",
-            "3"=>"75222",
-            "2"=>"35500"
-        ];
-        return $this->json('{"code": '.$tab[$id].'}');
-    }
+
     /**
      * @Route("/get-adresse/{id}", name="getAdresse")
      */
