@@ -45,7 +45,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
-    private $password;
+    private $password="";
 
     /**
      * @ORM\Column(type="string", length=100)

@@ -200,7 +200,7 @@ class SortieController extends AbstractController
            return $this->redirectToRoute("accueil");
        }else{
         $updateSortieForm->handleRequest($request);
-
+          // dd($updateSortieForm );
         ///////
            $lieu = new Lieu();
     $nouveauLieuForm = $this->createForm(NouveauLieuType::class, $lieu);

@@ -17,6 +17,40 @@
 
     <script type="text/javascript">
 
+        function updatePass(e){
+
+            let form = e.target;
+
+            const http = new XMLHttpRequest(); // client
+            http.responseType="json"; //
+            http.onload = function(e){
+                var infos=document.getElementById("infos");
+                var parsed = JSON.parse(this.response);
+                infos.innerHTML="";
+                for( ele of parsed){
+                    console.log(ele);
+                    if("error" in ele){
+                        infos.innerHTML+="<p class='alert alert-danger' >"+ele.error+"</p>";
+                    }else{
+                        infos.innerHTML+="<p class='alert alert-success' >"+ele.success+"</p>";
+                    }
+
+                }
+
+
+                //infos.innerHTML = parsed.warning;
+
+                //fermeture
+                // if(http.readyState == 4 && http.status == 200) {
+                //     window.location = "/login";
+                // }
+            };
+            http.open(form.method,"/user/update-pass");
+            http.send(new FormData(form));
+
+            e.preventDefault();
+        }
+
         function PreviewImage() {
             var oFReader = new FileReader();
             oFReader.readAsDataURL(document.getElementById("file").files[0]);
@@ -63,14 +97,20 @@
         <label class="label">email : </label>
         {{ form_widget(ModifierProfilFormType.email) }}
         {{ form_errors(ModifierProfilFormType.email) }}
-        <br>
-        {{ form_widget(ModifierProfilFormType.plainPassword) }}
-        {{ form_errors(ModifierProfilFormType.plainPassword) }}
-        <br>
+
         <label class="label">Mon campus de rattachement :</label>
         {{ form_widget(ModifierProfilFormType.site, {'attr':{'class':'choice'}}) }}
         {{ form_errors(ModifierProfilFormType.site) }}
+
+        <br>
+        <label class="label">Entrez votre mot de passe pour valider les modifications :</label>
+        {{ form_widget(ModifierProfilFormType.plainPassword) }}
+        {{ form_errors(ModifierProfilFormType.plainPassword) }}
+        <br>
     </div>
+    <a class="btn btn-modifier" data-bs-toggle="modal" data-bs-target="#MyModalPassword" href="#MyModalPassword">
+        Changer mon mot de passe
+    </a>
 
     <div class="btnModifProfil">
         {{ form_row(ModifierProfilFormType.modifier) }}
@@ -82,27 +122,35 @@
     <div class="modal fade" id="MyModalPassword" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
+                {{ form_start(newMdpForm, { 'attr':{ 'onsubmit':"return updatePass(event);" } } ) }}
                 <div class="modal-header">
                     <h5 class="modal-title" id="ModalLabel">Nouveau mot de passe</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    {{ form_start(newMdpForm) }}
-                    {{ form_errors(newMdpForm) }}
-                    <div class="form-group">
-                        {{ form_widget(newMdpForm.password) }}
-                    </div>
+                    <div id="infos" ></div>
 
+                    <div class="form-group">
+                        {{ form_widget(newMdpForm.plainPassword) }}
+
+                        {{ form_widget(newMdpForm.newPassword) }}
+
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <div class="form-group">
                         {{form_widget(newMdpForm.valider, {'attr':{'class':'btn btn-modifier'}}) }}
+
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-annuler" data-bs-dismiss="modal">Annuler</button>
+                        <a class="btn btn-annuler" data-bs-dismiss="modal">Annuler</a>
                     </div>
 
                 </div>
+                {{ form_end(newMdpForm) }}
             </div>
         </div>
     </div> <!--fin de la div modal-->
