@@ -9,7 +9,9 @@
 {% block body %}
 
     <div id="date-participant">
+        <div class="custom-select" style="width:400px;">
         <h3>Date du jour : {{ date|date('d/m/y') }}</h3>
+        </div>
         <h3>Participant : {{ app.user.pseudo }}</h3>
     </div>
 
