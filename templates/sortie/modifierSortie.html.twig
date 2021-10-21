@@ -5,23 +5,23 @@
 
 {% block title %}
     Modifier la sortie
-{%endblock%}
+{% endblock %}
 {% block titre %}
 
 {% endblock %}
 
 {% block javascripts %}
     <script defer>
-        function onLieu(e){
+        function onLieu(e) {
             // recupérer la valeur de select
             let id = e.value;
 
             // créer une requette http
             const http = new XMLHttpRequest();
             // spécifier le type de reponse en json
-            http.responseType="json";
+            http.responseType = "json";
             // la fonction se déclenche une fois que le serveur a repondu
-            http.onload = function(){
+            http.onload = function () {
 
                 const data = JSON.parse(this.response);
                 document.getElementById("rue").innerHTML = data.rue;
@@ -29,42 +29,42 @@
                 document.getElementById("cp").innerText = data.cp;
             };
             // choisir la méthode et l'URL
-            http.open("GET","/get-adresse/"+id);
+            http.open("GET", "/get-adresse/" + id);
             // envoyer la requete http vers le serveur
             http.send();
         }
 
-        window.addEventListener("load", function(event) {
+        window.addEventListener("load", function (event) {
             onLieu(document.getElementById("update_sortie_lieu"));
         });
 
-//fonction pour changer les lieux disponibles selon la sélection de la ville :
+        //fonction pour changer les lieux disponibles selon la sélection de la ville :
 
-        function onVille(v){
+        function onVille(v) {
             // recupérer la valeur de option
             let id = v.value;
 
             // créer une requette http
             const http = new XMLHttpRequest();
             // spécifier le type de reponse en json
-            http.responseType="json";
+            http.responseType = "json";
             // la fonction se déclenche une fois que le serveur a repondu
-            http.onload = function(){
-                 const data = JSON.parse(this.response);
-                var option ='<option value="0"disabled > Choisis un lieu </option>' ;
-                 for( let e of data){
-                     option += '<option value="'+e.id+'" >'+e.nom+'</option>';
-                 }
+            http.onload = function () {
+                const data = JSON.parse(this.response);
+                var option = '<option value="0"disabled > Choisis un lieu </option>';
+                for (let e of data) {
+                    option += '<option value="' + e.id + '" >' + e.nom + '</option>';
+                }
                 document.getElementById("update_sortie_lieu").innerHTML = option;
 
             };
             // choisir la méthode et l'URL
-            http.open("GET","/get-lieux/"+id);
+            http.open("GET", "/get-lieux/" + id);
             // envoyer la requete http vers le serveur
             http.send();
         }
 
-        window.addEventListener("load", function(event) {
+        window.addEventListener("load", function (event) {
             onVille(document.getElementById("update_sortie_ville"));
         });
 
@@ -84,7 +84,8 @@
             <p> Cette sortie a été annulée !<br>
                 Motif : {{ sortie.infosSortie }}
                 <br>
-                <a href="{{ path('app_reactiverSortie',  {'id': sortie.id}) }}" class="lienBouton">Réactiver la sortie ?</a>
+                <a href="{{ path('app_reactiverSortie',  {'id': sortie.id}) }}" class="lienBouton">Réactiver la sortie
+                    ?</a>
             </p>
 
         {% elseif sortie.etat.id !=6 %}
@@ -94,15 +95,19 @@
             <div class="GaucheDroite">
 
                 <div class="gauche">
-                    {{ form_start(updateSortieForm) }}
+                    {{ form_start(CreerSortieForm) }}
                     <label class="label">Nom de la sortie : </label>
-                    {{ form_widget(updateSortieForm.nom) }}
+                    {{ form_widget(CreerSortieForm.nom) }}
                     <br>
                     <label class="label">Date et heure de la sortie : </label>
-                    {{ form_widget(updateSortieForm.dateHeureDebut) }}
+                    <div class="select">
+                        {{ form_widget(CreerSortieForm.dateHeureDebut) }}
+                    </div>
 
                     <label class="label">Date limite d'inscription :</label>
-                    {{ form_widget(updateSortieForm.dateLimiteInscription) }}
+                    <div class="select">
+                        {{ form_widget(CreerSortieForm.dateLimiteInscription) }}
+                    </div>
 
                     <label class="label">Nombre de places :</label>
                     {{ form_widget(updateSortieForm.nbInscriptionsMax) }}
@@ -117,23 +122,24 @@
                 <div class="droite">
                     <label class="label">Campus organisateur : </label>
                     <div class="select">
-                    {{ form_widget(updateSortieForm.site) }}
+                        {{ form_widget(updateSortieForm.site) }}
                     </div>
 
                     <label class="label">Ville de la sortie : </label>
                     <div class="select">
                         <select id="update_sortie_ville" onchange="onVille(this);">
                             {% for ville in villes %}
-                            <option value="{{ ville.id }}">{{ ville.nomVille }}</option>
+                                <option value="{{ ville.id }}">{{ ville.nomVille }}</option>
                             {% endfor %}
                         </select>
-                    </div>>
+                    </div>
+                    >
 
 
                     <div class="lieuAddLieu">
                         <label class="label">Lieu de la sortie : </label>
                         <div class="select">
-                        {{ form_widget(updateSortieForm.lieu, {'attr':{'class':'choice' , 'onchange':"onLieu(this);"}}) }}
+                            {{ form_widget(updateSortieForm.lieu, {'attr':{'class':'choice' , 'onchange':"onLieu(this);"}}) }}
                         </div>
 
                         <a data-bs-toggle="modal" data-bs-target="#MyModalLieu" href="#MyModalLieu">
@@ -141,10 +147,9 @@
                         </a>
 
 
-
                     </div><!-- Fin de la div lieuNouveauLieu-->
 
-<!-------------------------------------------------------------------------->
+                    <!-------------------------------------------------------------------------->
 
                     <p id="rue"></p>
                     <p id="ville"></p>
@@ -164,19 +169,18 @@
         Frida%20Kahlo%2C%2044400%20Rez%C3%A9!5e0!3m2!1sfr!2sfr!4v1634137488608!5m2!1sfr!2sfr"
                             width="450" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
                     {# <iframe src="'https://maps.google.com/maps?q=' + lat + ',' + lng + '&t=&z=15&ie=UTF8&iwloc=&output=embed'" id="carte"
-                width="450" height="300" style="border:0;" allowfullscreen="" loading="lazy"> </iframe>#}
+                width="450" height="300" style="border:0;" allowfullscreen="" loading="lazy"> </iframe> #}
 
                 </div>
-
-
 
 
             </div>
 
             <div class="boutonsModifSortie">
                 {{ form_widget(updateSortieForm.Enregistrer  ,  {'attr':{'class':'"btn btn-afficher'}} ) }}
-                <a class="btn btn-publier "  href="{{ path('app_publierSortie',  {'id':sortie.id}) }}">Publier</a>
-                <a class="btn btn-annuler" href="{{ path('app_annulerSortie',  {'id':sortie.id}) }}">Annuler la sortie</a>
+                <a class="btn btn-publier " href="{{ path('app_publierSortie',  {'id':sortie.id}) }}">Publier</a>
+                <a class="btn btn-annuler" href="{{ path('app_annulerSortie',  {'id':sortie.id}) }}">Annuler la
+                    sortie</a>
                 {{ form_widget(updateSortieForm.reset, {'attr':{'class':'btn-modifier'}} ) }}
             </div>
 
@@ -194,7 +198,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            {{form_start(nouveauLieuForm, {'action': path('nouveauLieu', {'sortie_id':sortie.id})}) }}
+                            {{ form_start(nouveauLieuForm, {'action': path('nouveauLieu', {'sortie_id':sortie.id})}) }}
                             <div class="form-group">
                                 {{ form_widget(nouveauLieuForm.nom, {'attr':{'class':'input', 'type':'text', 'placeholder':'Nom *'}}) }}
                             </div>
@@ -216,13 +220,13 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                                <div class="form-group">
-                                    {{ form_widget(nouveauLieuForm.enregistrer,{'attr':{'class':'btn-success'}}) }}
-                                </div>
-                                <div class="form-group">
-                                    {#{{ form_widget(nouveauLieuForm.annuler,{'attr':{'class':'uabb-modal-close'}})}}#}
-                                    <button class="btn-warning" data-bs-dismiss="modal">Annuler</button>
-                                </div>
+                            <div class="form-group">
+                                {{ form_widget(nouveauLieuForm.enregistrer,{'attr':{'class':'btn-success'}}) }}
+                            </div>
+                            <div class="form-group">
+                                {# {{ form_widget(nouveauLieuForm.annuler,{'attr':{'class':'uabb-modal-close'}})}} #}
+                                <button class="btn-warning" data-bs-dismiss="modal">Annuler</button>
+                            </div>
                             {{ form_end(nouveauLieuForm) }}
                         </div>
                     </div>
