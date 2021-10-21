@@ -21,22 +21,33 @@ class ModifierProfilFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('pseudo', TextType::class, [
+            ->add('pseudo', null, [
                 'label' => "Pseudo :"
             ])
-            ->add('prenom', TextType::class, [
+            ->add('prenom', null, [
                 'label' => "Prénom :"
             ])
-            ->add('nom', TextType::class, [
+            ->add('nom', null, [
                 'label' => "Nom :"
             ])
-            ->add('telephone', TextType::class, [
+            ->add('telephone', null, [
                 'label' => "Téléphone :"
             ])
-            ->add('email', TextType::class, [
+            ->add('email', null, [
                 'label' => "Email :"
             ])
-            ->add('password', RepeatedType::class, [
+            ->add('plainPassword', PasswordType::class, [
+                // instead of being set onto the object directly,
+                // this is read and encoded in the controller
+                'mapped' => false,
+                'attr' => ['autocomplete' => 'password'],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Please enter your password',
+                    ]),
+                ],
+            ])
+            /*->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,'mapped'=>false,
                 'attr'=>['autocomplete'=>'new-password'],
                 'constraints'=>[
@@ -52,9 +63,9 @@ class ModifierProfilFormType extends AbstractType
                 ],
                 'invalid_message'=>"mot de passe invalide",
                 'required'=>false,
-                'first_options'  => ['label' => 'Nouveau mot de passe :', 'attr'=> ['class' => 'text-muted f-w-400 form-control'],],
+                'first_options'  => ['label' => 'Mot de passe :', 'attr'=> ['class' => 'text-muted f-w-400 form-control'],],
                 'second_options' => ['label' => 'Confirmez votre mot de passe :', 'attr'=> ['class' => 'text-muted f-w-400 form-control'],],
-            ])
+            ])*/
             ->add('site', EntityType::class, [
                 'class' => Site::class,
                 'choice_label' => "nom",

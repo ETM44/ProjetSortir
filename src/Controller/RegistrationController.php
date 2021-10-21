@@ -9,7 +9,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordHasherInterface;
+//use Symfony\Component\Security\Core\Encoder\UserPasswordHasherInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class RegistrationController extends AbstractController
 {
@@ -25,7 +26,7 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
             $user->setPassword(
-                $passwordEncoder->encodePassword(
+                $passwordEncoder->hashPassword(
                     $user,
                     $form->get('plainPassword')->getData()
                 )
