@@ -4,39 +4,40 @@
 {% block titre %}<h1>Inscription</h1> {% endblock %}
 {% block body %}
 
-    <form class="inscription">
         {{ form_start(registrationForm) }}
 
                 <div class="form-group">
                     {{ form_widget(registrationForm.nom, {'attr':{'class':'input', 'type':'text', 'placeholder':'Nom'}}) }}
+                    {{ form_errors(registrationForm.nom) }}
+
                 </div>
 
                 <div class="form-group">
                     {{ form_widget(registrationForm.prenom, {'attr':{'class':'input', 'type':'text', 'placeholder':'Prénom'}}) }}
+                    {{ form_errors(registrationForm.prenom) }}
                 </div>
 
                 <div class="form-group">
                     {{ form_widget(registrationForm.telephone, {'attr':{'class':'input', 'type':'numer', 'placeholder':'Numéro de téléphone'}}) }}
+                    {{ form_errors(registrationForm.telephone) }}
                 </div>
 
                 <div class="form-group">
 
                     {{ form_widget(registrationForm.email, {'attr':{'class':'input', 'type':'email', 'placeholder':'E-mail'}}) }}
+                    {{ form_errors(registrationForm.email) }}
                 </div>
 
                 <div class="form-group">
 
                     {{ form_widget(registrationForm.pseudo, {'attr':{'class':'input', 'type':'text', 'placeholder':'Pseudo'}}) }}
+                    {{ form_errors(registrationForm.pseudo) }}
                 </div>
 
 
                 <div class="form-group">
-                    <label for="password">Mot de passe : </label><br>
                     {{ form_widget(registrationForm.plainPassword, { label: 'Password','placeholder':'Mot de passe' }) }}
-                </div>
-                <div class="form-group">
-                    <label for="password">Confirmer mot de passe : </label><br>
-                    <input type="password">
+                    {{ form_errors(registrationForm.plainPassword) }}
                 </div>
         <div class="form-group">
             <label for="site">Campus : </label><br>
@@ -51,6 +52,5 @@
         <button type="submit" class="btn">C'est parti</button>
 
         {{ form_end(registrationForm) }}
-    </form>
 
 {% endblock %}

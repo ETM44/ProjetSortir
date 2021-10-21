@@ -15,7 +15,8 @@ use Symfony\Component\Validator\Constraints\Unique;
 
 /**
  * @ORM\Entity(repositoryClass=ParticipantRepository::class)
- * @UniqueEntity(fields={"email", "pseudo"}, message="There is already an account with this email or pseudo")
+ * @UniqueEntity(fields={"pseudo"}, message="There is already an account with this pseudo")
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
 class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -44,7 +45,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
-    private $password;
+    private $password="";
 
     /**
      * @ORM\Column(type="string", length=100)

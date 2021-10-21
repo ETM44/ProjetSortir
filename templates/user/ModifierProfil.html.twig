@@ -4,6 +4,7 @@
 {% block javascripts %}
 
     <script>
+        //fonction pour changer de profile pic
         var loadFile = function (event) {
             var image = document.getElementById("output");
             image.src = URL.createObjectURL(event.target.files[0]);
@@ -14,16 +15,50 @@
 
     <script src="{{ asset('js/main.js') }}"></script>
 
-	<script type="text/javascript">
+    <script type="text/javascript">
 
-function PreviewImage() {
-var oFReader = new FileReader();
-oFReader.readAsDataURL(document.getElementById("file").files[0]);
-oFReader.onload = function (oFREvent) {
-	document.getElementById("output").src = oFREvent.target.result;
-	};
-};
-</script>
+        function updatePass(e){
+
+            let form = e.target;
+
+            const http = new XMLHttpRequest(); // client
+            http.responseType="json"; //
+            http.onload = function(e){
+                var infos=document.getElementById("infos");
+                var parsed = JSON.parse(this.response);
+                infos.innerHTML="";
+                for( ele of parsed){
+                    console.log(ele);
+                    if("error" in ele){
+                        infos.innerHTML+="<p class='alert alert-danger' >"+ele.error+"</p>";
+                    }else{
+                        infos.innerHTML+="<p class='alert alert-success' >"+ele.success+"</p>";
+                    }
+
+                }
+
+
+                //infos.innerHTML = parsed.warning;
+
+                //fermeture
+                // if(http.readyState == 4 && http.status == 200) {
+                //     window.location = "/login";
+                // }
+            };
+            http.open(form.method,"/user/update-pass");
+            http.send(new FormData(form));
+
+            e.preventDefault();
+        }
+
+        function PreviewImage() {
+            var oFReader = new FileReader();
+            oFReader.readAsDataURL(document.getElementById("file").files[0]);
+            oFReader.onload = function (oFREvent) {
+                document.getElementById("output").src = oFREvent.target.result;
+            };
+        };
+    </script>
 
 {% endblock %}
 
@@ -38,37 +73,86 @@ oFReader.onload = function (oFREvent) {
             <span>Change Image</span>
         </label>
         <input id="file" type="file" onchange="loadFile(event)"/>
-        <img src="{{ asset('img/profilepic.png') }}" id="output" width="150" />
+        <img src="{{ asset('img/profilepic.png') }}" id="output" width="150"/>
     </div>
 
-<div class="profil">
-    {{ form_start(ModifierProfilFormType) }}
-    <label class="label">Pseudo : </label>
-    {{ form_widget(ModifierProfilFormType.pseudo) }}
-    <br>
-    <label class="label">Prénom : </label>
-    {{ form_widget(ModifierProfilFormType.prenom) }}
-    <br>
-    <label class="label">Nom : </label>
-    {{ form_widget(ModifierProfilFormType.nom) }}
-    <br>
-    <label class="label">Téléphone : </label>
-    {{ form_widget(ModifierProfilFormType.telephone) }}
-    <br>
-    <label class="label">email : </label>
-    {{ form_widget(ModifierProfilFormType.email) }}
-    <br>
-    <label class="label">Mot de passe : </label>
-    {{ form_widget(ModifierProfilFormType.password) }}
-    <br>
-    <label class="label">Mon campus de rattachement :</label>
-    {{ form_widget(ModifierProfilFormType.site, {'attr':{'class':'choice'}}) }}
+    <div class="profil">
+        {{ form_start(ModifierProfilFormType) }}
+        <label class="label">Pseudo : </label>
+        {{ form_widget(ModifierProfilFormType.pseudo) }}
+        {{ form_errors(ModifierProfilFormType.pseudo) }}
+        <br>
+        <label class="label">Prénom : </label>
+        {{ form_widget(ModifierProfilFormType.prenom) }}
+        {{ form_errors(ModifierProfilFormType.prenom) }}
+        <br>
+        <label class="label">Nom : </label>
+        {{ form_widget(ModifierProfilFormType.nom) }}
+        {{ form_errors(ModifierProfilFormType.nom) }}
+        <br>
+        <label class="label">Téléphone : </label>
+        {{ form_widget(ModifierProfilFormType.telephone) }}
+        {{ form_errors(ModifierProfilFormType.telephone) }}
+        <br>
+        <label class="label">email : </label>
+        {{ form_widget(ModifierProfilFormType.email) }}
+        {{ form_errors(ModifierProfilFormType.email) }}
 
-</div>
+        <label class="label">Mon campus de rattachement :</label>
+        {{ form_widget(ModifierProfilFormType.site, {'attr':{'class':'choice'}}) }}
+        {{ form_errors(ModifierProfilFormType.site) }}
+
+        <br>
+        <label class="label">Entrez votre mot de passe pour valider les modifications :</label>
+        {{ form_widget(ModifierProfilFormType.plainPassword) }}
+        {{ form_errors(ModifierProfilFormType.plainPassword) }}
+        <br>
+    </div>
+    <a class="btn btn-modifier" data-bs-toggle="modal" data-bs-target="#MyModalPassword" href="#MyModalPassword">
+        Changer mon mot de passe
+    </a>
+
     <div class="btnModifProfil">
         {{ form_row(ModifierProfilFormType.modifier) }}
         {{ form_row(ModifierProfilFormType.annuler) }}
     </div>
     {{ form_end(ModifierProfilFormType) }}
+
+    <!-- Modal -->
+    <div class="modal fade" id="MyModalPassword" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                {{ form_start(newMdpForm, { 'attr':{ 'onsubmit':"return updatePass(event);" } } ) }}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabel">Nouveau mot de passe</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="infos" ></div>
+
+                    <div class="form-group">
+                        {{ form_widget(newMdpForm.plainPassword) }}
+
+                        {{ form_widget(newMdpForm.newPassword) }}
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="form-group">
+                        {{form_widget(newMdpForm.valider, {'attr':{'class':'btn btn-modifier'}}) }}
+
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+
+                    </div>
+                    <div class="form-group">
+                        <a class="btn btn-annuler" data-bs-dismiss="modal">Annuler</a>
+                    </div>
+
+                </div>
+                {{ form_end(newMdpForm) }}
+            </div>
+        </div>
+    </div> <!--fin de la div modal-->
 
 {% endblock %}
