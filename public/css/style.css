@@ -5,7 +5,13 @@
 .fond{
     background: rgb(87,9,121);
     background: linear-gradient(90deg, rgba(87,9,121,1) 47%, rgba(255,0,199,1) 100%);
+    color: white;
+    max-width: 1280px;
+    min-height: 100%;
+    margin: 0 auto;
+    position: relative;
 }
+
 #loginForm {
     border: none;
     background-image: url("../img/graffitiSlothLight.jpg");
@@ -19,35 +25,39 @@
 .table{
     color: white;
 }
-a{
+
+a {
     text-decoration: none;
 }
-h1{
+
+h1 {
     text-align: center;
 }
-.gauche, .droite{
+
+.gauche, .droite {
     display: flex;
     flex-direction: column;
-    margin:60px;
+    margin: 60px;
 }
 
-.GaucheDroite{
+.GaucheDroite {
     display: flex;
 
 }
 
-.boutonsModifSortie{
+.boutonsModifSortie {
     display: flex;
-    border-radius: 4px!important;
+    border-radius: 4px !important;
     margin-left: auto;
     margin-right: auto;
 }
 
-.lienBouton, button{
+.lienBouton, button {
     border-radius: 4px !important;
     text-align: center;
 }
-.lienBouton a{
+
+.lienBouton a {
     position: center;
     text-decoration: none;
 }
@@ -100,10 +110,9 @@ h1{
     margin: 1px;
 }
 
-.lieuAddLieu{
+.lieuAddLieu {
     display: flex;
 }
-
 nav{
     font-weight: bolder;
     text-align: center!important;
@@ -112,24 +121,27 @@ nav{
 
 .bg-color {
     --bs-bg-opacity: 1;
-    background-color: #b08f26 !important;
+    background-color: #ffc107 !important;
 }
 
-nav button{
+nav button {
     background-color: #b21f2d;
 }
 
-a{
+a {
     text-decoration: none;
     color: brown;
 }
-a:hover{
+
+a:hover {
     text-decoration: none;
 }
-.navbar-brand{
+
+.navbar-brand {
     font-size: larger;
 }
-li{
+
+li {
     list-style: none;
 }
 
@@ -138,25 +150,34 @@ textarea {
 }
 
 .form-group {
-    width:650px !important;
+    width: 650px !important;
     text-align: justify;
-    padding:4px;
+    padding: 4px;
 }
 
-img{
-    margin:4px
+img {
+    margin: 4px
+}
+main {
+    min-height:90%;
 }
 
-input, select, textarea{
-    border-radius: 4px;
+input, textarea {
+    border-radius: 6px;
 }
 
-footer{
+.form-control, input {
+    background: rgba(178, 238, 243, 0.5); /*  semi-transparent */
+}
+
+footer {
     text-align: center;
+    padding-top:50px;
+    height:50px;
 }
-.form-group input
 
-/***************style modal pour quand ça marchera ******/
+.form-group input
+    /***************style modal pour quand ça marchera ******/
 .modal {
     display: none;
     position: fixed;
@@ -167,30 +188,53 @@ footer{
     height: 100%;
     background-color: pink;
     background-color: rgba(0, 0, 0, 0.5);
-}.modal-content {
-     position: relative;
-     background-color: white;
-     padding: 20px;
-     margin: auto;
-     width: 75%;
-     -webkit-animation-name: animatetop;
-     -webkit-animation-duration: 0.4s;
-     animation-name: animatetop;
-     animation-duration: 0.4s
- }.close-btn {
-      float: right;
-      color: lightgray;
-      font-size: 24px;
-      font-weight: bold;
-  }.close-btn:hover {
-       color: darkgray;
-   }@-webkit-keyframes animatetop {
-        from {top:-300px; opacity:0}
-        to {top:0; opacity:1}
-    }@keyframes animatetop {
-         from {top:-300px; opacity:0}
-         to {top:0; opacity:1}
-     }
+}
+
+.modal-content {
+    position: relative;
+    background-color: white;
+    padding: 20px;
+    margin: auto;
+    width: 75%;
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+
+.close-btn {
+    float: right;
+    color: lightgray;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.close-btn:hover {
+    color: darkgray;
+}
+
+@-webkit-keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
+@keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
 /*********************/
 
 #global {
@@ -213,6 +257,7 @@ footer{
 .profile-pic input {
     display: none;
 }
+
 .profile-pic img, .profile-picc img {
     position: absolute;
     object-fit: cover;
@@ -220,14 +265,16 @@ footer{
     height: 165px;
     box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.35);
     border-radius: 100px;
-    border:black 1px solid;
+    border: black 1px solid;
     z-index: 0;
 }
+
 .profile-pic .-label, .profile-picc .-label {
     cursor: pointer;
     height: 165px;
     width: 165px;
 }
+
 .profile-pic:hover .-label {
     display: flex;
     justify-content: center;
@@ -239,9 +286,28 @@ footer{
     border-radius: 100px;
     margin-bottom: 0;
 }
+
 .profile-pic span, .profile-picc span {
     display: inline-flex;
     padding: 0.2em;
     height: 2em;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body, html {
+    height: 100%;
+}
+
+footer {
+    background: #ccc;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding-top: 50px;
+    height: 50px;
 }
 
