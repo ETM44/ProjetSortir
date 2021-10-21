@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
-
+{% block stylesheets %}
+    <link href="{{ asset('css/select.css') }}" rel="stylesheet">
+{% endblock %}
 
 {% block javascripts %}
 
@@ -99,9 +101,10 @@
         {{ form_errors(ModifierProfilFormType.email) }}
 
         <label class="label">Mon campus de rattachement :</label>
+        <div class="select">
         {{ form_widget(ModifierProfilFormType.site, {'attr':{'class':'choice'}}) }}
         {{ form_errors(ModifierProfilFormType.site) }}
-
+        </div>
         <br>
         <label class="label">Entrez votre mot de passe pour valider les modifications :</label>
         {{ form_widget(ModifierProfilFormType.plainPassword) }}

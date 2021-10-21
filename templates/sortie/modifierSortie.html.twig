@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
-
+{% block stylesheets %}
+    <link href="{{ asset('css/select.css') }}" rel="stylesheet">
+{% endblock %}
 
 {% block title %}
     Modifier la sortie
@@ -114,22 +116,25 @@
 
                 <div class="droite">
                     <label class="label">Campus organisateur : </label>
+                    <div class="select">
                     {{ form_widget(updateSortieForm.site) }}
+                    </div>
 
                     <label class="label">Ville de la sortie : </label>
+                    <div class="select">
                         <select id="update_sortie_ville" onchange="onVille(this);">
                             {% for ville in villes %}
                             <option value="{{ ville.id }}">{{ ville.nomVille }}</option>
                             {% endfor %}
                         </select>
+                    </div>>
 
 
                     <div class="lieuAddLieu">
                         <label class="label">Lieu de la sortie : </label>
+                        <div class="select">
                         {{ form_widget(updateSortieForm.lieu, {'attr':{'class':'choice' , 'onchange':"onLieu(this);"}}) }}
-
-
-
+                        </div>
 
                         <a data-bs-toggle="modal" data-bs-target="#MyModalLieu" href="#MyModalLieu">
                             <img src="{{ asset('img/16057.png') }}" width="30px"/>

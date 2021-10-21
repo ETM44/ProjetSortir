@@ -172,8 +172,8 @@ main {
     min-height:90%;
 }
 
-input, select, textarea {
-    border-radius: 4px;
+input, textarea {
+    border-radius: 6px;
 }
 
 .form-control, input {
