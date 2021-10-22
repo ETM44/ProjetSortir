@@ -95,18 +95,18 @@
             <div class="GaucheDroite">
 
                 <div class="gauche">
-                    {{ form_start(CreerSortieForm) }}
+                    {{ form_start(updateSortieForm) }}
                     <label class="label">Nom de la sortie : </label>
-                    {{ form_widget(CreerSortieForm.nom) }}
+                    {{ form_widget(updateSortieForm.nom) }}
                     <br>
                     <label class="label">Date et heure de la sortie : </label>
                     <div class="select">
-                        {{ form_widget(CreerSortieForm.dateHeureDebut) }}
+                        {{ form_widget(updateSortieForm.dateHeureDebut) }}
                     </div>
 
                     <label class="label">Date limite d'inscription :</label>
                     <div class="select">
-                        {{ form_widget(CreerSortieForm.dateLimiteInscription) }}
+                        {{ form_widget(updateSortieForm.dateLimiteInscription) }}
                     </div>
 
                     <label class="label">Nombre de places :</label>

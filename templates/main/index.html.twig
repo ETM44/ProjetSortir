@@ -25,10 +25,12 @@
         <div class="col-9">
             <div class="row">
                 <div class="col">
+                    <div class="select">
                     {{ form_label(mainForm.site) }}
                     {{ form_widget(mainForm.site) }}
                     {{ form_label(mainForm.nom) }}
                     {{ form_widget(mainForm.nom) }}
+                    </div>
                 </div>
                 <div class="col">
                     {{ form_row(mainForm.sortieOrganisateur) }}
@@ -39,12 +41,16 @@
             </div>
             <div class="row">
                 <div class="col">
+                    <div class="select">
                     {{ form_label(mainForm.dateHeureDebut) }}
                     {{ form_widget(mainForm.dateHeureDebut) }}
+                    </div>
                 </div>
                 <div class="col">
+                    <div class="select">
                     {{ form_label(mainForm.dateHeureFin) }}
                     {{ form_widget(mainForm.dateHeureFin) }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -52,6 +58,7 @@
             <button class="btn btn-warning btn-lg btn-block" type="submit">Rechercher</button>
         </div>
     </div>
+        </div>
     </div>
 
     {{ form_end(mainForm) }}
@@ -99,11 +106,15 @@
                     {% endif %}
 
                 <td>{% if app.user %}
+                        <div class="select">
                         <div class="row">
                             {% if result.organisateur.id == app.user.id %}
                                 {% if result.etat.id == 1 %}
+                                    <div class="select">
                                     <div class="col"><a class="btn btn-modifier" href="{{ path('app_modifierSortie',  {'id': result.id})}}">Modifier</a></div>
+                                    </div>
                                     <div class="col"><a class="btn btn-publier" href="{{ path('app_publierSortie',  {'id': result.id})}}">Publier</a></div>
+
                                 {% elseif result.etat.id == 2 %}
                                     <div class="col"><a class="btn btn-afficher" href="{{ path('afficherSortie',  {'id': result.id})}}">Afficher</a></div>
                                     <div class="col"><a class="btn btn-annuler" href="{{ path('app_annulerSortie',  {'id': result.id})}}">Annuler</a></div>
@@ -123,13 +134,14 @@
                                     {% if (sinscrire and result.etat.id == 2) %}
                                         <div class="col"><a class="btn btn-inscrire" href="{{ path('app_inscrire',  {'id': result.id})}}">S'inscrire</a></div>
                                     {% elseif sinscrire == false %}
-                                        <div class="col"><a class="btn btn-desister" href="{{ path('app_desister',  {'id': result.id})}}">Se&nbspdésister</a></div>
+                                        <div class="col"><a class="btn btn-desister" href="{{ path('app_desister',  {'id': result.id})}}">Se désister</a></div>
                                     {% endif %}
                                 {% else %}
                                     <div class="col"></div>
                                 {% endif %}
                             {% endif %}
                         </div>
+                </div>
                     {% else %}
                         <a class="btn btn-afficher" href="{{ path('afficherSortie',  {'id': result.id})}}">Afficher</a>
                     {% endif %}

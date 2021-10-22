@@ -58,9 +58,6 @@ class CreerSortieFormType extends AbstractType
                 return $lieu-> getNom();
                 }
             ])
-            ->add('Enregistrer', SubmitType::class)
-            ->add('annuler', ResetType::class)
-
         ;
     }
 

@@ -17,23 +17,29 @@
         <h3 class="table">Filtrer les sorties</h3>
         <div class="col-9">
             <div class="row">
+                <div class="select">
                 <div class="col">
                     {{ form_label(mainForm.site) }}
                     {{ form_widget(mainForm.site) }}
                     {{ form_label(mainForm.nom) }}
                     {{ form_widget(mainForm.nom) }}
                 </div>
+                </div>
             </div>
             <div class="row">
+                <div class="select">
                 <div class="col">
                     {{ form_label(mainForm.dateHeureDebut) }}
                     {{ form_widget(mainForm.dateHeureDebut) }}
                     </div>
                 </div>
+                </div>
+            <div class="select">
                 <div class="col">
                     {{ form_label(mainForm.dateHeureFin) }}
                     {{ form_widget(mainForm.dateHeureFin) }}
                     </div>
+            </div>
                 </div>
             </div>
         </div>

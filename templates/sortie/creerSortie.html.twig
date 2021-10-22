@@ -94,6 +94,10 @@
         <br>
         <label class="label">Description et infos :</label>
         {{ form_widget(CreerSortieForm.infosSortie,  {'attr':{'class':'textarea'}} ) }}
+        <br>
+        <button type="submit" class="btn btn-warning">Créer</button>
+        <br>
+        <button type="reset" class="btn btn-annuler">Annuler</button>
     </div>
 
     <div class="droite">
@@ -151,12 +155,7 @@
 
     </div>
 </div>
-    {#<div class="boutonsModifSortie">
-        {{ form_widget(CreerSortieForm ,  {'attr':{'class':'"btn btn-afficher'}} ) }}
-        <a class="btn btn-publier "  href="{{ path('app_publierSortie',  {'id':sortie.id}) }}">Publier</a>
-        <a class="btn btn-annuler" href="{{ path('app_annulerSortie',  {'id':sortie.id}) }}">Annuler la sortie</a>
-        {{ form_widget(CreerSortieForm, {'attr':{'class':'btn-modifier'}} ) }}
-    </div>#}
+
 
     {{ form_end(CreerSortieForm) }}
 

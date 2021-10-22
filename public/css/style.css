@@ -15,8 +15,15 @@
 }
 
 #loginForm {
+
+    margin-top: 100px;
     border: none;
-    background-image: url("../img/graffitiSlothLight.jpg");
+    background-image: url("../img/graffitiSlothMed.jpg");
+    color:midnightblue;
+    font-size: x-large;
+    font-weight: bold;
+    text-shadow: 6px 6px 9px white;
+    min-height: 600px;
 }
 #register{
     color: white;!important;
@@ -118,7 +125,7 @@ h1 {
 nav{
     font-weight: bolder;
     text-align: center!important;
-    text-shadow: 1px 1px 2px pink;
+    text-shadow: 2px 2px 3px pink;
 }
 
 .bg-color {
@@ -173,7 +180,7 @@ input, textarea {
 }
 
 footer {
-    text-align: center;
+    /*text-align: center;*/
     padding-top:50px;
     height:50px;
 }
@@ -310,7 +317,7 @@ header {
 }
 
 footer {
-    position: absolute;
+
     bottom: 0;
     width: 100%;
 
