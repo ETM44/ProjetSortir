@@ -23,35 +23,37 @@ class NewPasswordFormType extends AbstractType
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,
-                'attr' => ['autocomplete' => 'password'],
+                'attr' => ['autocomplete' => 'password',
+                    'class' => 'text-muted f-w-400 form-control input-size',
+                    'placeholder' => 'Mot de passe'],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Please enter your password',
                     ]),
                 ],
             ])
-
             ->add('newPassword', RepeatedType::class, [
-                'type' => PasswordType::class,'mapped'=>false,
-                'attr'=>['autocomplete'=>'new-password'],
-                'constraints'=>[
+                'type' => PasswordType::class, 'mapped' => false,
+                'attr' => ['autocomplete' => 'new-password'],
+                'constraints' => [
                     new NotBlank([
-                        'message'=>'Vous devez entrer un mot de passe',
+                        'message' => 'Vous devez entrer un mot de passe',
                     ]),
                     new Length([
-                        'min'=>6,
-                        'minMessage'=>'Le mot de passe doit contenir au moins {{limit}} caractères',
+                        'min' => 6,
+                        'minMessage' => 'Le mot de passe doit contenir au moins {{limit}} caractères',
                         //max length allowed by Symfony for security reasons
-                        'max'=>4096,
+                        'max' => 4096,
                     ]),
                 ],
-                'invalid_message'=>"Les deux entrées ne sont pas identiques.",
-                'required'=>false,
-                'first_options'  => ['label' => 'Mot de passe :', 'attr'=> ['class' => 'text-muted f-w-400 form-control'],],
-                'second_options' => ['label' => 'Confirmez votre mot de passe :', 'attr'=> ['class' => 'text-muted f-w-400 form-control'],],
+                'invalid_message' => "Les deux entrées ne sont pas identiques.",
+                'required' => false,
+                'first_options' => ['label' => 'Mot de passe :', 'attr' => ['class' => 'text-muted f-w-400 form-control input-size',
+                    'placeholder' => 'Nouveau mot de passe'],],
+                'second_options' => ['label' => 'Confirmez votre mot de passe :', 'attr' => ['class' => 'text-muted f-w-400 form-control input-size',
+                    'placeholder' => 'Nouveau mot de passe'],],
             ])
-        ->add('valider', SubmitType::class)
-    ;
+            ->add('valider', SubmitType::class);
     }
 
 

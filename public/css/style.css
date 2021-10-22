@@ -172,12 +172,6 @@ input, textarea {
     background: rgba(178, 238, 243, 0.5); /*  semi-transparent */
 }
 
-footer {
-    text-align: center;
-    padding-top:50px;
-    height:50px;
-}
-
 .form-group input
     /***************style modal pour quand ça marchera ******/
 .modal {
@@ -310,7 +304,9 @@ header {
 }
 
 footer {
-    /*position: absolute;*/
+    text-align: center;
+    height:50px;
+
     bottom: 0;
     width: 100%;
 

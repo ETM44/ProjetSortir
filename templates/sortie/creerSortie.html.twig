@@ -3,20 +3,21 @@
 
 {% block stylesheets %}
     <link href="{{ asset('css/select.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/creerSortie.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block javascripts %}
     <script defer>
-        function onLieu(e){
+        function onLieu(e) {
             // recupérer la valeur de select
             let id = e.value;
 
             // créer une requette http
             const http = new XMLHttpRequest();
             // spécifier le type de reponse en json
-            http.responseType="json";
+            http.responseType = "json";
             // la fonction se déclenche une fois que le serveur a repondu
-            http.onload = function(){
+            http.onload = function () {
 
                 const data = JSON.parse(this.response);
                 document.getElementById("rue").innerHTML = data.rue;
@@ -24,42 +25,42 @@
                 document.getElementById("cp").innerText = data.cp;
             };
             // choisir la méthode et l'URL
-            http.open("GET","/get-adresse/"+id);
+            http.open("GET", "/get-adresse/" + id);
             // envoyer la requete http vers le serveur
             http.send();
         }
 
-        window.addEventListener("load", function(event) {
+        window.addEventListener("load", function (event) {
             onLieu(document.getElementById("creer_sortie_lieu"));
         });
 
         //fonction pour changer les lieux disponibles selon la sélection de la ville :
 
-        function onVille(v){
+        function onVille(v) {
             // recupérer la valeur de option
             let id = v.value;
 
             // créer une requette http
             const http = new XMLHttpRequest();
             // spécifier le type de reponse en json
-            http.responseType="json";
+            http.responseType = "json";
             // la fonction se déclenche une fois que le serveur a repondu
-            http.onload = function(){
+            http.onload = function () {
                 const data = JSON.parse(this.response);
-                var option ='<option value="0"disabled > Choisis un lieu </option>' ;
-                for( let e of data){
-                    option += '<option value="'+e.id+'" >'+e.nom+'</option>';
+                var option = '<option value="0"disabled > Choisis un lieu </option>';
+                for (let e of data) {
+                    option += '<option value="' + e.id + '" >' + e.nom + '</option>';
                 }
                 document.getElementById("creer_sortie_lieu").innerHTML = option;
 
             };
             // choisir la méthode et l'URL
-            http.open("GET","/get-lieux/"+id);
+            http.open("GET", "/get-lieux/" + id);
             // envoyer la requete http vers le serveur
             http.send();
         }
 
-        window.addEventListener("load", function(event) {
+        window.addEventListener("load", function (event) {
             onVille(document.getElementById("creer_sortie_ville"));
         });
 
@@ -68,71 +69,68 @@
 {% endblock %}
 
 {% block body %}
-    <div class="table">
-<div class="GaucheDroite">
 
-    <div class="gauche">
-        {{ form_start(CreerSortieForm) }}
-        <label class="label">Nom de la sortie : </label>
-        {{ form_widget(CreerSortieForm.nom) }}
-        <br>
-        <label class="label">Date et heure de la sortie : </label>
-        <div class="select">
-        {{ form_widget(CreerSortieForm.dateHeureDebut) }}
-        </div>
-
-        <label class="label">Date limite d'inscription :</label>
-        <div class="select">
-        {{ form_widget(CreerSortieForm.dateLimiteInscription) }}
-        </div>
-
-        <label class="label">Nombre de places :</label>
-        {{ form_widget(CreerSortieForm.nbInscriptionsMax) }}
-        <br>
-        <label class="label">Durée :</label>
-        {{ form_widget(CreerSortieForm.duree) }} heures.
-        <br>
-        <label class="label">Description et infos :</label>
-        {{ form_widget(CreerSortieForm.infosSortie,  {'attr':{'class':'textarea'}} ) }}
-    </div>
-
-    <div class="droite">
-        <label class="label">Campus organisateur : </label>
-        <div class="select">
-            {{ form_widget(CreerSortieForm.site) }}
-        </div>
-
-        <label class="label">Ville de la sortie : </label>
-        <div class="select">
-        <select id="update_sortie_ville" onchange="onVille(this);">
-            {% for ville in villes %}
-                <option value="{{ ville.id }}">{{ ville.nomVille }}</option>
-            {% endfor %}
-        </select>
-        </div>
-
-        <div class="lieuAddLieu">
-            <label class="label">Lieu de la sortie : </label>
-            <div class="select">
-            {{ form_widget(CreerSortieForm.lieu, {'attr':{'class':'choice' , 'onchange':"onLieu(this);"}}) }}
+    <div class="GaucheDroite">
+        {% form_theme CreerSortieForm 'bootstrap_5_layout.html.twig' %}
+        <div class="gauche">
+            {{ form_start(CreerSortieForm) }}
+            <label class="label">Nom de la sortie : </label>
+            {{ form_widget(CreerSortieForm.nom) }}
+            <br>
+            <label class="label">Date et heure de la sortie : </label>
+            <div class="">
+                {{ form_widget(CreerSortieForm.dateHeureDebut) }}
             </div>
 
+            <label class="label">Date limite d'inscription :</label>
+            <div class="">
+                {{ form_widget(CreerSortieForm.dateLimiteInscription) }}
+            </div>
+
+            <label class="label">Nombre de places :</label>
+            {{ form_widget(CreerSortieForm.nbInscriptionsMax) }}
+            <br>
+            <label class="label">Durée :</label>
+            {{ form_widget(CreerSortieForm.duree) }} heures.
+            <br>
+            <label class="label">Description et infos :</label>
+            {{ form_widget(CreerSortieForm.infosSortie,  {'attr':{'class':'textarea'}} ) }}
+        </div>
+
+        <div class="droite">
+            <label class="label">Campus organisateur : </label>
+            <div class="">
+                {{ form_widget(CreerSortieForm.site) }}
+            </div>
+
+            <label class="label">Ville de la sortie : </label>
+            <div class="">
+                <select id="update_sortie_ville" onchange="onVille(this);">
+                    {% for ville in villes %}
+                        <option value="{{ ville.id }}">{{ ville.nomVille }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="lieuAddLieu">
+                <label class="label">Lieu de la sortie : </label>
+                <div class="">
+                    {{ form_widget(CreerSortieForm.lieu, {'attr':{'class':'choice' , 'onchange':"onLieu(this);"}}) }}
+                </div>
 
 
-
-            <a data-bs-toggle="modal" data-bs-target="#MyModalLieu" href="#MyModalLieu">
-                <img src="{{ asset('img/16057.png') }}" width="30px"/>
-            </a>
-
+                <a data-bs-toggle="modal" data-bs-target="#MyModalLieu" href="#MyModalLieu">
+                    <img src="{{ asset('img/16057.png') }}" width="30px"/>
+                </a>
 
 
-        </div><!-- Fin de la div lieuNouveauLieu-->
+            </div><!-- Fin de la div lieuNouveauLieu-->
 
-        <!-------------------------------------------------------------------------->
+            <!-------------------------------------------------------------------------->
 
-        <p id="rue"></p>
-        <p id="ville"></p>
-        <p id="cp"></p>
+            <p id="rue"></p>
+            <p id="ville"></p>
+            <p id="cp"></p>
 
 
             <label class="label">Latitude :</label>
@@ -141,22 +139,22 @@
             <label class="label">Longitude :</label>
             <p id="longitude"></p>
 
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!
         1d2712.5968569125494!2d-1.5564777840385209!3d47.16574957915793!2m3!1f0!2f0!3f0!3m2!
         1i1024!2i768!4f13.1!3m3!1m2!1s0x4805e97f6fb1094b%3A0x7d21011fae2eb0ba!2s2%20Rue%20
         Frida%20Kahlo%2C%2044400%20Rez%C3%A9!5e0!3m2!1sfr!2sfr!4v1634137488608!5m2!1sfr!2sfr"
-                width="450" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-        {# <iframe src="'https://maps.google.com/maps?q=' + lat + ',' + lng + '&t=&z=15&ie=UTF8&iwloc=&output=embed'" id="carte"
-                width="450" height="300" style="border:0;" allowfullscreen="" loading="lazy"> </iframe>#}
+                    width="450" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            {# <iframe src="'https://maps.google.com/maps?q=' + lat + ',' + lng + '&t=&z=15&ie=UTF8&iwloc=&output=embed'" id="carte"
+                width="450" height="300" style="border:0;" allowfullscreen="" loading="lazy"> </iframe> #}
 
+        </div>
     </div>
-</div>
-    {#<div class="boutonsModifSortie">
+    {# <div class="boutonsModifSortie">
         {{ form_widget(CreerSortieForm ,  {'attr':{'class':'"btn btn-afficher'}} ) }}
         <a class="btn btn-publier "  href="{{ path('app_publierSortie',  {'id':sortie.id}) }}">Publier</a>
         <a class="btn btn-annuler" href="{{ path('app_annulerSortie',  {'id':sortie.id}) }}">Annuler la sortie</a>
         {{ form_widget(CreerSortieForm, {'attr':{'class':'btn-modifier'}} ) }}
-    </div>#}
+    </div> #}
 
     {{ form_end(CreerSortieForm) }}
 
@@ -168,42 +166,43 @@
                     <h5 class="modal-title" id="ModalLabel">Ajouter un lieu</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                {% form_theme nouveauLieuForm 'bootstrap_5_layout.html.twig' %}
                 <div class="modal-body">
-                    {{form_start(nouveauLieuForm, {'action': path('nouveauLieu')}) }}
+                    {{ form_start(nouveauLieuForm, {'action': path('nouveauLieu')}) }}
                     <div class="form-group">
-                        {{ form_widget(nouveauLieuForm.nom, {'attr':{'class':'input', 'type':'text', 'placeholder':'Nom *'}}) }}
+                        {{ form_widget(nouveauLieuForm.nom, {'attr':{'class':'input input-size', 'type':'text', 'placeholder':'Nom *'}}) }}
                     </div>
 
                     <div class="form-group">
-                        {{ form_widget(nouveauLieuForm.rue, {'attr':{'class':'input', 'type':'text', 'placeholder':'Rue *'}}) }}
+                        {{ form_widget(nouveauLieuForm.rue, {'attr':{'class':'input input-size', 'type':'text', 'placeholder':'Rue *'}}) }}
                     </div>
 
                     <div class="form-group">
-                        {{ form_widget(nouveauLieuForm.latitude, {'attr':{'class':'input', 'type':'text', 'placeholder':'Latitude'}}) }}
+                        {{ form_widget(nouveauLieuForm.latitude, {'attr':{'class':'input input-size', 'type':'text', 'placeholder':'Latitude'}}) }}
                     </div>
 
                     <div class="form-group">
-                        {{ form_widget(nouveauLieuForm.longitude, {'attr':{'class':'input', 'type':'text', 'placeholder':'Longitude'}}) }}
+                        {{ form_widget(nouveauLieuForm.longitude, {'attr':{'class':'input input-size', 'type':'text', 'placeholder':'Longitude'}}) }}
                     </div>
                     <div class="form-group">
-                        {{ form_widget(nouveauLieuForm.ville,{'attr':{'class':'choice'}}) }}
-                        <a href="#">Ajouter une ville</a>
+                        {{ form_widget(nouveauLieuForm.ville,{'attr':{'class':'choice input-size'}}) }}
+                        {#<a href="#">Ajouter une ville</a>#}
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <div class="form-group">
-                        {{ form_widget(nouveauLieuForm.enregistrer,{'attr':{'class':'btn-success'}}) }}
+                    <div class="">
+                        {{ form_widget(nouveauLieuForm.enregistrer,{'attr':{'class':'btn btn-success'}}) }}
                     </div>
-                    <div class="form-group">
-                       {# {{ form_widget(nouveauLieuForm.annuler,{'attr':{'class':'uabb-modal-close'}})}}#}
-                        <button class="btn-warning" data-bs-dismiss="modal">Annuler</button>
+                    <div class="">
+                        {# {{ form_widget(nouveauLieuForm.annuler,{'attr':{'class':'uabb-modal-close'}})}} #}
+                        <button class="btn btn-warning" data-bs-dismiss="modal">Annuler</button>
                     </div>
                     {{ form_end(nouveauLieuForm) }}
                 </div>
             </div>
         </div>
     </div>
-</div>
+
 
 {% endblock %}
 

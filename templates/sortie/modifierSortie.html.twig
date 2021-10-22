@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block stylesheets %}
     <link href="{{ asset('css/select.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/modifProfil.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block title %}
@@ -91,9 +92,9 @@
         {% elseif sortie.etat.id !=6 %}
 
             <h1 class="table">{{ title }} {{ sortie.nom }}</h1>
-<div class="table">
-            <div class="GaucheDroite">
 
+            <div class="GaucheDroite">
+                {% form_theme updateSortieForm 'bootstrap_5_layout.html.twig' %}
                 <div class="gauche">
                     {{ form_start(updateSortieForm) }}
                     <label class="label">Nom de la sortie : </label>
@@ -133,7 +134,6 @@
                             {% endfor %}
                         </select>
                     </div>
-                    >
 
 
                     <div class="lieuAddLieu">
@@ -197,42 +197,42 @@
                             <h5 class="modal-title" id="ModalLabel">Ajouter un lieu</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
+                        {% form_theme nouveauLieuForm 'bootstrap_5_layout.html.twig' %}
                         <div class="modal-body">
                             {{ form_start(nouveauLieuForm, {'action': path('nouveauLieu', {'sortie_id':sortie.id})}) }}
                             <div class="form-group">
-                                {{ form_widget(nouveauLieuForm.nom, {'attr':{'class':'input', 'type':'text', 'placeholder':'Nom *'}}) }}
+                                {{ form_widget(nouveauLieuForm.nom, {'attr':{'class':'input input-size', 'type':'text', 'placeholder':'Nom *'}}) }}
                             </div>
 
                             <div class="form-group">
-                                {{ form_widget(nouveauLieuForm.rue, {'attr':{'class':'input', 'type':'text', 'placeholder':'Rue *'}}) }}
+                                {{ form_widget(nouveauLieuForm.rue, {'attr':{'class':'input input-size', 'type':'text', 'placeholder':'Rue *'}}) }}
                             </div>
 
                             <div class="form-group">
-                                {{ form_widget(nouveauLieuForm.latitude, {'attr':{'class':'input', 'type':'text', 'placeholder':'Latitude'}}) }}
+                                {{ form_widget(nouveauLieuForm.latitude, {'attr':{'class':'input input-size', 'type':'text', 'placeholder':'Latitude'}}) }}
                             </div>
 
                             <div class="form-group">
-                                {{ form_widget(nouveauLieuForm.longitude, {'attr':{'class':'input', 'type':'text', 'placeholder':'Longitude'}}) }}
+                                {{ form_widget(nouveauLieuForm.longitude, {'attr':{'class':'input input-size', 'type':'text', 'placeholder':'Longitude'}}) }}
                             </div>
                             <div class="form-group">
-                                {{ form_widget(nouveauLieuForm.ville,{'attr':{'class':'choice'}}) }}
+                                {{ form_widget(nouveauLieuForm.ville,{'attr':{'class':'choice input-size'}}) }}
                                 <a href="#">Ajouter une ville</a>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <div class="form-group">
-                                {{ form_widget(nouveauLieuForm.enregistrer,{'attr':{'class':'btn-success'}}) }}
-                            </div>
-                            <div class="form-group">
-                                {# {{ form_widget(nouveauLieuForm.annuler,{'attr':{'class':'uabb-modal-close'}})}} #}
-                                <button class="btn-warning" data-bs-dismiss="modal">Annuler</button>
-                            </div>
-                            {{ form_end(nouveauLieuForm) }}
+
+                            {{ form_widget(nouveauLieuForm.enregistrer,{'attr':{'class':'btn btn-success'}}) }}
+
+                            {# {{ form_widget(nouveauLieuForm.annuler,{'attr':{'class':'uabb-modal-close'}})}} #}
+                            <button class="btn btn-warning" data-bs-dismiss="modal">Annuler</button>
+
                         </div>
                     </div>
+                    {{ form_end(nouveauLieuForm) }}
                 </div>
-            </div> <!--fin de la div modal-->
-</div>
+            </div><!--fin de la div modal-->
+
         {% endif %}
     {% endif %}
 
