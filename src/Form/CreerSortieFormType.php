@@ -58,7 +58,7 @@ class CreerSortieFormType extends AbstractType
                 return $lieu-> getNom();
                 }
             ])
-        ;
+;
     }
 
     public function configureOptions(OptionsResolver $resolver)
