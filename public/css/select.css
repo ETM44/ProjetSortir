@@ -1,8 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&display=swap');
 
-
-/*font-family: 'Comfortaa', cursive;*/
-
 *,
 *::before,
 *::after {
@@ -62,4 +59,9 @@ select::-ms-expand {
 select,
 .select:after {
     grid-area: select;
+}
+
+.login-center {
+    margin-top: 10%;
+    margin-left: 35%;
 }

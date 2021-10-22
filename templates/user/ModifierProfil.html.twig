@@ -67,7 +67,7 @@
 
 {% block body %}
 
-    <h1 class="table">{{ title }} {{ participant.pseudo }}</h1>
+    <h1 class="text-blanc">{{ title }} {{ participant.pseudo }}</h1>
 
     <div class="profile-pic">
         <label class="-label" for="file">
@@ -153,23 +153,15 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="form-group">
+                            <div class="">
                                 {{ form_widget(newMdpForm.valider, {'attr':{'class':'btn btn-modifier'}}) }}
-
-                                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-
                             </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="form-group">
+
+                            <div class="">
                                 <a class="btn btn-annuler" data-bs-dismiss="modal">Annuler</a>
                             </div>
-                        </div>
-                    </div>
                 </div>
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                 {{ form_end(newMdpForm) }}
             </div>
         </div>

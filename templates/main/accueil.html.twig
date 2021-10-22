@@ -12,41 +12,53 @@
     {% form_theme mainForm 'bootstrap_5_layout.html.twig' %}
 
     {{ form_start(mainForm) }}
-    <div class="table">
-    <div class="row">
-        <h3 class="table">Filtrer les sorties</h3>
-        <div class="col-9">
-            <div class="row">
-                <div class="col">
-                    {{ form_label(mainForm.site) }}
-                    {{ form_widget(mainForm.site) }}
-                    {{ form_label(mainForm.nom) }}
-                    {{ form_widget(mainForm.nom) }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    {{ form_label(mainForm.dateHeureDebut) }}
-                    {{ form_widget(mainForm.dateHeureDebut) }}
+    <div class="text-blanc">
+        <div class="row">
+            <h3 class="text-blanc">Filtrer les sorties</h3>
+            <div class="col-9">
+                <div class="row">
+                    <div class="col">
+                        {{ form_label(mainForm.site) }}
+                        <div class="select">
+
+                            {{ form_widget(mainForm.site) }}
+                        </div>
+                    </div><div class="col">
+                        {{ form_label(mainForm.nom) }}
+                        <div class="select">
+
+                            {{ form_widget(mainForm.nom) }}
+                        </div>
                     </div>
                 </div>
-                <div class="col">
-                    {{ form_label(mainForm.dateHeureFin) }}
-                    {{ form_widget(mainForm.dateHeureFin) }}
+                <div class="row">
+
+                    <div class="col">
+                        {{ form_label(mainForm.dateHeureDebut) }}
+                        <div class="select">
+                            {{ form_widget(mainForm.dateHeureDebut) }}
+                        </div>
+                    </div>
+                    <div class="col">
+                        {{ form_label(mainForm.dateHeureFin) }}
+                        <div class="select">
+                            {{ form_widget(mainForm.dateHeureFin) }}
+                        </div>
                     </div>
                 </div>
+
+
+            </div>
+            <div class="col-3">
+                <button class="btn btn-warning btn-lg btn-block" type="submit">Rechercher</button>
             </div>
         </div>
-        <div class="col-3">
-            <button class="btn btn-warning btn-lg btn-block" type="submit">Rechercher</button>
-        </div>
-    </div>
     </div>
 
 
     {{ form_end(mainForm) }}
 
-    <table class="table"
+    <table class="table text-blanc"
            id="table"
            data-toggle="table"
            data-search="true"
@@ -74,7 +86,8 @@
                 <td>{{ result.nombreInscription }} / {{ result.nbInscriptionsMax }}</td>
                 <td>{{ result.etat.libelle }}</td>
                 <td>{{ result.organisateur.pseudo }}</td>
-                <td><a class="btn btn-afficher" href="{{ path('afficherSortie',  {'id': result.id})}}">Afficher</a></td>
+                <td><a class="btn btn-afficher" href="{{ path('afficherSortie',  {'id': result.id}) }}">Afficher</a>
+                </td>
             </tr>
         {% endfor %}
         </tbody>

@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block titre %}
-    <h1 class="table"> {{ participant.pseudo }}, mon profil</h1>
+    <h1 class="text-blanc"> {{ participant.pseudo }}, mon profil</h1>
 {% endblock %}
 
 {% block javascript %}
@@ -22,7 +22,7 @@
         <img src="{{ asset('img/profilepic.jpg') }}" id="output" width="200" />
     </div>
 
-    <table class="table">
+    <table class="text-blanc">
         <thead>
         <tr>
             <th scope="row">Prénom</th>

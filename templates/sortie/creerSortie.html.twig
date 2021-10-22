@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block titre %}<h1 class="table">Créons une sortie!</h1>{% endblock %}
+{% block titre %}<h1 class="text-blanc">Créons une sortie!</h1>{% endblock %}
 
 {% block stylesheets %}
     <link href="{{ asset('css/select.css') }}" rel="stylesheet">
@@ -73,38 +73,52 @@
     <div class="GaucheDroite">
         {% form_theme CreerSortieForm 'bootstrap_5_layout.html.twig' %}
         <div class="gauche">
+
             {{ form_start(CreerSortieForm) }}
+
             <label class="label">Nom de la sortie : </label>
-            {{ form_widget(CreerSortieForm.nom) }}
+            <div class="select">
+                {{ form_widget(CreerSortieForm.nom) }}
+            </div>
             <br>
             <label class="label">Date et heure de la sortie : </label>
-            <div class="">
+            <div class="select">
                 {{ form_widget(CreerSortieForm.dateHeureDebut) }}
             </div>
 
             <label class="label">Date limite d'inscription :</label>
-            <div class="">
+            <div class="select">
                 {{ form_widget(CreerSortieForm.dateLimiteInscription) }}
             </div>
 
             <label class="label">Nombre de places :</label>
-            {{ form_widget(CreerSortieForm.nbInscriptionsMax) }}
+            <div class="select">
+                {{ form_widget(CreerSortieForm.nbInscriptionsMax) }}
+            </div>
             <br>
-            <label class="label">Durée :</label>
-            {{ form_widget(CreerSortieForm.duree) }} heures.
+            <label class="label">Durée en heure:</label>
+            <div class="select">
+                {{ form_widget(CreerSortieForm.duree) }}
+            </div>
             <br>
             <label class="label">Description et infos :</label>
-            {{ form_widget(CreerSortieForm.infosSortie,  {'attr':{'class':'textarea'}} ) }}
+            <div class="select">
+                {{ form_widget(CreerSortieForm.infosSortie,  {'attr':{'class':'textarea'}} ) }}
+            </div>
+            <br>
+            <button type="submit" class="btn btn-warning">Créer</button>
+            <br>
+            <button type="reset" class="btn btn-annuler">Annuler</button>
         </div>
 
         <div class="droite">
             <label class="label">Campus organisateur : </label>
-            <div class="">
+            <div class="select">
                 {{ form_widget(CreerSortieForm.site) }}
             </div>
 
             <label class="label">Ville de la sortie : </label>
-            <div class="">
+            <div class="select">
                 <select id="update_sortie_ville" onchange="onVille(this);">
                     {% for ville in villes %}
                         <option value="{{ ville.id }}">{{ ville.nomVille }}</option>
@@ -114,7 +128,7 @@
 
             <div class="lieuAddLieu">
                 <label class="label">Lieu de la sortie : </label>
-                <div class="">
+                <div class="select">
                     {{ form_widget(CreerSortieForm.lieu, {'attr':{'class':'choice' , 'onchange':"onLieu(this);"}}) }}
                 </div>
 
@@ -149,12 +163,6 @@
 
         </div>
     </div>
-    {# <div class="boutonsModifSortie">
-        {{ form_widget(CreerSortieForm ,  {'attr':{'class':'"btn btn-afficher'}} ) }}
-        <a class="btn btn-publier "  href="{{ path('app_publierSortie',  {'id':sortie.id}) }}">Publier</a>
-        <a class="btn btn-annuler" href="{{ path('app_annulerSortie',  {'id':sortie.id}) }}">Annuler la sortie</a>
-        {{ form_widget(CreerSortieForm, {'attr':{'class':'btn-modifier'}} ) }}
-    </div> #}
 
     {{ form_end(CreerSortieForm) }}
 
@@ -186,7 +194,7 @@
                     </div>
                     <div class="form-group">
                         {{ form_widget(nouveauLieuForm.ville,{'attr':{'class':'choice input-size'}}) }}
-                        {#<a href="#">Ajouter une ville</a>#}
+                        {# <a href="#">Ajouter une ville</a> #}
                     </div>
                 </div>
                 <div class="modal-footer">
