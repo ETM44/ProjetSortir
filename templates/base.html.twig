@@ -37,8 +37,10 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="fond">
-        <header>
+
+<div class="fond">
+    <header class="bg-color">
+        <div class="container">
             <nav class="navbar navbar-expand-lg navbar-light bg-color">
                 {% if app.user %}
                     <a class="navbar-brand" href="{{ path('main') }}"><img src="{{ asset('img/logosortie.png') }}"
@@ -66,36 +68,38 @@
                             <a class="nav-item nav-link" href="{{ path('app_register') }}">Inscription</a>
                         </div>
                     {% endif %}
+
                 </div>
             </nav>
-            <hr>
-        </header>
-        <div class="container">
-            {% for categorie, messages in app.flashes %}
-                {% for message in messages %}
-                    <div class="alert alert-{{ categorie }}" role="alert">
-                        {{ message }}
-                    </div>
-                {% endfor %}
+        </div>
+    </header>
+    <div class="container">
+        {% for categorie, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ categorie }}" role="alert">
+                    {{ message }}
+                </div>
             {% endfor %}
+        {% endfor %}
 
 
 
-            {% block titre %}{% endblock %}
-            <div id="global">
-                {% block body %}{% endblock %}
-            </div>
-
+        {% block titre %}{% endblock %}
+        <div id="global">
+            {% block body %}{% endblock %}
         </div>
 
-        {% block javascripts %}
-            {# <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> #}
-            {# {{ encore_entry_script_tags('app') }} #}
-        {% endblock %}
     </div>
-    <footer>
-        <hr>
-        @Sortir.com&#169;, {{ "now"|date("Y") }}
-    </footer>
+</div>
+
+{% block javascripts %}
+    {# <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> #}
+    {# {{ encore_entry_script_tags('app') }} #}
+{% endblock %}
+
+</div>
+<footer class="bg-color text-blanc">
+    <p class="bg-color">@Sortir.com&#169;, {{ "now"|date("Y") }}</p>
+</footer>
 </body>
 </html>

@@ -4,7 +4,7 @@
     Annuler la sortie
 {%endblock%}
 {% block titre %}
-    <h1>Réactiver la sortie : {{ sortie.nom }}</h1>
+    <h1 class="text-blanc">Réactiver la sortie : {{ sortie.nom }}</h1>
 {% endblock %}
 
 {% block javascript %}
@@ -18,7 +18,7 @@
             {% if sortie.organisateur.id != app.user.id %}
                 <i>Vous n'êtes pas autorisé à accéder à cette page ! </i>
             {% else %}
-
+                    <div class="text-blanc">
                     {{ form_start(form) }}
                     <ul>
                         <li>Nom de la sortie : {{ sortie.nom }}</li>
@@ -34,6 +34,7 @@
 
                     </div>
                     {{ form_end(form) }}
+                    </div>
             {% endif %}
 
         {% endblock %}

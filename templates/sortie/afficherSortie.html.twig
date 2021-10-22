@@ -1,6 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{sortie.nom}}{% endblock %}
+{% block title %}
+    <div class="blockTitle">
+    {{sortie.nom}}
+    </div>
+{% endblock %}
 
 {% block body %}
     <div class="fond">
@@ -18,8 +22,8 @@
     {% elseif sortie.etat.id !=6 %}
 
     <div>
-        <h1>{{ sortie.nom }}</h1>
-        <table class="table">
+        <h1 class="text-blanc">{{ sortie.nom }}</h1>
+        <table class="text-blanc">
            <thead>
             <tr>
                 <th scope="row">date de la sortie</th>
@@ -68,8 +72,8 @@
     <p> Il n'y a pas encore de participant pour cette sortie ! </p>
     {% else %}
     <div>
-        <h3>Liste des participants inscrits</h3>
-        <table class="table">
+        <h3 class="blockTitle">Liste des participants inscrits</h3>
+        <table class="text-blanc">
             <thead>
             <tr>
                 <th scope="col">Pseudo</th>

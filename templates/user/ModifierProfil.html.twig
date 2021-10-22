@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block stylesheets %}
     <link href="{{ asset('css/select.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/modifProfil.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block javascripts %}
@@ -19,22 +20,22 @@
 
     <script type="text/javascript">
 
-        function updatePass(e){
+        function updatePass(e) {
 
             let form = e.target;
 
             const http = new XMLHttpRequest(); // client
-            http.responseType="json"; //
-            http.onload = function(e){
-                var infos=document.getElementById("infos");
+            http.responseType = "json"; //
+            http.onload = function (e) {
+                var infos = document.getElementById("infos");
                 var parsed = JSON.parse(this.response);
-                infos.innerHTML="";
-                for( ele of parsed){
+                infos.innerHTML = "";
+                for (ele of parsed) {
                     console.log(ele);
-                    if("error" in ele){
-                        infos.innerHTML+="<p class='alert alert-danger' >"+ele.error+"</p>";
-                    }else{
-                        infos.innerHTML+="<p class='alert alert-success' >"+ele.success+"</p>";
+                    if ("error" in ele) {
+                        infos.innerHTML += "<p class='alert alert-danger' >" + ele.error + "</p>";
+                    } else {
+                        infos.innerHTML += "<p class='alert alert-success' >" + ele.success + "</p>";
                     }
 
                 }
@@ -47,7 +48,7 @@
                 //     window.location = "/login";
                 // }
             };
-            http.open(form.method,"/user/update-pass");
+            http.open(form.method, "/user/update-pass");
             http.send(new FormData(form));
 
             e.preventDefault();
@@ -66,8 +67,7 @@
 
 {% block body %}
 
-    <body>
-    <h1>{{ title }} {{ participant.pseudo }}</h1>
+    <h1 class="text-blanc">{{ title }} {{ participant.pseudo }}</h1>
 
     <div class="profile-pic">
         <label class="-label" for="file">
@@ -77,38 +77,49 @@
         <input id="file" type="file" onchange="loadFile(event)"/>
         <img src="{{ asset('img/profilepic.jpg') }}" id="output" width="150"/>
     </div>
-
-    <div class="profil">
+    {% form_theme ModifierProfilFormType 'bootstrap_5_layout.html.twig' %}
+    <div class="blockTitle">
         {{ form_start(ModifierProfilFormType) }}
         <label class="label">Pseudo : </label>
-        {{ form_widget(ModifierProfilFormType.pseudo) }}
-        {{ form_errors(ModifierProfilFormType.pseudo) }}
+        <div class="select">
+            {{ form_widget(ModifierProfilFormType.pseudo) }}
+            {{ form_errors(ModifierProfilFormType.pseudo) }}
+        </div>
         <br>
         <label class="label">Prénom : </label>
-        {{ form_widget(ModifierProfilFormType.prenom) }}
-        {{ form_errors(ModifierProfilFormType.prenom) }}
+        <div class="select">
+            {{ form_widget(ModifierProfilFormType.prenom) }}
+            {{ form_errors(ModifierProfilFormType.prenom) }}
+        </div>
         <br>
         <label class="label">Nom : </label>
-        {{ form_widget(ModifierProfilFormType.nom) }}
-        {{ form_errors(ModifierProfilFormType.nom) }}
+        <div class="select">
+            {{ form_widget(ModifierProfilFormType.nom) }}
+            {{ form_errors(ModifierProfilFormType.nom) }}
+        </div>
         <br>
         <label class="label">Téléphone : </label>
-        {{ form_widget(ModifierProfilFormType.telephone) }}
-        {{ form_errors(ModifierProfilFormType.telephone) }}
+        <div class="select">
+            {{ form_widget(ModifierProfilFormType.telephone) }}
+            {{ form_errors(ModifierProfilFormType.telephone) }}
+        </div>
         <br>
         <label class="label">email : </label>
-        {{ form_widget(ModifierProfilFormType.email) }}
-        {{ form_errors(ModifierProfilFormType.email) }}
-
+        <div class="select">
+            {{ form_widget(ModifierProfilFormType.email) }}
+            {{ form_errors(ModifierProfilFormType.email) }}
+        </div>
         <label class="label">Mon campus de rattachement :</label>
         <div class="select">
-        {{ form_widget(ModifierProfilFormType.site, {'attr':{'class':'choice'}}) }}
-        {{ form_errors(ModifierProfilFormType.site) }}
+            {{ form_widget(ModifierProfilFormType.site, {'attr':{'class':'choice'}}) }}
+            {{ form_errors(ModifierProfilFormType.site) }}
         </div>
         <br>
         <label class="label">Entrez votre mot de passe pour valider les modifications :</label>
-        {{ form_widget(ModifierProfilFormType.plainPassword) }}
-        {{ form_errors(ModifierProfilFormType.plainPassword) }}
+        <div class="select">
+            {{ form_widget(ModifierProfilFormType.plainPassword) }}
+            {{ form_errors(ModifierProfilFormType.plainPassword) }}
+        </div>
         <br>
     </div>
     <a class="btn btn-modifier" data-bs-toggle="modal" data-bs-target="#MyModalPassword" href="#MyModalPassword">
@@ -125,13 +136,14 @@
     <div class="modal fade" id="MyModalPassword" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
+                {% form_theme newMdpForm 'bootstrap_5_layout.html.twig' %}
                 {{ form_start(newMdpForm, { 'attr':{ 'onsubmit':"return updatePass(event);" } } ) }}
                 <div class="modal-header">
                     <h5 class="modal-title" id="ModalLabel">Nouveau mot de passe</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div id="infos" ></div>
+                    <div id="infos"></div>
 
                     <div class="form-group">
                         {{ form_widget(newMdpForm.plainPassword) }}
@@ -141,18 +153,15 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <div class="form-group">
-                        {{form_widget(newMdpForm.valider, {'attr':{'class':'btn btn-modifier'}}) }}
+                            <div class="">
+                                {{ form_widget(newMdpForm.valider, {'attr':{'class':'btn btn-modifier'}}) }}
+                            </div>
 
-                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-
-                    </div>
-                    <div class="form-group">
-                        <a class="btn btn-annuler" data-bs-dismiss="modal">Annuler</a>
-                    </div>
-
+                            <div class="">
+                                <a class="btn btn-annuler" data-bs-dismiss="modal">Annuler</a>
+                            </div>
                 </div>
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                 {{ form_end(newMdpForm) }}
             </div>
         </div>

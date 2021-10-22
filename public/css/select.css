@@ -1,8 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&display=swap');
 
-
-/*font-family: 'Comfortaa', cursive;*/
-
 *,
 *::before,
 *::after {
@@ -46,7 +43,7 @@ select::-ms-expand {
     line-height: 1.1;
     background-color: #fff;
     background-image:  linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
-    display: grid;
+    /*display: grid;*/
     grid-template-areas: "select";
     align-items: center;
 }
@@ -62,4 +59,9 @@ select::-ms-expand {
 select,
 .select:after {
     grid-area: select;
+}
+
+.login-center {
+    margin-top: 10%;
+    margin-left: 35%;
 }
